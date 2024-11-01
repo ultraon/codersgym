@@ -1,5 +1,5 @@
-import 'package:myapp/core/error/result.dart';
-import 'package:myapp/features/question/domain/model/question.dart';
+import 'package:dailycoder/core/error/result.dart';
+import 'package:dailycoder/features/question/domain/model/question.dart';
 
 abstract interface class QuestionRepository {
   Future<Result<Question, Exception>> getTodayChallenge();

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/app.dart';
-import 'package:myapp/injection.dart';
+import 'package:dailycoder/app.dart';
+import 'package:dailycoder/injection.dart';
 
 void main() {
   intializeDependencies();

@@ -1,4 +1,4 @@
-import 'package:myapp/features/question/domain/model/question.dart';
+import 'package:dailycoder/features/question/domain/model/question.dart';
 
 class QuestionNodeEntity {
   String? title;

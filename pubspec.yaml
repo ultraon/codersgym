@@ -1,4 +1,4 @@
-name: myapp
+name: dailycoder
 description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -60,6 +60,11 @@ dev_dependencies:
   auto_route_generator: ^9.0.0
   build_runner: ^2.4.13
   flutter_gen_runner: ^5.8.0
+  flutter_launcher_icons: "^0.14.1"
+
+flutter_launcher_icons:
+  android: "ic_launcher"
+  image_path: "assets/images/app_icon.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

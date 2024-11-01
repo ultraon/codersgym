@@ -9,15 +9,16 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:auto_route/auto_route.dart' as _i5;
-import 'package:flutter/material.dart' as _i6;
-import 'package:myapp/features/auth/presentation/pages/leetcode_web_page.dart'
+import 'package:dailycoder/features/auth/presentation/pages/leetcode_web_page.dart'
     as _i2;
-import 'package:myapp/features/auth/presentation/pages/login_page.dart' as _i3;
-import 'package:myapp/features/question/domain/model/question.dart' as _i7;
-import 'package:myapp/features/question/presentation/pages/home_page.dart'
+import 'package:dailycoder/features/auth/presentation/pages/login_page.dart'
+    as _i3;
+import 'package:dailycoder/features/question/domain/model/question.dart' as _i7;
+import 'package:dailycoder/features/question/presentation/pages/home_page.dart'
     as _i1;
-import 'package:myapp/features/question/presentation/pages/question_detail_page.dart'
+import 'package:dailycoder/features/question/presentation/pages/question_detail_page.dart'
     as _i4;
+import 'package:flutter/material.dart' as _i6;
 
 /// generated route for
 /// [_i1.HomePage]

@@ -1,5 +1,5 @@
-import 'package:myapp/features/question/data/entity/question_entity.dart';
-import 'package:myapp/features/question/domain/model/question.dart';
+import 'package:dailycoder/features/question/data/entity/question_entity.dart';
+import 'package:dailycoder/features/question/domain/model/question.dart';
 
 class DailyQuestionEntity {
   ActiveDailyCodingChallengeQuestionNode? activeDailyCodingChallengeQuestion;

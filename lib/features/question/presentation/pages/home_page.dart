@@ -2,14 +2,14 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:myapp/core/api/api_state.dart';
-import 'package:myapp/core/routes/app_router.gr.dart';
-import 'package:myapp/features/question/domain/model/question.dart';
-import 'package:myapp/features/question/presentation/blocs/daily_challenge/daily_challenge_cubit.dart';
-import 'package:myapp/features/question/presentation/pages/question_detail_page.dart';
-import 'package:myapp/features/question/presentation/widgets/daily_question_card.dart';
-import 'package:myapp/features/question/presentation/widgets/user_greeting_card.dart';
-import 'package:myapp/injection.dart';
+import 'package:dailycoder/core/api/api_state.dart';
+import 'package:dailycoder/core/routes/app_router.gr.dart';
+import 'package:dailycoder/features/question/domain/model/question.dart';
+import 'package:dailycoder/features/question/presentation/blocs/daily_challenge/daily_challenge_cubit.dart';
+import 'package:dailycoder/features/question/presentation/pages/question_detail_page.dart';
+import 'package:dailycoder/features/question/presentation/widgets/daily_question_card.dart';
+import 'package:dailycoder/features/question/presentation/widgets/user_greeting_card.dart';
+import 'package:dailycoder/injection.dart';
 
 @RoutePage()
 class HomePage extends HookWidget {

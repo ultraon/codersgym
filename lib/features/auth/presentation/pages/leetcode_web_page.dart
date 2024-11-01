@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:myapp/features/common/presentation/widgets/app_webview.dart';
+import 'package:dailycoder/features/common/presentation/widgets/app_webview.dart';
 
 @RoutePage()
 class LeetcodeWebPage extends StatelessWidget {

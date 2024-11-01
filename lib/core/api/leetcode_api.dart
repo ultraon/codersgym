@@ -1,7 +1,7 @@
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:myapp/core/error/exception.dart';
-import 'package:myapp/core/api/api_urls.dart';
-import 'package:myapp/core/api/leetcode_requests.dart';
+import 'package:dailycoder/core/error/exception.dart';
+import 'package:dailycoder/core/api/api_urls.dart';
+import 'package:dailycoder/core/api/leetcode_requests.dart';
 
 class LeetcodeApi {
   late GraphQLClient _graphQLClient;

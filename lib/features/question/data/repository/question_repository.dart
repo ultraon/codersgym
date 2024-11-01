@@ -1,9 +1,9 @@
-import 'package:myapp/core/error/result.dart';
-import 'package:myapp/core/api/leetcode_api.dart';
-import 'package:myapp/features/question/data/entity/daily_question_entity.dart';
-import 'package:myapp/features/question/data/entity/question_entity.dart';
-import 'package:myapp/features/question/domain/model/question.dart';
-import 'package:myapp/features/question/domain/repository/question_repository.dart';
+import 'package:dailycoder/core/error/result.dart';
+import 'package:dailycoder/core/api/leetcode_api.dart';
+import 'package:dailycoder/features/question/data/entity/daily_question_entity.dart';
+import 'package:dailycoder/features/question/data/entity/question_entity.dart';
+import 'package:dailycoder/features/question/domain/model/question.dart';
+import 'package:dailycoder/features/question/domain/repository/question_repository.dart';
 
 class QuestionRepositoryImpl implements QuestionRepository {
   final LeetcodeApi leetcodeApi;

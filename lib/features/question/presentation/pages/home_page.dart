@@ -30,10 +30,10 @@ class HomePage extends HookWidget {
         builder: (context, state) {
           return state.when(
             onInitial: () {
-              return const SizedBox();
+              return const Center(child: CircularProgressIndicator());
             },
             onLoading: () {
-              return const CircularProgressIndicator();
+              return const Center(child: CircularProgressIndicator());
             },
             onLoaded: (question) {
               return HomePageBody(

@@ -1,4 +1,4 @@
-# myapp
+# Daily Coder
 
 A new Flutter project.
 

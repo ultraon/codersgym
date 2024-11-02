@@ -25,7 +25,6 @@ class TypingTextAnimation extends StatelessWidget {
           textAlign: textAlign,
         ),
       ],
-      repeatForever: true,
       pause: const Duration(milliseconds: 100),
     );
   }

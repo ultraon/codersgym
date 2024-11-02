@@ -1,5 +1,7 @@
-sealed class ApiState<S, E extends Exception> {
-  ApiState();
+import 'package:equatable/equatable.dart';
+
+sealed class ApiState<S, E extends Exception> extends Equatable {
+  const ApiState();
   // Factory constructor to initialize ApiState with ApiInitial
   factory ApiState.initial() => ApiInitial<S, E>();
 
@@ -23,16 +25,28 @@ sealed class ApiState<S, E extends Exception> {
   }
 }
 
-class ApiInitial<S, E extends Exception> extends ApiState<S, E> {}
+class ApiInitial<S, E extends Exception> extends ApiState<S, E> {
+  @override
+  List<Object?> get props => [];
+}
 
-class ApiLoading<S, E extends Exception> extends ApiState<S, E> {}
+class ApiLoading<S, E extends Exception> extends ApiState<S, E> {
+  @override
+  List<Object?> get props => [];
+}
 
 class ApiLoaded<S, E extends Exception> extends ApiState<S, E> {
   final S data;
-  ApiLoaded(this.data);
+  const ApiLoaded(this.data);
+
+  @override
+  List<Object?> get props => [data];
 }
 
 class ApiError<S, E extends Exception> extends ApiState<S, E> {
   final E error;
-  ApiError(this.error);
+  const ApiError(this.error);
+
+  @override
+  List<Object?> get props => [error];
 }

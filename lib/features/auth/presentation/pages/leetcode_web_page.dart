@@ -11,6 +11,7 @@ class LeetcodeWebPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppWebview(
       url: "https://leetcode.com/accounts/login/",
+      appBarTitle: Text("Leetcode Login"),
       redirectUrl: "https://leetcode.com/",
       onUrlRedirection: () async {
         final cookieManager = CookieManager.instance();

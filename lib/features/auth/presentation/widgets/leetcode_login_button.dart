@@ -1,5 +1,8 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:dailycoder/features/auth/presentation/blocs/auth/auth_bloc.dart';
+import 'package:dailycoder/features/auth/presentation/pages/splash_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:dailycoder/core/routes/app_router.gr.dart';
 import 'package:dailycoder/gen/assets.gen.dart';
@@ -9,9 +12,13 @@ class LeetCodeLoginButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return OutlinedButton.icon(
       onPressed: () {
-        AutoRouter.of(context).push(LeetcodeWebRoute()).then(
+        final authbloc = context.read<AuthBloc>();
+        AutoRouter.of(context).push(const LeetcodeWebRoute()).then(
           (leetcodeSessionToken) {
-            print(leetcodeSessionToken);
+            if (leetcodeSessionToken is String) {
+              authbloc
+                  .add(AuthLoginWithLeetcode(sessionId: leetcodeSessionToken));
+            }
           },
         );
       },

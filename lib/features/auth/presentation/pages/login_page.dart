@@ -70,9 +70,14 @@ class LoginPage extends StatelessWidget {
                           },
                         );
 
-                        if (username != null && username.isNotEmpty) {
-                          // Use the entered username
-                          print("Username entered: $username");
+                        if (username != null &&
+                            username.isNotEmpty &&
+                            context.mounted) {
+                          context.read<AuthBloc>().add(
+                                AuthLoginWithLeetcodeUserName(
+                                  leetcodeUserName: username,
+                                ),
+                              );
                         }
                       },
                       child: const Text("Enter Your UserName"),

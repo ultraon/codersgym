@@ -24,19 +24,8 @@ class MyProfilePage extends HookWidget {
               onLoaded: (userProfile) {
                 return SafeArea(
                   child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        LeetcodeProfile(
-                          userProfile: userProfile,
-                        ),
-                        TextButton.icon(
-                          onPressed: () {
-                            context.read<AuthBloc>().add(AuthLogout());
-                          },
-                          label: Text("Logout"),
-                          icon: Icon(Icons.logout_rounded),
-                        )
-                      ],
+                    child: LeetcodeProfile(
+                      userProfile: userProfile,
                     ),
                   ),
                 );

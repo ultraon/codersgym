@@ -9,7 +9,7 @@ import 'package:dailycoder/core/routes/app_router.gr.dart';
 import 'package:dailycoder/features/question/domain/model/question.dart';
 import 'package:dailycoder/features/question/presentation/blocs/daily_challenge/daily_challenge_cubit.dart';
 import 'package:dailycoder/features/question/presentation/widgets/daily_question_card.dart';
-import 'package:dailycoder/features/question/presentation/widgets/user_greeting_card.dart';
+import 'package:dailycoder/features/dashboard/presentation/widgets/user_greeting_card.dart';
 
 class HomePage extends HookWidget {
   const HomePage({super.key});

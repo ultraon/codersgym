@@ -44,6 +44,11 @@ class LeetcodeApi {
     return _executeGraphQLQuery(request);
   }
 
+  Future<Map<String, dynamic>?> getContestRankingInfo(String userName) async {
+    final request = LeetCodeRequests.getUserContestRankingInfo(userName);
+    return _executeGraphQLQuery(request);
+  }
+
   Future<Map<String, dynamic>?> _executeGraphQLQuery(
       LeetCodeRequests request) async {
     try {

@@ -4,6 +4,8 @@ import 'package:dailycoder/features/auth/data/service/auth_service.dart';
 import 'package:dailycoder/features/auth/domain/service/auth_service.dart';
 import 'package:dailycoder/features/auth/presentation/blocs/auth/auth_bloc.dart';
 import 'package:dailycoder/features/profile/data/repository/profile_repository.dart';
+import 'package:dailycoder/features/profile/domain/model/contest_ranking_info.dart';
+import 'package:dailycoder/features/profile/presentation/blocs/contest_ranking_info/contest_ranking_info_cubit.dart';
 import 'package:dailycoder/features/profile/presentation/blocs/user_profile/user_profile_cubit.dart';
 import 'package:get_it/get_it.dart';
 import 'package:dailycoder/core/api/leetcode_api.dart';
@@ -71,6 +73,11 @@ Future<void> initializeDependencies() async {
   );
   getIt.registerFactory(
     () => UserProfileCubit(
+      getIt.get(),
+    ),
+  );
+  getIt.registerFactory(
+    () => ContestRankingInfoCubit(
       getIt.get(),
     ),
   );

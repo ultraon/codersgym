@@ -2,6 +2,7 @@ import 'package:dailycoder/core/api/leetcode_api.dart';
 import 'package:dailycoder/core/utils/storage/storage_manager.dart';
 import 'package:dailycoder/features/auth/data/entity/user_status_entity.dart';
 import 'package:dailycoder/features/auth/domain/service/auth_service.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 class AuthServiceImp implements AuthService {
   final StorageManager _storageManager;
@@ -59,6 +60,7 @@ class AuthServiceImp implements AuthService {
   Future<AuthenticationStatus> logout() async {
     await _storageManager.clearKey(_storageManager.leetcodeSession);
     await _storageManager.clearKey(_storageManager.leetcodeUserName);
+    CookieManager.instance().deleteAllCookies();
     return UnAuthenticatedStatus();
   }
 }

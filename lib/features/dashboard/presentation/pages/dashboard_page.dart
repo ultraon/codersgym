@@ -1,10 +1,14 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:dailycoder/core/api/api_state.dart';
 import 'package:dailycoder/core/routes/app_router.gr.dart';
 import 'package:dailycoder/features/auth/presentation/blocs/auth/auth_bloc.dart';
 import 'package:dailycoder/features/auth/presentation/pages/login_page.dart';
+import 'package:dailycoder/features/profile/domain/model/user_profile.dart';
+import 'package:dailycoder/features/profile/domain/repository/profile_repository.dart';
 import 'package:dailycoder/features/profile/presentation/blocs/user_profile/user_profile_cubit.dart';
 import 'package:dailycoder/features/profile/presentation/pages/my_profile_page.dart';
-import 'package:dailycoder/features/question/presentation/pages/home_page.dart';
+import 'package:dailycoder/features/dashboard/presentation/pages/home_page.dart';
+import 'package:dailycoder/features/settings/presentation/pages/setting_page.dart';
 import 'package:dailycoder/injection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -28,7 +32,18 @@ class DashboardPage extends HookWidget implements AutoRouteWrapper {
         if (authState is Authenticated) {
           profileCubit.getUserProfile(authState.userName);
         }
-        return null;
+        final subscription = profileCubit.stream.listen(
+          (profileState) {
+            final currentState = profileState;
+            if (currentState is ApiError<UserProfile, Exception> &&
+                currentState.error is UserProfileNotFoundFailure) {
+              if (context.mounted) {
+                showUserNotFoundDialog(context);
+              }
+            }
+          },
+        );
+        return subscription.cancel;
       },
       [],
     );
@@ -44,6 +59,7 @@ class DashboardPage extends HookWidget implements AutoRouteWrapper {
       ),
       const Center(child: Text('Search')),
       const MyProfilePage(),
+      const SettingPage(),
     ];
 
     return Scaffold(
@@ -74,6 +90,10 @@ class DashboardPage extends HookWidget implements AutoRouteWrapper {
             icon: Icon(Icons.person),
             label: 'Profile',
           ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: 'Settings',
+          ),
         ],
       ),
     );
@@ -84,6 +104,31 @@ class DashboardPage extends HookWidget implements AutoRouteWrapper {
     return BlocProvider(
       create: (_) => getIt.get<DailyChallengeCubit>(),
       child: this,
+    );
+  }
+
+  void showUserNotFoundDialog(BuildContext context) {
+    final authBloc = context.read<AuthBloc>();
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        Future.delayed(
+          const Duration(seconds: 2),
+          () {
+            if (context.mounted) {
+              authBloc.add(AuthLogout());
+            }
+          },
+        );
+
+        return const AlertDialog(
+          title: Text("User Not Found"),
+          content: Text(
+            "Redirecting to the login page...",
+          ),
+        );
+      },
     );
   }
 }

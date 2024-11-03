@@ -246,6 +246,38 @@ class LeetCodeRequests {
 """,
     );
   }
+
+  static LeetCodeRequests getUserContestRankingInfo(String userName) {
+    return LeetCodeRequests(
+      operationName: "userContestRankingInfo",
+      variables: Variables(
+        username: userName,
+      ),
+      query: """
+          query userContestRankingInfo(\$username: String!) {
+        userContestRanking(username: \$username) {
+          attendedContestsCount
+          rating
+          globalRanking
+          totalParticipants
+          topPercentage
+        }
+        userContestRankingHistory(username: \$username) {
+          attended
+          trendDirection
+          problemsSolved
+          totalProblems
+          rating
+          ranking
+          contest {
+            title
+            startTime
+          }
+        }
+      }
+    """,
+    );
+  }
 }
 
 class Variables {

@@ -1,14 +1,19 @@
+import 'package:dailycoder/features/profile/domain/model/user_profile.dart';
 import 'package:flutter/material.dart';
+
+import '../../../profile/presentation/widgets/leetcode_streak_fire.dart';
 
 class UserGreetingCard extends StatelessWidget {
   final String userName;
   final String avatarUrl;
+  final StreakCounter? streak;
 
   const UserGreetingCard({
-    Key? key,
+    super.key,
     required this.userName,
     required this.avatarUrl,
-  }) : super(key: key);
+    required this.streak,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +42,14 @@ class UserGreetingCard extends StatelessWidget {
             // Additional greeting message can be added here if needed
           ],
         ),
+        const Spacer(),
+        if (streak != null)
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: LeetCodeStreakFire(
+              streakCounter: streak!,
+            ),
+          ),
       ],
     );
   }

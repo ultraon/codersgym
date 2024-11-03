@@ -3,6 +3,8 @@ import 'package:dailycoder/core/utils/storage/storage_manager.dart';
 import 'package:dailycoder/features/auth/data/service/auth_service.dart';
 import 'package:dailycoder/features/auth/domain/service/auth_service.dart';
 import 'package:dailycoder/features/auth/presentation/blocs/auth/auth_bloc.dart';
+import 'package:dailycoder/features/profile/data/repository/profile_repository.dart';
+import 'package:dailycoder/features/profile/presentation/blocs/user_profile/user_profile_cubit.dart';
 import 'package:get_it/get_it.dart';
 import 'package:dailycoder/core/api/leetcode_api.dart';
 import 'package:dailycoder/core/routes/app_router.dart';
@@ -11,6 +13,7 @@ import 'package:dailycoder/features/question/domain/repository/question_reposito
 import 'package:dailycoder/features/question/presentation/blocs/daily_challenge/daily_challenge_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'features/profile/domain/repository/profile_repository.dart';
 import 'features/question/presentation/blocs/question_content/question_content_cubit.dart';
 
 final getIt = GetIt.instance;
@@ -27,30 +30,47 @@ Future<void> initializeDependencies() async {
 
   // SERVICE
   getIt.registerLazySingleton<AuthService>(
-    () => AuthServiceImp(getIt.get()),
+    () => AuthServiceImp(
+      getIt.get(),
+      getIt.get(),
+    ),
   );
 
   // REPOSITORY
-  final leetcodeApi = LeetcodeApi();
+  getIt.registerLazySingleton(
+    () =>  LeetcodeApi(
+    storageManger: getIt.get(),
+  ),
+  );
   getIt.registerSingleton<QuestionRepository>(
     QuestionRepositoryImpl(
-      leetcodeApi: leetcodeApi,
+       getIt.get(),
+    ),
+  );
+  getIt.registerSingleton<ProfileRepository>(
+    ProfileRepositoryImp(
+       getIt.get(),
     ),
   );
 
   // BLOC/CUBIT
-  getIt.registerLazySingleton(
+  getIt.registerFactory(
     () => AuthBloc(
       getIt.get(),
     ),
   );
-  getIt.registerLazySingleton(
+  getIt.registerFactory(
     () => DailyChallengeCubit(
       getIt.get(),
     ),
   );
-  getIt.registerLazySingleton(
+  getIt.registerFactory(
     () => QuestionContentCubit(
+      getIt.get(),
+    ),
+  );
+  getIt.registerFactory(
+    () => UserProfileCubit(
       getIt.get(),
     ),
   );

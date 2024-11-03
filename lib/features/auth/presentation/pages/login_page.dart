@@ -24,7 +24,7 @@ class LoginPage extends StatelessWidget {
         listener: (context, state) {
           if (state is AuthenticatedWithLeetcodeAccount ||
               state is AuthenticatedWithLeetcodeUserName) {
-            context.router.replace(const HomeRoute());
+            context.router.replace(const DashboardRoute());
           }
         },
         child: SafeArea(

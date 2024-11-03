@@ -8,10 +8,11 @@ import 'package:dailycoder/features/question/domain/repository/question_reposito
 class QuestionRepositoryImpl implements QuestionRepository {
   final LeetcodeApi leetcodeApi;
 
-  QuestionRepositoryImpl({required this.leetcodeApi});
+  QuestionRepositoryImpl(this.leetcodeApi);
   @override
   Future<Result<Question, Exception>> getTodayChallenge() async {
     final data = await leetcodeApi.getDailyQuestion();
+    
     if (data == null) {
       return Failure(Exception("No data found"));
     }

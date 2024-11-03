@@ -17,6 +17,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           return _onAuthLoginWithLeetcode(event, emit);
         case AuthLoginWithLeetcodeUserName():
           return _onAuthLoginWithLeetcodeUserName(event, emit);
+        case AuthLogout():
+          return _onAuthLogout(event, emit);
       }
     });
   }
@@ -28,13 +30,20 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   void _onAuthLoginWithLeetcode(
       AuthLoginWithLeetcode event, Emitter<AuthState> emit) async {
-    final authStatus = await _authService.loginWithLeetcodeAccount(event.sessionId);
+    final authStatus =
+        await _authService.loginWithLeetcodeAccount(event.sessionId);
     _emitAutheticatedState(emit, authStatus);
   }
 
   void _onAuthLoginWithLeetcodeUserName(
       AuthLoginWithLeetcodeUserName event, Emitter<AuthState> emit) async {
-    final authStatus = await _authService.loginWithLeetcodeUserName(event.leetcodeUserName);
+    final authStatus =
+        await _authService.loginWithLeetcodeUserName(event.leetcodeUserName);
+    _emitAutheticatedState(emit, authStatus);
+  }
+
+  void _onAuthLogout(AuthLogout event, Emitter<AuthState> emit) async {
+    final authStatus = await _authService.logout();
     _emitAutheticatedState(emit, authStatus);
   }
 
@@ -44,6 +53,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           emit(
             AuthenticatedWithLeetcodeAccount(
               leetcodeSession: status.leetcodeSession,
+              userName: status.userName,
             ),
           ),
         },

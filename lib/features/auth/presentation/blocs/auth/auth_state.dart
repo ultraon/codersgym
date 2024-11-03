@@ -9,16 +9,20 @@ sealed class AuthState extends Equatable {
 
 final class AuthInitial extends AuthState {}
 
-sealed class Authenticated extends AuthState {}
+sealed class Authenticated extends AuthState {
+  final String userName;
+
+  const Authenticated({required this.userName});
+}
 
 class UnAuthenticated extends AuthState {}
 
 class AuthenticatedWithLeetcodeAccount extends Authenticated {
   final String leetcodeSession;
-  AuthenticatedWithLeetcodeAccount({required this.leetcodeSession});
+  AuthenticatedWithLeetcodeAccount(
+      {required this.leetcodeSession, required super.userName});
 }
 
 class AuthenticatedWithLeetcodeUserName extends Authenticated {
-  final String userName;
-  AuthenticatedWithLeetcodeUserName({required this.userName});
+  AuthenticatedWithLeetcodeUserName({required super.userName});
 }

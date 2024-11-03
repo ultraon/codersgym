@@ -18,6 +18,7 @@ class SplashPage extends HookWidget {
         authBloc.add(AuthCheckStatus());
         return;
       },
+      [],
     );
 
     return Scaffold(
@@ -25,7 +26,9 @@ class SplashPage extends HookWidget {
         listener: (context, state) {
           if (state is AuthenticatedWithLeetcodeAccount ||
               state is AuthenticatedWithLeetcodeUserName) {
-            context.router.replace(const HomeRoute());
+            context.router.replace(
+              const DashboardRoute(),
+            );
           }
 
           if (state is UnAuthenticated) {

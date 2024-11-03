@@ -4,14 +4,19 @@ abstract interface class AuthService {
   Future<AuthenticationStatus> loginWithLeetcodeUserName(
     String leetcodeUsername,
   );
+  Future<AuthenticationStatus> logout();
 }
 
 sealed class AuthenticationStatus {}
 
 class LeetcodeAccountAuthenticated extends AuthenticationStatus {
   final String leetcodeSession;
+  final String userName;
 
-  LeetcodeAccountAuthenticated({required this.leetcodeSession});
+  LeetcodeAccountAuthenticated({
+    required this.leetcodeSession,
+    required this.userName,
+  });
 }
 
 class LeetcodeUsernameAuthenticated extends AuthenticationStatus {

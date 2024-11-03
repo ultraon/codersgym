@@ -9,8 +9,8 @@ class AppRouter extends RootStackRouter {
   @override
   List<AutoRoute> get routes => [
         AutoRoute(path: '/', page: SplashRoute.page),
+        AutoRoute(page: DashboardRoute.page),
         AutoRoute(page: LoginRoute.page),
-        AutoRoute(page: HomeRoute.page),
         AutoRoute(page: QuestionDetailRoute.page),
         AutoRoute(page: LeetcodeWebRoute.page),
       ];

@@ -2,7 +2,7 @@ part of 'auth_bloc.dart';
 
 sealed class AuthEvent extends Equatable {
   const AuthEvent();
-    @override
+  @override
   List<Object?> get props => [];
 }
 
@@ -23,3 +23,5 @@ class AuthLoginWithLeetcodeUserName extends AuthEvent {
   @override
   List<Object?> get props => [leetcodeUserName];
 }
+
+class AuthLogout extends AuthEvent {}

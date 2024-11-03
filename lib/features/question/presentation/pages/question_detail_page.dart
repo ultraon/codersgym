@@ -22,27 +22,33 @@ class QuestionDetailPage extends HookWidget {
         questionContentCubit.getQuestionContent(question);
         return null;
       },
+      [],
     );
-    return Scaffold(
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(18.0),
-          child: SingleChildScrollView(
-            child: BlocBuilder<QuestionContentCubit,
-                ApiState<Question, Exception>>(
-              bloc: questionContentCubit,
-              builder: (context, state) {
-                return state.when(
-                  onInitial: () => const CircularProgressIndicator(),
-                  onLoading: () => const CircularProgressIndicator(),
-                  onLoaded: (question) {
-                    return QuestionDetailPageBody(
-                      question: question,
-                    );
-                  },
-                  onError: (exception) => Text(exception.toString()),
-                );
-              },
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text("Question Descption"),
+        ),
+        body: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(18.0),
+            child: SingleChildScrollView(
+              child: BlocBuilder<QuestionContentCubit,
+                  ApiState<Question, Exception>>(
+                bloc: questionContentCubit,
+                builder: (context, state) {
+                  return state.when(
+                    onInitial: () => const CircularProgressIndicator(),
+                    onLoading: () => const CircularProgressIndicator(),
+                    onLoaded: (question) {
+                      return QuestionDetailPageBody(
+                        question: question,
+                      );
+                    },
+                    onError: (exception) => Text(exception.toString()),
+                  );
+                },
+              ),
             ),
           ),
         ),
@@ -62,25 +68,22 @@ class QuestionDetailPageBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              ("${question.frontendQuestionId}. ") + (question.title ?? ""),
-              style:
-                  textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
-            ),
-            QuestionDifficultyText(question),
-            HtmlWidget(
-              question.content ?? '',
-              renderMode: RenderMode.column,
-              textStyle: const TextStyle(fontSize: 14),
-            ),
-          ],
-        ),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            ("${question.frontendQuestionId}. ") + (question.title ?? ""),
+            style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+          ),
+          QuestionDifficultyText(question),
+          HtmlWidget(
+            question.content ?? '',
+            renderMode: RenderMode.column,
+            textStyle: const TextStyle(fontSize: 14),
+          ),
+        ],
       ),
     );
   }

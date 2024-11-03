@@ -54,10 +54,92 @@ class LeetCodeRequests {
           username: userName,
           query: "",
         ),
-        query: "query getUserProfile(\$username: String!) { allQuestionsCount { difficulty count __typename } matchedUser(username: \$username) { username socialAccounts githubUrl contributions { points questionCount"
-                " testcaseCount __typename } profile { realName websites countryName skillTags company school starRating aboutMe userAvatar reputation ranking __typename } submissionCalendar submitStats: submitStatsGlobal" +
-            " { acSubmissionNum { difficulty count submissions __typename } totalSubmissionNum { difficulty count submissions __typename } __typename } badges { id displayName icon creationDate medal { slug config " +
-            "{ icon iconGif iconGifBackground iconWearing __typename } __typename } __typename } upcomingBadges { name icon __typename } activeBadge { id __typename } __typename } } ");
+        query: """
+            query getUserProfile(\$username: String!) {
+                  allQuestionsCount {
+                    difficulty
+                    count
+                    __typename
+                  }
+                  streakCounter {
+                        streakCount
+                        daysSkipped
+                        currentDayCompleted
+                  }
+                  matchedUser(username: \$username) {
+                    username
+                    socialAccounts
+                    githubUrl
+                    contributions {
+                      points
+                      questionCount
+                      testcaseCount
+                      __typename
+                    }
+                      
+                    profile {
+                      realName
+                      websites
+                      countryName
+                      skillTags
+                      company
+                      school
+                      starRating
+                      aboutMe
+                      userAvatar
+                      reputation
+                      ranking
+                      __typename
+                    }
+                    submissionCalendar
+                    submitStats: submitStatsGlobal {
+                      acSubmissionNum {
+                        difficulty
+                        count
+                        submissions
+                        __typename
+                      }
+                      totalSubmissionNum {
+                        difficulty
+                        count
+                        submissions
+                        __typename
+                      }
+                      __typename
+                    }
+                    badges {
+                      id
+                      displayName
+                      icon
+                      creationDate
+                      medal {
+                        slug
+                        config {
+                          icon
+                          iconGif
+                          iconGifBackground
+                          iconWearing
+                          __typename
+                        }
+                        __typename
+                      }
+                      __typename
+                    }
+                    upcomingBadges {
+                      name
+                      icon
+                      __typename
+                    }
+                    activeBadge {
+                      id
+                      __typename
+                    }
+                    __typename
+                  }
+                }
+
+    
+        """);
   }
 
   static LeetCodeRequests getDailyQuestion() {
@@ -144,7 +226,26 @@ class LeetCodeRequests {
             "paidOnly: isPaidOnly     title titleSlug topicTags { name id     slug }hasSolution } } }");
   }
 
-  // Additional methods for other requests can follow the same pattern...
+  static LeetCodeRequests getGlobalData() {
+    return LeetCodeRequests(
+      operationName: "globalData",
+      variables: Variables(),
+      query: """
+        query globalData {
+          userStatus {
+            username
+            realName
+            avatar
+            notificationStatus {
+              lastModified
+              numUnread
+              __typename
+            }
+        }
+      }
+""",
+    );
+  }
 }
 
 class Variables {

@@ -15,7 +15,27 @@ final ThemeData leetcodeTheme = ThemeData(
   appBarTheme: const AppBarTheme(
     color: Color(0xFF2A2A2A), // Darker shade for app bar
     elevation: 0,
-    iconTheme: IconThemeData(color: Color(0xFFFF9E0F)),
+
+    iconTheme: IconThemeData(
+      color: Color(0xFFFF9E0F),
+    ),
+  ),
+  bottomNavigationBarTheme: BottomNavigationBarThemeData(
+    backgroundColor: Colors.grey[850], // Dark background for nav bar
+    selectedItemColor: Color(0xFFFF9E0F), // Accent color for selected item
+    unselectedItemColor: Colors.grey[400], // Subtle grey for unselected items
+    showSelectedLabels: true,
+    showUnselectedLabels: false,
+    selectedLabelStyle: TextStyle(
+      fontSize: 12,
+      fontWeight: FontWeight.bold,
+      color: Color(0xFFFF9E0F),
+    ),
+    unselectedLabelStyle: TextStyle(
+      fontSize: 12,
+      color: Colors.grey[400],
+    ),
+    type: BottomNavigationBarType.shifting, // Makes all items appear equally
   ),
 
   textTheme: const TextTheme(

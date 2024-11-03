@@ -1,4 +1,5 @@
 import 'package:dailycoder/features/auth/presentation/blocs/auth/auth_bloc.dart';
+import 'package:dailycoder/features/profile/presentation/blocs/user_profile/user_profile_cubit.dart';
 import 'package:dailycoder/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:dailycoder/core/routes/app_router.dart';
@@ -14,20 +15,24 @@ class AppInitializer extends HookWidget {
   Widget build(BuildContext context) {
     final isInitialized = useState(false);
 
-    useEffect(() {
-      Future<void> initialize() async {
-        await initializeDependencies();
-        isInitialized.value = true;
-      }
+    useEffect(
+      () {
+        Future<void> initialize() async {
+          await initializeDependencies();
+          isInitialized.value = true;
+        }
 
-      initialize();
-      return null;
-    }, []);
+        initialize();
+        return null;
+      },
+      [],
+    );
 
     if (!isInitialized.value) {
       return WidgetsApp(
         color: leetcodeTheme.scaffoldBackgroundColor,
         builder: (context, _) => Scaffold(
+        backgroundColor: leetcodeTheme.scaffoldBackgroundColor,
           body: Center(
             child: Image.asset(
               Assets.images.appIcon.path,
@@ -54,6 +59,9 @@ class App extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (context) => getIt.get<AuthBloc>(),
+        ),
+        BlocProvider(
+          create: (context) => getIt.get<UserProfileCubit>(),
         ),
       ],
       child: MaterialApp.router(

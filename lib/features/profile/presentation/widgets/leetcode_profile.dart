@@ -1,6 +1,9 @@
 import 'package:dailycoder/core/api/api_state.dart';
+import 'package:dailycoder/core/utils/date_time_extension.dart';
 import 'package:dailycoder/features/profile/domain/model/contest_ranking_info.dart';
+import 'package:dailycoder/features/profile/domain/model/user_profile_calendar.dart';
 import 'package:dailycoder/features/profile/presentation/blocs/contest_ranking_info/contest_ranking_info_cubit.dart';
+import 'package:dailycoder/features/profile/presentation/blocs/cubit/user_profile_calendar_cubit.dart';
 import 'package:dailycoder/features/profile/presentation/widgets/badge_carousel.dart';
 import 'package:dailycoder/features/profile/presentation/widgets/leetcode_rating_chart.dart';
 import 'package:dailycoder/features/profile/presentation/widgets/submission_heat_map_calendart.dart';
@@ -26,8 +29,11 @@ class LeetcodeProfile extends HookWidget {
     final textTheme = theme.textTheme;
 
     final contestRankingInfoCubit = getIt.get<ContestRankingInfoCubit>();
+    final userProfileCalendarCubit = getIt.get<UserProfileCalendarCubit>();
     useEffect(() {
       contestRankingInfoCubit.getContestRankingInfo(userProfile.username ?? '');
+      userProfileCalendarCubit
+          .getUserProfileSubmissionCalendar(userProfile.username ?? '');
       return null;
     }, []);
     return Padding(
@@ -80,8 +86,10 @@ class LeetcodeProfile extends HookWidget {
             bloc: contestRankingInfoCubit,
             builder: (context, state) {
               return state.when(
-                onInitial: () => Center(child: CircularProgressIndicator()),
-                onLoading: () => Center(child: CircularProgressIndicator()),
+                onInitial: () =>
+                    const Center(child: CircularProgressIndicator()),
+                onLoading: () =>
+                    const Center(child: CircularProgressIndicator()),
                 onLoaded: (contestRankingInfo) {
                   final dataPoints =
                       contestRankingInfo.userContestRankingHistory
@@ -90,12 +98,12 @@ class LeetcodeProfile extends HookWidget {
                   )
                           .mapIndexed(
                     (i, e) {
-                      return DataPoint(
-                          i.toDouble() ?? 0, e.rating?.toInt().toDouble() ?? 0.0);
+                      return DataPoint(i.toDouble() ?? 0,
+                          e.rating?.toInt().toDouble() ?? 0.0);
                     },
                   ).toList();
                   return Padding(
-                    padding: EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.all(16.0),
                     child: SizedBox(
                       child: LeetcodeRatingChart(
                         dataPoints: dataPoints ?? [],
@@ -115,9 +123,40 @@ class LeetcodeProfile extends HookWidget {
               style: textTheme.titleMedium?.copyWith(color: theme.hintColor),
             ),
           ),
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: SubmissionHeatMapCalendar(),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: BlocBuilder<UserProfileCalendarCubit,
+                ApiState<UserProfileCalendar, Exception>>(
+              bloc: userProfileCalendarCubit,
+              builder: (context, state) {
+                return state.when(
+                  onInitial: () => const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                  onLoading: () => const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                  onLoaded: (calendar) {
+                    final dataSet = calendar.submissionCalendar?.map(
+                      (e) {
+                        // Convert timestamp to DateTime and multiply by 1000 to get milliseconds
+                        return MapEntry(
+                            DateTime.fromMillisecondsSinceEpoch(
+                              e.timeStamp * 1000,
+                            ).onlyDate,
+                            e.submissionCount,);
+                      },
+                    );
+                    return SubmissionHeatMapCalendar(
+                      dataSets: Map.fromEntries(
+                        dataSet ?? [],
+                      ),
+                    );
+                  },
+                  onError: (exception) => Text(exception.toString()),
+                );
+              },
+            ),
           ),
         ],
       ),

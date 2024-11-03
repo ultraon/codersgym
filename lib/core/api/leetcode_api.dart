@@ -48,6 +48,10 @@ class LeetcodeApi {
     final request = LeetCodeRequests.getUserContestRankingInfo(userName);
     return _executeGraphQLQuery(request);
   }
+  Future<Map<String, dynamic>?> getUserProfileCalendar(String userName) async {
+    final request = LeetCodeRequests.getUserProfileCalendar(userName);
+    return _executeGraphQLQuery(request);
+  }
 
   Future<Map<String, dynamic>?> _executeGraphQLQuery(
       LeetCodeRequests request) async {

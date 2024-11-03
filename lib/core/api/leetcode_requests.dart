@@ -278,6 +278,35 @@ class LeetCodeRequests {
     """,
     );
   }
+  static LeetCodeRequests getUserProfileCalendar(String userName) {
+    return LeetCodeRequests(
+      operationName: "userProfileCalendar",
+      variables: Variables(
+        username: userName,
+      ),
+      query: """
+          query userProfileCalendar(\$username: String!, \$year: Int) {
+                matchedUser(username: \$username) {
+                  userCalendar(year: \$year) {
+                    activeYears
+                    streak
+                    totalActiveDays
+                    dccBadges {
+                      timestamp
+                      badge {
+                        name
+                        icon
+                      }
+                    }
+                    submissionCalendar
+                  }
+                }
+              }
+    
+    """,
+    );
+  }
+
 }
 
 class Variables {

@@ -8,12 +8,15 @@ class SubmissionHeatMapCalendar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const showLastDaysCount = 90;
     return HeatMap(
       defaultColor: Theme.of(context).canvasColor,
       colorMode: ColorMode.color,
       margin: const EdgeInsets.all(2),
       scrollable: true,
-      startDate: DateTime.now().subtract(Duration(days: 90)).onlyDate,
+      startDate: DateTime.now()
+          .subtract(const Duration(days: showLastDaysCount))
+          .onlyDate,
       size: 18,
       datasets: dataSets,
       colorsets: const {

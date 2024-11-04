@@ -14,19 +14,29 @@ class LeetcodeRatingChart extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final averageY = dataPoints.map((e) => e.y).average;
+    const defaultRating = 1400;
+    final averageY = dataPoints.isEmpty
+        ? defaultRating.toDouble()
+        : dataPoints.map((e) => e.y).average;
     final averageDataPoint = dataPoints.map(
       (e) => e.toFlSpot().copyWith(
             y: averageY,
           ),
     );
     final animationShown = useState(false);
+    final touchingGraph = useState(false);
     useEffect(() {
-      Future.delayed(const Duration(milliseconds: 800), () {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         animationShown.value = true;
       });
+
       return;
     }, []);
+    final maxContestRating = dataPoints.asMap().entries.reduce(
+          (value, element) => value.value.y > element.value.y ? value : element,
+        );
+    int maxIndex = maxContestRating.key;
+    DataPoint maxPoint = maxContestRating.value;
 
     return AspectRatio(
       aspectRatio: 1.80,
@@ -44,6 +54,27 @@ class LeetcodeRatingChart extends HookWidget {
             gridData: const FlGridData(
               show: false,
             ),
+            showingTooltipIndicators: animationShown.value
+                ? [
+                    ShowingTooltipIndicators([
+                      LineBarSpot(
+                        LineChartBarData(
+                          spots: dataPoints.map((e) => e.toFlSpot()).toList(),
+                          isCurved: false,
+                          color: Theme.of(context).primaryColor,
+                          barWidth: 3,
+                          isStrokeCapRound: true,
+                          dotData: const FlDotData(
+                            show: true,
+                          ),
+                          curveSmoothness: 0.5,
+                        ),
+                        maxIndex,
+                        maxPoint.toFlSpot(),
+                      ),
+                    ])
+                  ]
+                : [],
             titlesData: FlTitlesData(
               show: true,
               rightTitles: const AxisTitles(
@@ -60,8 +91,10 @@ class LeetcodeRatingChart extends HookWidget {
               leftTitles: AxisTitles(
                 sideTitles: SideTitles(
                   showTitles: true,
-                  maxIncluded: true,
+                  interval: calculateInterval(dataPoints),
                   getTitlesWidget: leftTitleWidgets,
+                  maxIncluded: false,
+                  minIncluded: true,
                   reservedSize: 42,
                 ),
               ),
@@ -69,14 +102,18 @@ class LeetcodeRatingChart extends HookWidget {
             borderData: FlBorderData(
               show: false,
             ),
-            minY: dataPoints
-                .reduce(
-                    (value, element) => value.y < element.y ? value : element)
-                .y,
-            maxY: dataPoints
-                .reduce(
-                    (value, element) => value.y > element.y ? value : element)
-                .y,
+            minY: dataPoints.isNotEmpty
+                ? dataPoints
+                    .reduce((value, element) =>
+                        value.y < element.y ? value : element)
+                    .y
+                : null,
+            maxY: dataPoints.isNotEmpty
+                ? dataPoints
+                    .reduce((value, element) =>
+                        value.y > element.y ? value : element)
+                    .y
+                : null,
             lineBarsData: [
               LineChartBarData(
                 spots: animationShown.value
@@ -107,6 +144,16 @@ class LeetcodeRatingChart extends HookWidget {
               ),
             ],
             lineTouchData: LineTouchData(
+              enabled: touchingGraph.value,
+              touchCallback: (touchEvent, response) {
+                if (touchEvent is FlTapUpEvent || touchEvent is FlPanEndEvent) {
+                  touchingGraph.value = false;
+                } else if (touchEvent is FlTapDownEvent ||
+                    touchEvent is FlPanStartEvent) {
+                  touchingGraph.value = true;
+                }
+              },
+              handleBuiltInTouches: true,
               touchTooltipData: LineTouchTooltipData(
                 getTooltipColor: (touchedSpot) {
                   return theme.primaryColorDark;
@@ -119,26 +166,6 @@ class LeetcodeRatingChart extends HookWidget {
     );
   }
 
-  double calculateInterval(List<DataPoint> values) {
-    // Check if the list is not empty
-    if (values.isEmpty) return 0;
-
-    // Find the max and min values in the list
-    final maxValue = values.reduce((a, b) => a.y > b.y ? a : b);
-    final minValue = values.reduce((a, b) => a.y < b.y ? a : b);
-
-    // Calculate the range
-    double range = maxValue.y - minValue.y;
-
-    // Calculate the interval to show 10 points at max
-    double interval = range / 4;
-
-    // Ensure interval is positive
-    return interval > 0
-        ? interval
-        : 1; // If range is very small, set a minimum interval of 1
-  }
-
   Widget leftTitleWidgets(double value, TitleMeta meta) {
     const style = TextStyle(
       fontWeight: FontWeight.bold,
@@ -148,6 +175,29 @@ class LeetcodeRatingChart extends HookWidget {
       value.toInt().toString(),
       style: style,
     );
+  }
+
+  calculateInterval(List<DataPoint> dataPoints, {int maxTicks = 4}) {
+    if (dataPoints.isEmpty || maxTicks <= 0) {
+      throw ArgumentError(
+          "Data points cannot be empty, and maxTicks must be positive.");
+    }
+
+    // Find the minimum and maximum y-values
+    double minY = dataPoints.map((point) => point.y).reduce(min);
+    double maxY = dataPoints.map((point) => point.y).reduce(max);
+
+    // Calculate the range
+    double range = maxY - minY;
+
+    // Determine a raw interval based on the desired number of ticks
+    double rawInterval = range / maxTicks;
+
+    // Calculate a "nice" rounded interval
+    double magnitude =
+        pow(10, (log(rawInterval) / ln10).floorToDouble()).toDouble();
+    double niceInterval = (rawInterval / magnitude).round() * magnitude;
+    return niceInterval;
   }
 }
 

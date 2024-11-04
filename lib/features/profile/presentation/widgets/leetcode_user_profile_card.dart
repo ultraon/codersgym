@@ -1,3 +1,4 @@
+import 'package:dailycoder/core/utils/number_extension.dart';
 import 'package:dailycoder/features/profile/presentation/widgets/leetcode_streak_fire.dart';
 import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
@@ -68,7 +69,7 @@ class LeetcodeUserProfileCard extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  userProfile.ranking?.toString() ?? "N/A",
+                  userProfile.ranking?.toReadableNumber.toString() ?? "N/A",
                   style: textTheme.titleMedium,
                 ),
               ],

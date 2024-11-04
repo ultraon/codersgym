@@ -7,6 +7,7 @@ import 'package:dailycoder/features/profile/data/repository/profile_repository.d
 import 'package:dailycoder/features/profile/presentation/blocs/contest_ranking_info/contest_ranking_info_cubit.dart';
 import 'package:dailycoder/features/profile/presentation/blocs/cubit/user_profile_calendar_cubit.dart';
 import 'package:dailycoder/features/profile/presentation/blocs/user_profile/user_profile_cubit.dart';
+import 'package:dailycoder/features/question/presentation/blocs/question_archieve/question_archieve_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:dailycoder/core/api/leetcode_api.dart';
 import 'package:dailycoder/core/routes/app_router.dart';
@@ -83,6 +84,11 @@ Future<void> initializeDependencies() async {
   );
   getIt.registerFactory(
     () => UserProfileCalendarCubit(
+      getIt.get(),
+    ),
+  );
+  getIt.registerFactory(
+    () => QuestionArchieveBloc(
       getIt.get(),
     ),
   );

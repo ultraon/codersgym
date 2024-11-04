@@ -11,6 +11,9 @@ class QuestionNodeEntity {
   bool? hasSolution;
   String? content;
   List<TopicTagsNodeEntity>? topicTags;
+  Null? freqBar;
+  bool? isFavor;
+  Null? status;
 
   QuestionNodeEntity({
     this.title,

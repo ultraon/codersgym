@@ -21,7 +21,7 @@ class QuestionDifficultyText extends HookWidget {
           style: textTheme.bodyMedium?.copyWith(color: theme.hintColor),
         ),
         SizedBox(
-          width: 50, // Prevents reposition of visibility icon
+          width: 60, // Prevents reposition of visibility icon
           child: (isDifficultyVisible.value)
               ?
               // Difficulty value shown with appropriate color
@@ -35,7 +35,7 @@ class QuestionDifficultyText extends HookWidget {
               :
               // Hidden difficulty represented by dots
               Text(
-                  "•••••",
+                  "•••••••",
                   style: textTheme.bodyMedium?.copyWith(color: theme.hintColor),
                 ),
         ),

@@ -48,8 +48,24 @@ class LeetcodeApi {
     final request = LeetCodeRequests.getUserContestRankingInfo(userName);
     return _executeGraphQLQuery(request);
   }
+
   Future<Map<String, dynamic>?> getUserProfileCalendar(String userName) async {
     final request = LeetCodeRequests.getUserProfileCalendar(userName);
+    return _executeGraphQLQuery(request);
+  }
+
+  Future<Map<String, dynamic>?> getProblemsList({
+    required String? categorySlug,
+    required int? limit,
+    required Filters? filters,
+    required int? skip,
+  }) async {
+    final request = LeetCodeRequests.getAllQuestionsRequest(
+      categorySlug,
+      limit,
+      filters ?? Filters(), // Passing empty filter until filter is implemented
+      skip,
+    );
     return _executeGraphQLQuery(request);
   }
 
@@ -80,7 +96,7 @@ class LeetcodeApi {
             .query(
           queryOptions,
         )
-            .timeout(const Duration(milliseconds: 100), onTimeout: () {
+            .timeout(const Duration(seconds: 2), onTimeout: () {
           throw TimeoutException('Server Timeout');
         }),
         retryIf: (error) {
@@ -93,13 +109,19 @@ class LeetcodeApi {
         },
         (result) {
           if (result.hasException) {
+            if (result.exception is OperationException) {
+              if (result.exception?.graphqlErrors.firstOrNull?.message ==
+                  "That user does not exist.") {
+                throw ApiNotFoundException("User Not Found", result.exception);
+              }
+            }
             throw ApiServerException("Server Error", result.exception);
           }
           return result.data;
         },
       );
     } catch (e) {
-      if (e is ApiServerException) {
+      if (e is ApiException) {
         rethrow;
       }
       throw ApiNoNetworkException("There was some network error", e);

@@ -8,6 +8,8 @@ import 'package:dailycoder/features/profile/domain/repository/profile_repository
 import 'package:dailycoder/features/profile/presentation/blocs/user_profile/user_profile_cubit.dart';
 import 'package:dailycoder/features/profile/presentation/pages/my_profile_page.dart';
 import 'package:dailycoder/features/dashboard/presentation/pages/home_page.dart';
+import 'package:dailycoder/features/question/presentation/blocs/question_archieve/question_archieve_bloc.dart';
+import 'package:dailycoder/features/question/presentation/pages/explore_page.dart';
 import 'package:dailycoder/features/settings/presentation/pages/setting_page.dart';
 import 'package:dailycoder/injection.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +27,7 @@ class DashboardPage extends HookWidget implements AutoRouteWrapper {
     final dailyChallengeCubit = context.read<DailyChallengeCubit>();
     final profileCubit = context.read<UserProfileCubit>();
     final authBloc = context.read<AuthBloc>();
+    final questionArchieveBloc = context.read<QuestionArchieveBloc>();
     useEffect(
       () {
         dailyChallengeCubit.getTodayChallenge();
@@ -47,9 +50,6 @@ class DashboardPage extends HookWidget implements AutoRouteWrapper {
       },
       [],
     );
-    useEffect(() {
-      return;
-    }, []);
 
     final currentIndex = useState(0);
     final pages = [
@@ -57,7 +57,10 @@ class DashboardPage extends HookWidget implements AutoRouteWrapper {
         value: dailyChallengeCubit,
         child: const HomePage(),
       ),
-      const Center(child: Text('Search')),
+      BlocProvider.value(
+        value: questionArchieveBloc,
+        child: const ExplorePage(),
+      ),
       const MyProfilePage(),
       const SettingPage(),
     ];
@@ -101,8 +104,15 @@ class DashboardPage extends HookWidget implements AutoRouteWrapper {
 
   @override
   Widget wrappedRoute(BuildContext context) {
-    return BlocProvider(
-      create: (_) => getIt.get<DailyChallengeCubit>(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) => getIt.get<DailyChallengeCubit>(),
+        ),
+        BlocProvider(
+          create: (context) => getIt.get<QuestionArchieveBloc>(),
+        ),
+      ],
       child: this,
     );
   }

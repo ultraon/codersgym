@@ -1,4 +1,5 @@
 import 'package:dailycoder/core/api/leetcode_api.dart';
+import 'package:dailycoder/core/error/exception.dart';
 import 'package:dailycoder/core/error/result.dart';
 import 'package:dailycoder/features/profile/data/entity/contest_ranking_info_entity.dart';
 import 'package:dailycoder/features/profile/data/entity/user_profile_calendar_entity.dart';
@@ -23,7 +24,10 @@ class ProfileRepositoryImp implements ProfileRepository {
       final userProfile = UserProfileEntity.fromJson(data);
       return Success(userProfile.toUserProfile());
     } catch (e) {
-      return Failure(UserProfileNotFoundFailure());
+      if (e is ApiNotFoundException) {
+        return Failure(UserProfileNotFoundFailure());
+      }
+      return Failure(UserProfileFailure());
     }
   }
 
@@ -44,13 +48,15 @@ class ProfileRepositoryImp implements ProfileRepository {
   }
 
   @override
-  Future<Result<UserProfileCalendar, Exception>> getUserProfileCalendar(String userName) async{
-try {
+  Future<Result<UserProfileCalendar, Exception>> getUserProfileCalendar(
+      String userName) async {
+    try {
       final data = await _leetcodeApi.getUserProfileCalendar(userName);
       if (data == null) {
         return Failure(Exception());
       }
-      final userProfileCalendarEntity = UserProfileCalendarEntity.fromJson(data);
+      final userProfileCalendarEntity =
+          UserProfileCalendarEntity.fromJson(data);
       return Success(userProfileCalendarEntity.toUserProfileCalendar());
     } catch (e) {
       return Failure(Exception());

@@ -212,18 +212,50 @@ class LeetCodeRequests {
   }
 
   static LeetCodeRequests getAllQuestionsRequest(
-      String categorySlug, int limit, Filters filters) {
+    String? categorySlug,
+    int? limit,
+    Filters? filters,
+    int? skip,
+  ) {
     return LeetCodeRequests(
-        operationName: "problemsetQuestionList",
-        variables: Variables(
-          skip: 0,
-          categorySlug: categorySlug,
-          limit: limit,
-          filters: filters,
-        ),
-        query: "query problemsetQuestionList(\$categorySlug: String, \$limit: Int, \$skip: Int, \$filters: QuestionListFilterInput) { problemsetQuestionList: questionList(    "
-                "categorySlug: \$categorySlug limit: \$limit skip: \$skip filters: \$filters) {total: totalNum questions: data {acRate difficulty frontendQuestionId: questionFrontendId  " +
-            "paidOnly: isPaidOnly     title titleSlug topicTags { name id     slug }hasSolution } } }");
+      operationName: "problemsetQuestionList",
+      variables: Variables(
+        skip: skip,
+        categorySlug: categorySlug,
+        limit: limit,
+        filters: filters,
+      ),
+      query: """
+             query problemsetQuestionList(\$categorySlug: String, \$limit: Int, \$skip: Int, \$filters: QuestionListFilterInput) {
+              problemsetQuestionList: questionList(
+                categorySlug: \$categorySlug
+                limit: \$limit
+                skip: \$skip
+                filters: \$filters
+              ) {
+                total: totalNum
+                questions: data {
+                  acRate
+                  difficulty
+                  freqBar
+                  frontendQuestionId: questionFrontendId
+                  isFavor
+                  paidOnly: isPaidOnly
+                  status
+                  title
+                  titleSlug
+                  topicTags {
+                    name
+                    id
+                    slug
+                  }
+                  hasSolution
+                  hasVideoSolution
+                }
+              }
+              }
+        """,
+    );
   }
 
   static LeetCodeRequests getGlobalData() {
@@ -278,6 +310,7 @@ class LeetCodeRequests {
     """,
     );
   }
+
   static LeetCodeRequests getUserProfileCalendar(String userName) {
     return LeetCodeRequests(
       operationName: "userProfileCalendar",
@@ -306,7 +339,6 @@ class LeetCodeRequests {
     """,
     );
   }
-
 }
 
 class Variables {
@@ -376,11 +408,11 @@ class Filters {
 
   Map<String, dynamic> toJson() {
     return {
-      'tags': tags,
-      'orderBy': orderBy,
-      'searchKeywords': searchKeywords,
-      'listId': listId,
-      'difficulty': difficulty,
+      if (tags != null) 'tags': tags,
+      if (orderBy != null) 'orderBy': orderBy,
+      if (searchKeywords != null) 'searchKeywords': searchKeywords,
+      if (listId != null) 'listId': listId,
+      if (difficulty != null) 'difficulty': difficulty,
     };
   }
 }

@@ -32,6 +32,7 @@ class HomePageBody extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             BlocBuilder<UserProfileCubit, ApiState<UserProfile, Exception>>(
               builder: (context, state) {
@@ -93,6 +94,23 @@ class HomePageBody extends StatelessWidget {
                   },
                 );
               },
+            ),
+            const SizedBox(
+              height: 16,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                "Upcoming Contest",
+                style: Theme.of(context)
+                    .textTheme
+                    .titleLarge
+                    ?.copyWith(fontWeight: FontWeight.bold),
+                textAlign: TextAlign.left,
+              ),
+            ),
+            const SizedBox(
+              height: 16,
             ),
           ],
         ),

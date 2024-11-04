@@ -1,13 +1,15 @@
 import 'package:dailycoder/core/api/api_state.dart';
 import 'package:dailycoder/core/utils/date_time_extension.dart';
-import 'package:dailycoder/core/utils/number_extension.dart';
+import 'package:dailycoder/features/common/widgets/app_loading.dart';
 import 'package:dailycoder/features/profile/domain/model/contest_ranking_info.dart';
 import 'package:dailycoder/features/profile/domain/model/user_profile_calendar.dart';
 import 'package:dailycoder/features/profile/presentation/blocs/contest_ranking_info/contest_ranking_info_cubit.dart';
 import 'package:dailycoder/features/profile/presentation/blocs/cubit/user_profile_calendar_cubit.dart';
 import 'package:dailycoder/features/profile/presentation/widgets/badge_carousel.dart';
 import 'package:dailycoder/features/profile/presentation/widgets/leetcode_rating_chart.dart';
+import 'package:dailycoder/features/profile/presentation/widgets/leetcode_rating_details.dart';
 import 'package:dailycoder/features/profile/presentation/widgets/submission_heat_map_calendart.dart';
+import 'package:dailycoder/features/profile/presentation/widgets/user_profile_info.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -91,53 +93,14 @@ class LeetcodeProfile extends HookWidget {
                 return state.when(
                   onInitial: () =>
                       const Center(child: CircularProgressIndicator()),
-                  onLoading: () =>
-                      const Center(child: CircularProgressIndicator()),
+                  onLoading: () {
+                    return AppWidgetLoading(
+                      child: LeetcodeRatingDetails.empty(),
+                    );
+                  },
                   onLoaded: (contestRankingInfo) {
-                    final dataPoints =
-                        contestRankingInfo.userContestRankingHistory
-                            ?.where(
-                      (e) => e.attended ?? false,
-                    )
-                            .mapIndexed(
-                      (i, e) {
-                        return DataPoint(i.toDouble() ?? 0,
-                            e.rating?.toInt().toDouble() ?? 0.0);
-                      },
-                    ).toList();
-                    return Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            _buildInfoItem(
-                              context,
-                              title: "Global Ranking",
-                              data: contestRankingInfo
-                                      .globalRanking?.toReadableNumber ??
-                                  "",
-                            ),
-                            _buildInfoItem(
-                              context,
-                              title: "Top Leetcode",
-                              data:
-                                  "${contestRankingInfo.topPercentage}%" ?? "",
-                            ),
-                            _buildInfoItem(
-                              context,
-                              title: "Attended",
-                              data: contestRankingInfo.attendedContestsCount
-                                  .toString(),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 30,
-                        ),
-                        LeetcodeRatingChart(
-                          dataPoints: dataPoints ?? [],
-                        ),
-                      ],
+                    return LeetcodeRatingDetails(
+                      contestRankingInfo: contestRankingInfo,
                     );
                   },
                   onError: (exception) => Text(exception.toString()),
@@ -183,18 +146,15 @@ class LeetcodeProfile extends HookWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            _buildInfoItem(
-                              context,
+                            UserProfileInfo(
                               title: "Total Active Days",
                               data: calendar.totalActiveDays.toString(),
                             ),
-                            _buildInfoItem(
-                              context,
+                            UserProfileInfo(
                               title: "Max Streak",
                               data: calendar.streak.toString(),
                             ),
-                            _buildInfoItem(
-                              context,
+                            UserProfileInfo(
                               title: "Total Submission",
                               data: (calendar.submissionCalendar?.length ?? 0)
                                   .toString(),
@@ -219,23 +179,6 @@ class LeetcodeProfile extends HookWidget {
           ),
         ],
       ),
-    );
-  }
-
-  Column _buildInfoItem(
-    BuildContext context, {
-    required String title,
-    required String data,
-  }) {
-    final textTheme = Theme.of(context).textTheme;
-    return Column(
-      children: [
-        Text(title),
-        Text(
-          data,
-          style: textTheme.titleMedium,
-        ),
-      ],
     );
   }
 }

@@ -13,6 +13,13 @@ class DailyQuestionCard extends StatelessWidget {
   final Question question;
   final VoidCallback onSolveTapped;
 
+  factory DailyQuestionCard.empty() {
+    return DailyQuestionCard(
+      question: const Question(),
+      onSolveTapped: () {},
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);

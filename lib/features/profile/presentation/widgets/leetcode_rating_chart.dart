@@ -189,6 +189,10 @@ class LeetcodeRatingChart extends HookWidget {
 
     // Calculate the range
     double range = maxY - minY;
+    // Handle the case where minY and maxY are the same
+    if (range == 0) {
+      return minY == 0 ? 1 : minY / maxTicks;
+    }
 
     // Determine a raw interval based on the desired number of ticks
     double rawInterval = range / maxTicks;

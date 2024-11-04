@@ -1,5 +1,6 @@
 import 'package:dailycoder/features/profile/domain/model/user_profile.dart';
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../profile/presentation/widgets/leetcode_streak_fire.dart';
 
@@ -21,7 +22,8 @@ class UserGreetingCard extends StatelessWidget {
       children: [
         CircleAvatar(
           radius: 30.0,
-          backgroundImage: NetworkImage(avatarUrl),
+          backgroundImage:
+              (avatarUrl.isNotEmpty) ? NetworkImage(avatarUrl) : null,
           // You can use AssetImage('assets/images/avatar.png') for a local image
         ),
         const SizedBox(width: 16.0),
@@ -51,6 +53,14 @@ class UserGreetingCard extends StatelessWidget {
             ),
           ),
       ],
+    );
+  }
+
+  factory UserGreetingCard.loading() {
+    return const UserGreetingCard(
+      userName: "Daily Coder",
+      avatarUrl: "",
+      streak: null,
     );
   }
 }

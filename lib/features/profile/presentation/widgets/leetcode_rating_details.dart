@@ -11,11 +11,16 @@ class LeetcodeRatingDetails extends StatelessWidget {
   const LeetcodeRatingDetails({
     super.key,
     required this.contestRankingInfo,
+    this.showRatingGraphAnimation = true,
   });
   final ContestRankingInfo contestRankingInfo;
+  final bool showRatingGraphAnimation;
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final textTheme = theme.textTheme;
+
     final dataPoints = contestRankingInfo.userContestRankingHistory
         ?.where(
       (e) => e.attended ?? false,
@@ -28,30 +33,52 @@ class LeetcodeRatingDetails extends StatelessWidget {
         );
       },
     ).toList();
+    if (dataPoints?.isEmpty ?? true) return SizedBox();
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            UserProfileInfo(
-              title: "Global Ranking",
-              data: contestRankingInfo.globalRanking?.toReadableNumber ?? "",
-            ),
-            UserProfileInfo(
-              title: "Top Leetcode",
-              data: "${contestRankingInfo.topPercentage}%",
-            ),
-            UserProfileInfo(
-              title: "Attended",
-              data: contestRankingInfo.attendedContestsCount.toString(),
-            ),
-          ],
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            "Contest Ratings",
+            style: textTheme.titleMedium?.copyWith(color: theme.hintColor),
+          ),
         ),
-        const SizedBox(
-          height: 30,
-        ),
-        LeetcodeRatingChart(
-          dataPoints: dataPoints ?? [],
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  UserProfileInfo(
+                    title: "Global Ranking",
+                    data: contestRankingInfo.globalRanking?.toReadableNumber ??
+                        "0",
+                  ),
+                  UserProfileInfo(
+                    title: "Top Leetcode",
+                    data: contestRankingInfo.topPercentage != null
+                        ? "${contestRankingInfo.topPercentage}%"
+                        : "0%",
+                  ),
+                  UserProfileInfo(
+                    title: "Attended",
+                    data:
+                        contestRankingInfo.attendedContestsCount?.toString() ??
+                            "0",
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              LeetcodeRatingChart(
+                dataPoints: dataPoints ?? [],
+                showAnimation: true,
+              ),
+            ],
+          ),
         ),
       ],
     );
@@ -61,14 +88,21 @@ class LeetcodeRatingDetails extends StatelessWidget {
     final dummyRating = List.generate(
       10,
       (index) {
-        // Use a cosine function to create a wave pattern for the rating.
-        double amplitude = 100; // Controls the height of the wave
-        double baseRating = 1400; // Base rating to oscillate around
-        double frequency = 0.4; // Controls the wavelength
+        // Parameters for controlling the graph's shape
+        double baseRating = 1400; // Starting point
+        double linearGrowth = (20 * index).toDouble(); // Growth factor
+        double amplitude = 10; // Amplitude for occasional dips
+        double frequency =
+            0.3; // Frequency of the wave (lower means fewer dips)
+
+        // Generate a rating with growth and occasional downfalls
+        int rating = (baseRating +
+                linearGrowth +
+                amplitude * cos(index * frequency * pi))
+            .round();
 
         return UserContestRankingHistory(
-          rating:
-              (baseRating + amplitude * cos(index * frequency * pi)).round(),
+          rating: rating,
           attended: true,
         );
       },
@@ -77,6 +111,7 @@ class LeetcodeRatingDetails extends StatelessWidget {
       contestRankingInfo: ContestRankingInfo(
         userContestRankingHistory: dummyRating,
       ),
+      showRatingGraphAnimation: false,
     );
   }
 }

@@ -7,12 +7,14 @@ class AppPaginationList extends StatelessWidget {
     required this.itemCount,
     required this.moreAvailable,
     required this.loadMoreData,
+    this.loadingWidget,
     super.key,
   });
   final VoidCallback loadMoreData;
   final bool moreAvailable;
   final int itemCount;
   final Widget Function(BuildContext context, int index) itemBuilder;
+  final Widget? loadingWidget;
 
   @override
   Widget build(BuildContext context) {
@@ -35,8 +37,12 @@ class AppPaginationList extends StatelessWidget {
             if (!moreAvailable) return Container();
             loadMoreData(); // fetch more data if reached the end of the list
 
-            return const Center(
-              child: CircularProgressIndicator(),
+            return Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: loadingWidget ??
+                  const Center(
+                    child: CircularProgressIndicator(),
+                  ),
             );
           }
         },

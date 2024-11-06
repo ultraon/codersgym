@@ -8,8 +8,13 @@ import 'package:collection/collection.dart';
 
 class LeetcodeRatingChart extends HookWidget {
   final List<DataPoint> dataPoints;
+  final bool showAnimation;
 
-  const LeetcodeRatingChart({super.key, required this.dataPoints});
+  const LeetcodeRatingChart({
+    super.key,
+    required this.dataPoints,
+    this.showAnimation = true,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +28,7 @@ class LeetcodeRatingChart extends HookWidget {
             y: averageY,
           ),
     );
-    final animationShown = useState(false);
+    final animationShown = useState(!showAnimation);
     final touchingGraph = useState(false);
     useEffect(() {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -68,6 +73,7 @@ class LeetcodeRatingChart extends HookWidget {
                             show: true,
                           ),
                           curveSmoothness: 0.5,
+                          preventCurveOverShooting: true,
                         ),
                         maxIndex,
                         maxPoint.toFlSpot(),
@@ -155,6 +161,7 @@ class LeetcodeRatingChart extends HookWidget {
               },
               handleBuiltInTouches: true,
               touchTooltipData: LineTouchTooltipData(
+                fitInsideHorizontally: true,
                 getTooltipColor: (touchedSpot) {
                   return theme.primaryColorDark;
                 },

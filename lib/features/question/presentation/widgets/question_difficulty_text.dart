@@ -20,24 +20,29 @@ class QuestionDifficultyText extends HookWidget {
           "Difficulty: \t",
           style: textTheme.bodyMedium?.copyWith(color: theme.hintColor),
         ),
-        SizedBox(
-          width: 60, // Prevents reposition of visibility icon
-          child: (isDifficultyVisible.value)
-              ?
-              // Difficulty value shown with appropriate color
-              Text(
-                  question.difficulty ?? "N/A",
-                  style: textTheme.bodyMedium?.copyWith(
-                    color: getColorFromDifficulty(
-                        question.difficulty ?? "Unknown"),
-                  ),
-                )
-              :
-              // Hidden difficulty represented by dots
-              Text(
-                  "•••••••",
-                  style: textTheme.bodyMedium?.copyWith(color: theme.hintColor),
+        Stack(
+          alignment: Alignment.centerLeft,
+          children: [
+            Opacity(
+              opacity: isDifficultyVisible.value ? 1.0 : 0.0,
+              child: Text(
+                question.difficulty ?? "N/A",
+                style: textTheme.bodyMedium?.copyWith(
+                  color:
+                      getColorFromDifficulty(question.difficulty ?? "Unknown"),
                 ),
+              ),
+            ),
+            Opacity(
+              opacity: isDifficultyVisible.value ? 0.0 : 1.0,
+              child: Text(
+                "•••••••",
+                style: textTheme.bodyMedium?.copyWith(
+                  color: theme.hintColor,
+                ),
+              ),
+            ),
+          ],
         ),
         IconButton(
           icon: Icon(

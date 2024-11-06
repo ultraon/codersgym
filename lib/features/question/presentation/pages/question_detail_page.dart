@@ -27,7 +27,7 @@ class QuestionDetailPage extends HookWidget {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Question Descption"),
+          title: const Text("Question Descption"),
         ),
         body: Center(
           child: Padding(

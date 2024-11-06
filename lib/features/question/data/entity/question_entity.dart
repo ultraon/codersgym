@@ -13,7 +13,7 @@ class QuestionNodeEntity {
   List<TopicTagsNodeEntity>? topicTags;
   Null? freqBar;
   bool? isFavor;
-  Null? status;
+  String? status;
 
   QuestionNodeEntity({
     this.title,
@@ -26,6 +26,7 @@ class QuestionNodeEntity {
     this.hasSolution,
     this.topicTags,
     this.content,
+    this.status,
   });
 
   QuestionNodeEntity.fromJson(Map<String, dynamic> json) {
@@ -38,6 +39,7 @@ class QuestionNodeEntity {
     hasVideoSolution = json['hasVideoSolution'];
     hasSolution = json['hasSolution'];
     content = json['content'];
+    status = json['status'];
     if (json['topicTags'] != null) {
       topicTags = [];
       json['topicTags'].forEach((v) {
@@ -57,6 +59,7 @@ class QuestionNodeEntity {
       'frontendQuestionId': frontendQuestionId,
       'hasVideoSolution': hasVideoSolution,
       'hasSolution': hasSolution,
+      'status': status,
       'topicTags': topicTags?.map((v) => v.toJson()).toList(),
     };
   }
@@ -97,6 +100,7 @@ extension QuestionNodeEntityExt on QuestionNodeEntity {
       hasSolution: hasSolution,
       content: content,
       topicTags: topicTags?.map((tag) => tag.toTopicTags()).toList(),
+      status: _parseQuestionStatus(status),
     );
   }
 }
@@ -106,3 +110,16 @@ extension TopicTagsNodeEntityExt on TopicTagsNodeEntity {
     return TopicTags(id: id, name: name, slug: slug);
   }
 }
+
+  QuestionStatus _parseQuestionStatus(String? jsonValue) {
+    switch (jsonValue) {
+      case "ac":
+        return QuestionStatus.accepted;
+      case "notac":
+        return QuestionStatus.notAccepted;
+      case null:
+        return QuestionStatus.unattempted;
+      default:
+        throw ArgumentError("Invalid JSON value for QuestionStatus: $jsonValue");
+    }
+  }

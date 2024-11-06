@@ -3,9 +3,11 @@ import 'package:shimmer/shimmer.dart';
 
 class AppWidgetLoading extends StatelessWidget {
   final Widget child;
+  final bool isLoading;
   const AppWidgetLoading({
     super.key,
     required this.child,
+    this.isLoading = true,
   });
 
   static Widget roundedRectangularSkeleton({
@@ -48,6 +50,7 @@ class AppWidgetLoading extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (!isLoading) return child;
     return Shimmer.fromColors(
       baseColor: Theme.of(context).hoverColor,
       highlightColor: Theme.of(context).canvasColor,

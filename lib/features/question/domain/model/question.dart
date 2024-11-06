@@ -9,6 +9,7 @@ class Question {
   final bool? hasSolution;
   final List<TopicTags>? topicTags;
   final String? content;
+  final QuestionStatus? status;
 
   const Question({
     this.title,
@@ -21,6 +22,7 @@ class Question {
     this.hasSolution,
     this.topicTags,
     this.content,
+    this.status,
   });
 
   factory Question.fromJson(Map<String, dynamic> json) {
@@ -77,5 +79,20 @@ class TopicTags {
       'id': id,
       'slug': slug,
     };
+  }
+}
+
+enum QuestionStatus { accepted, notAccepted, unattempted }
+
+extension QuestionStatusExtension on QuestionStatus {
+  String get description {
+    switch (this) {
+      case QuestionStatus.accepted:
+        return "Accepted";
+      case QuestionStatus.notAccepted:
+        return "Attempted";
+      case QuestionStatus.unattempted:
+        return "Unattempted";
+    }
   }
 }

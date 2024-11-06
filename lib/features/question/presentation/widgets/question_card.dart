@@ -84,7 +84,7 @@ class QuestionCard extends StatelessWidget {
     return switch (question.status) {
       QuestionStatus.accepted => Icons.check_circle,
       QuestionStatus.notAccepted => Icons.incomplete_circle,
-      _ => Icons.extension,
+      _ => Icons.extension_outlined,
     };
   }
 

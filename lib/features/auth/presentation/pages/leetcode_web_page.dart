@@ -12,7 +12,7 @@ class LeetcodeWebPage extends StatelessWidget {
     return AppWebview(
       url: "https://leetcode.com/accounts/login/",
       appBarTitle: Text("Leetcode Login"),
-      redirectUrl: "https://leetcode.com/",
+      redirectUrl: "/api/home",
       onUrlRedirection: () async {
         final cookieManager = CookieManager.instance();
         final loginCookie = await cookieManager.getCookie(

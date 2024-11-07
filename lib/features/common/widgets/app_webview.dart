@@ -77,23 +77,21 @@ class AppWebview extends HookWidget {
         children: [
           InAppWebView(
             initialUrlRequest: url != null
-                ? URLRequest(
-                    url: WebUri.uri(Uri.parse(url!)),
-                  )
+                ? URLRequest(url: WebUri.uri(Uri.parse(url!)))
                 : null,
             initialData: htmlText != null
                 ? InAppWebViewInitialData(data: htmlText!)
                 : null,
             initialSettings: InAppWebViewSettings(),
-            shouldOverrideUrlLoading: (controller, navigationAction) async {
-              final url = navigationAction.request.url;
+            shouldInterceptFetchRequest: (controller, ajaxRequest) async {
+              final url = ajaxRequest.url;
               if (redirectUrl != null) {
                 if (url.toString().startsWith(redirectUrl!)) {
                   onUrlRedirection?.call();
-                  return NavigationActionPolicy.CANCEL;
+                  return null;
                 }
               }
-              return NavigationActionPolicy.ALLOW;
+              return null;
             },
             onLoadStop: (controller, url) async {
               canGoBack.value = await controller.canGoBack();
@@ -101,6 +99,10 @@ class AppWebview extends HookWidget {
             },
             onWebViewCreated: (controller) {
               webViewController.value = controller;
+              controller.setSettings(
+                  settings: InAppWebViewSettings(
+                      userAgent:
+                          "Mozilla/5.0 (Linux; Android 8.0; Pixel 2 Build/OPD3.170816.012) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.82 Mobile Safari/537.36"));
               if (assetFilePath != null) {
                 controller.loadFile(assetFilePath: assetFilePath!);
               }

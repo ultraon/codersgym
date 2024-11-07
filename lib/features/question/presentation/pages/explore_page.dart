@@ -60,10 +60,10 @@ class ExplorePage extends HookWidget {
       ),
       body: BlocBuilder<QuestionArchieveBloc, QuestionArchieveState>(
         builder: (context, state) {
-          if (state.isLoading) {
+          if (state.isLoading && state.questions.isEmpty) {
             return ListView(
               children: List.generate(
-                5,
+                10,
                 (index) => AppWidgetLoading(child: QuestionCard.empty()),
               ),
             );

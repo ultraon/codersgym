@@ -73,31 +73,47 @@ class UpcomingContestCard extends HookWidget {
                     )
                   : Container(height: 150, color: Colors.grey[300]),
               Positioned(
-                left: 12,
-                bottom: 4,
-                child: Row(
-                  children: [
-                    const Icon(
-                      Icons.access_time,
-                      size: 18,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                child: Container(
+                  padding: EdgeInsets.only(left: 12, bottom: 12, top: 40),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.bottomCenter,
+                      end: Alignment.topCenter,
+                      colors: [
+                        Colors.black.withOpacity(0.5), // Top transparent black
+                        Colors.black
+                            .withOpacity(0.0), // Bottom transparent black
+                      ],
                     ),
-                    const SizedBox(
-                      width: 8,
-                    ),
-                    Text(
-                      "Starts in:",
-                      style: textTheme.labelLarge,
-                    ),
-                    const SizedBox(
-                      width: 8,
-                    ),
-                    Text(
-                      formatTime(timeRemaining.value.inSeconds),
-                      style: textTheme.labelLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      const Icon(
+                        Icons.access_time,
+                        size: 18,
                       ),
-                    ),
-                  ],
+                      const SizedBox(
+                        width: 8,
+                      ),
+                      Text(
+                        "Starts in:",
+                        style: textTheme.labelLarge,
+                      ),
+                      const SizedBox(
+                        width: 8,
+                      ),
+                      Text(
+                        formatTime(timeRemaining.value.inSeconds),
+                        style: textTheme.labelLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               )
             ],
@@ -126,6 +142,9 @@ class UpcomingContestCard extends HookWidget {
                       ),
                     const SizedBox(height: 8.0),
                   ],
+                ),
+                const SizedBox(
+                  width: 8,
                 ),
                 ElevatedButton(
                   onPressed: () {

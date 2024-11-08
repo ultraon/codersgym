@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:dailycoder/features/auth/domain/service/auth_service.dart';
+import 'package:codersgym/features/auth/domain/service/auth_service.dart';
 import 'package:equatable/equatable.dart';
 
 part 'auth_event.dart';

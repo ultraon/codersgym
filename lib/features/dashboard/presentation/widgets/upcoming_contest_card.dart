@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:dailycoder/features/question/domain/model/contest.dart';
+import 'package:codersgym/features/question/domain/model/contest.dart';
 import 'package:flutter/material.dart';
-import 'package:dailycoder/core/utils/date_time_extension.dart';
+import 'package:codersgym/core/utils/date_time_extension.dart';
 import 'dart:async';
 
 import 'package:flutter_hooks/flutter_hooks.dart';

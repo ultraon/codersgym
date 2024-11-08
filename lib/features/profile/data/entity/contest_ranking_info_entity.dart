@@ -1,6 +1,6 @@
-import 'package:dailycoder/features/question/data/entity/contest_entity.dart';
-import 'package:dailycoder/features/profile/domain/model/contest_ranking_info.dart';
-import 'package:dailycoder/features/question/domain/model/contest.dart';
+import 'package:codersgym/features/question/data/entity/contest_entity.dart';
+import 'package:codersgym/features/profile/domain/model/contest_ranking_info.dart';
+import 'package:codersgym/features/question/domain/model/contest.dart';
 
 class ContestRankingInfoEntity {
   UserContestRankingEntity? userContestRanking;

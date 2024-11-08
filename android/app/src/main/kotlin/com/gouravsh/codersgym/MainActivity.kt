@@ -1,4 +1,4 @@
-package com.gouravsh.dailycoder
+package com.gouravsh.codersgym
 
 import io.flutter.embedding.android.FlutterActivity
 

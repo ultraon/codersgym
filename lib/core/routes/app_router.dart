@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:dailycoder/core/routes/app_router.gr.dart';
-import 'package:dailycoder/features/settings/presentation/pages/setting_page.dart';
+import 'package:codersgym/core/routes/app_router.gr.dart';
+import 'package:codersgym/features/settings/presentation/pages/setting_page.dart';
 
 @AutoRouterConfig(replaceInRouteName: 'Page,Route')
 class AppRouter extends RootStackRouter {

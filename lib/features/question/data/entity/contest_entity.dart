@@ -1,5 +1,5 @@
-import 'package:dailycoder/core/utils/app_constants.dart';
-import 'package:dailycoder/features/question/domain/model/contest.dart';
+import 'package:codersgym/core/utils/app_constants.dart';
+import 'package:codersgym/features/question/domain/model/contest.dart';
 
 class ContestEntity {
   String? title;

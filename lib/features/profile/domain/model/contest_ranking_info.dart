@@ -1,4 +1,4 @@
-import 'package:dailycoder/features/question/domain/model/contest.dart';
+import 'package:codersgym/features/question/domain/model/contest.dart';
 
 class ContestRankingInfo {
   final int? attendedContestsCount;

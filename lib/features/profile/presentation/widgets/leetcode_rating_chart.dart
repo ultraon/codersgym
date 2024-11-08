@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:dailycoder/features/profile/presentation/widgets/leetcode_user_profile_card.dart';
+import 'package:codersgym/features/profile/presentation/widgets/leetcode_user_profile_card.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';

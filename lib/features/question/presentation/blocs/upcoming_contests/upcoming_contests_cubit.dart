@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
-import 'package:dailycoder/core/api/api_state.dart';
-import 'package:dailycoder/features/question/domain/model/contest.dart';
-import 'package:dailycoder/features/question/domain/repository/question_repository.dart';
+import 'package:codersgym/core/api/api_state.dart';
+import 'package:codersgym/features/question/domain/model/contest.dart';
+import 'package:codersgym/features/question/domain/repository/question_repository.dart';
 
 class UpcomingContestsCubit extends Cubit<ApiState<List<Contest>, Exception>> {
   final QuestionRepository _questionRepository;

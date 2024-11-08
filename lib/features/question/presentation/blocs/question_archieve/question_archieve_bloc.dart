@@ -1,8 +1,8 @@
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
-import 'package:dailycoder/features/question/domain/model/question.dart';
-import 'package:dailycoder/features/question/domain/repository/question_repository.dart';
+import 'package:codersgym/features/question/domain/model/question.dart';
+import 'package:codersgym/features/question/domain/repository/question_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:rxdart/rxdart.dart';
 

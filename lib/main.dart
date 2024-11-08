@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:dailycoder/app.dart';
+import 'package:codersgym/app.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:dailycoder/features/profile/domain/model/user_profile_calendar.dart';
+import 'package:codersgym/features/profile/domain/model/user_profile_calendar.dart';
 
 class UserProfileCalendarEntity {
   MatchedUser? matchedUser;

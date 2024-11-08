@@ -1,14 +1,14 @@
 import 'dart:async';
 
-import 'package:dailycoder/core/network/network_service.dart';
-import 'package:dailycoder/core/utils/storage/storage_manager.dart';
-import 'package:dailycoder/features/auth/data/service/auth_service.dart';
-import 'package:dailycoder/injection.dart';
+import 'package:codersgym/core/network/network_service.dart';
+import 'package:codersgym/core/utils/storage/storage_manager.dart';
+import 'package:codersgym/features/auth/data/service/auth_service.dart';
+import 'package:codersgym/injection.dart';
 import 'package:exponential_back_off/exponential_back_off.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:dailycoder/core/error/exception.dart';
-import 'package:dailycoder/core/api/api_urls.dart';
-import 'package:dailycoder/core/api/leetcode_requests.dart';
+import 'package:codersgym/core/error/exception.dart';
+import 'package:codersgym/core/api/api_urls.dart';
+import 'package:codersgym/core/api/leetcode_requests.dart';
 
 class LeetcodeApi {
   late GraphQLClient _graphQLClient;

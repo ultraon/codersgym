@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:dailycoder/core/utils/storage/storage_manager.dart';
+import 'package:codersgym/core/utils/storage/storage_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LocalStorageManager implements StorageManager {
@@ -8,8 +8,7 @@ class LocalStorageManager implements StorageManager {
 
   LocalStorageManager._();
 
-  factory LocalStorageManager.getInstance(
-      SharedPreferences sharedPreferences) {
+  factory LocalStorageManager.getInstance(SharedPreferences sharedPreferences) {
     _sharedPreferences = sharedPreferences;
     return LocalStorageManager._();
   }

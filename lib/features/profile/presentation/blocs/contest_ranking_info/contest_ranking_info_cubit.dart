@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
-import 'package:dailycoder/core/api/api_state.dart';
-import 'package:dailycoder/features/profile/domain/model/contest_ranking_info.dart';
-import 'package:dailycoder/features/profile/domain/repository/profile_repository.dart';
+import 'package:codersgym/core/api/api_state.dart';
+import 'package:codersgym/features/profile/domain/model/contest_ranking_info.dart';
+import 'package:codersgym/features/profile/domain/repository/profile_repository.dart';
 
 class ContestRankingInfoCubit
     extends Cubit<ApiState<ContestRankingInfo, Exception>> {

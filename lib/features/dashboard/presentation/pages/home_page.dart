@@ -1,19 +1,19 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:dailycoder/features/common/widgets/app_loading.dart';
-import 'package:dailycoder/features/dashboard/presentation/widgets/upcoming_contest_card.dart';
-import 'package:dailycoder/features/profile/domain/model/user_profile.dart';
-import 'package:dailycoder/features/profile/presentation/blocs/user_profile/user_profile_cubit.dart';
-import 'package:dailycoder/features/question/domain/model/contest.dart';
-import 'package:dailycoder/features/question/presentation/blocs/upcoming_contests/upcoming_contests_cubit.dart';
+import 'package:codersgym/features/common/widgets/app_loading.dart';
+import 'package:codersgym/features/dashboard/presentation/widgets/upcoming_contest_card.dart';
+import 'package:codersgym/features/profile/domain/model/user_profile.dart';
+import 'package:codersgym/features/profile/presentation/blocs/user_profile/user_profile_cubit.dart';
+import 'package:codersgym/features/question/domain/model/contest.dart';
+import 'package:codersgym/features/question/presentation/blocs/upcoming_contests/upcoming_contests_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:dailycoder/core/api/api_state.dart';
-import 'package:dailycoder/core/routes/app_router.gr.dart';
-import 'package:dailycoder/features/question/domain/model/question.dart';
-import 'package:dailycoder/features/question/presentation/blocs/daily_challenge/daily_challenge_cubit.dart';
-import 'package:dailycoder/features/question/presentation/widgets/daily_question_card.dart';
-import 'package:dailycoder/features/dashboard/presentation/widgets/user_greeting_card.dart';
+import 'package:codersgym/core/api/api_state.dart';
+import 'package:codersgym/core/routes/app_router.gr.dart';
+import 'package:codersgym/features/question/domain/model/question.dart';
+import 'package:codersgym/features/question/presentation/blocs/daily_challenge/daily_challenge_cubit.dart';
+import 'package:codersgym/features/question/presentation/widgets/daily_question_card.dart';
+import 'package:codersgym/features/dashboard/presentation/widgets/user_greeting_card.dart';
 
 class HomePage extends HookWidget {
   const HomePage({super.key});

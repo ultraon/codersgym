@@ -1,10 +1,10 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:dailycoder/core/utils/app_constants.dart';
-import 'package:dailycoder/features/question/presentation/blocs/upcoming_contests/upcoming_contests_cubit.dart';
-import 'package:dailycoder/injection.dart';
+import 'package:codersgym/core/utils/app_constants.dart';
+import 'package:codersgym/features/question/presentation/blocs/upcoming_contests/upcoming_contests_cubit.dart';
+import 'package:codersgym/injection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:dailycoder/features/common/widgets/app_webview.dart';
+import 'package:codersgym/features/common/widgets/app_webview.dart';
 
 @RoutePage()
 class LeetcodeWebPage extends StatelessWidget {

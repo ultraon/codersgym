@@ -1,4 +1,4 @@
-import 'package:dailycoder/features/question/domain/model/question.dart';
+import 'package:codersgym/features/question/domain/model/question.dart';
 
 class QuestionNodeEntity {
   String? title;
@@ -111,15 +111,15 @@ extension TopicTagsNodeEntityExt on TopicTagsNodeEntity {
   }
 }
 
-  QuestionStatus _parseQuestionStatus(String? jsonValue) {
-    switch (jsonValue) {
-      case "ac":
-        return QuestionStatus.accepted;
-      case "notac":
-        return QuestionStatus.notAccepted;
-      case null:
-        return QuestionStatus.unattempted;
-      default:
-        throw ArgumentError("Invalid JSON value for QuestionStatus: $jsonValue");
-    }
+QuestionStatus _parseQuestionStatus(String? jsonValue) {
+  switch (jsonValue) {
+    case "ac":
+      return QuestionStatus.accepted;
+    case "notac":
+      return QuestionStatus.notAccepted;
+    case null:
+      return QuestionStatus.unattempted;
+    default:
+      throw ArgumentError("Invalid JSON value for QuestionStatus: $jsonValue");
   }
+}

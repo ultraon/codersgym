@@ -1,6 +1,4 @@
-import 'package:dailycoder/features/question/data/entity/contest_entity.dart';
-
-
+import 'package:codersgym/features/question/data/entity/contest_entity.dart';
 
 class UpcomingContestEntity {
   List<ContestEntity>? topTwoContests;

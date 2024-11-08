@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:dailycoder/features/profile/domain/model/user_profile.dart';
+import 'package:codersgym/features/profile/domain/model/user_profile.dart';
 import 'package:flutter/material.dart';
 
 class BadgeCarousel extends StatelessWidget {

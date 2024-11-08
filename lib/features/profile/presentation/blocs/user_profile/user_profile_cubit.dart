@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
-import 'package:dailycoder/core/api/api_state.dart';
-import 'package:dailycoder/features/profile/domain/model/user_profile.dart';
-import 'package:dailycoder/features/profile/domain/repository/profile_repository.dart';
+import 'package:codersgym/core/api/api_state.dart';
+import 'package:codersgym/features/profile/domain/model/user_profile.dart';
+import 'package:codersgym/features/profile/domain/repository/profile_repository.dart';
 import 'package:equatable/equatable.dart';
 
 class UserProfileCubit extends Cubit<ApiState<UserProfile, Exception>> {

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 final ThemeData leetcodeTheme = ThemeData(
   brightness: Brightness.dark,
   fontFamily: 'Lato',
-  primaryColor: const Color(0xFFFF9E0F), // LeetCode-like orange
+  primaryColor: const Color.fromRGBO(255, 158, 15, 1), // LeetCode-like orange
   scaffoldBackgroundColor: const Color(0xFF1C1C1C), // Dark background
 
   colorScheme: const ColorScheme.dark(

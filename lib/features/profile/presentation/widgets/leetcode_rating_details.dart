@@ -1,10 +1,10 @@
 import 'dart:math';
 
 import 'package:collection/collection.dart';
-import 'package:dailycoder/features/profile/domain/model/contest_ranking_info.dart';
-import 'package:dailycoder/features/profile/presentation/widgets/leetcode_rating_chart.dart';
-import 'package:dailycoder/features/profile/presentation/widgets/user_profile_info.dart';
-import 'package:dailycoder/core/utils/number_extension.dart';
+import 'package:codersgym/features/profile/domain/model/contest_ranking_info.dart';
+import 'package:codersgym/features/profile/presentation/widgets/leetcode_rating_chart.dart';
+import 'package:codersgym/features/profile/presentation/widgets/user_profile_info.dart';
+import 'package:codersgym/core/utils/number_extension.dart';
 import 'package:flutter/material.dart';
 
 class LeetcodeRatingDetails extends StatelessWidget {

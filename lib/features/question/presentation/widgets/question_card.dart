@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:dailycoder/features/question/domain/model/question.dart';
-import 'package:dailycoder/features/question/presentation/widgets/question_difficulty_text.dart';
+import 'package:codersgym/features/question/domain/model/question.dart';
+import 'package:codersgym/features/question/presentation/widgets/question_difficulty_text.dart';
 
 class QuestionCard extends StatelessWidget {
   const QuestionCard({

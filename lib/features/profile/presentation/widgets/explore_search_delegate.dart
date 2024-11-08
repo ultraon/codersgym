@@ -1,9 +1,9 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:dailycoder/features/common/widgets/app_pagination_list.dart';
-import 'package:dailycoder/features/dashboard/presentation/pages/dashboard_page.dart';
-import 'package:dailycoder/features/question/presentation/blocs/question_archieve/question_archieve_bloc.dart';
-import 'package:dailycoder/features/question/presentation/widgets/question_card.dart';
-import 'package:dailycoder/injection.dart';
+import 'package:codersgym/features/common/widgets/app_pagination_list.dart';
+import 'package:codersgym/features/dashboard/presentation/pages/dashboard_page.dart';
+import 'package:codersgym/features/question/presentation/blocs/question_archieve/question_archieve_bloc.dart';
+import 'package:codersgym/features/question/presentation/widgets/question_card.dart';
+import 'package:codersgym/injection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

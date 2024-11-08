@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
-import 'package:dailycoder/core/api/api_state.dart';
-import 'package:dailycoder/features/profile/domain/model/user_profile_calendar.dart';
-import 'package:dailycoder/features/profile/domain/repository/profile_repository.dart';
+import 'package:codersgym/core/api/api_state.dart';
+import 'package:codersgym/features/profile/domain/model/user_profile_calendar.dart';
+import 'package:codersgym/features/profile/domain/repository/profile_repository.dart';
 import 'package:equatable/equatable.dart';
 
 class UserProfileCalendarCubit
@@ -11,8 +11,7 @@ class UserProfileCalendarCubit
 
   Future<void> getUserProfileSubmissionCalendar(String userName) async {
     emit(ApiLoading());
-    final result =
-        await _profileRepository.getUserProfileCalendar(userName);
+    final result = await _profileRepository.getUserProfileCalendar(userName);
     result.when(
       onSuccess: (profileCalendar) {
         emit(

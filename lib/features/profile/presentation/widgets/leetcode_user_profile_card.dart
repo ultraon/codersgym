@@ -1,5 +1,5 @@
-import 'package:dailycoder/core/utils/number_extension.dart';
-import 'package:dailycoder/features/profile/presentation/widgets/leetcode_streak_fire.dart';
+import 'package:codersgym/core/utils/number_extension.dart';
+import 'package:codersgym/features/profile/presentation/widgets/leetcode_streak_fire.dart';
 import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
 import '../../domain/model/user_profile.dart';

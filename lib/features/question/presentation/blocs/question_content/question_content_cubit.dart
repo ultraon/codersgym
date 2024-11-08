@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
-import 'package:dailycoder/core/api/api_state.dart';
-import 'package:dailycoder/features/question/domain/model/question.dart';
-import 'package:dailycoder/features/question/domain/repository/question_repository.dart';
+import 'package:codersgym/core/api/api_state.dart';
+import 'package:codersgym/features/question/domain/model/question.dart';
+import 'package:codersgym/features/question/domain/repository/question_repository.dart';
 
 class QuestionContentCubit extends Cubit<ApiState<Question, Exception>> {
   QuestionContentCubit(this._questionRepository) : super(ApiState.initial());

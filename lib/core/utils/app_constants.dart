@@ -1,6 +1,7 @@
 class AppConstants {
   AppConstants._();
-  static const sourceCodeUrl = "https://github.com/GouravShDev/DailyCoder";
+  static const appName = "CodersGym";
+  static const sourceCodeUrl = "https://github.com/GouravShDev/codersgym";
   static const reportBugEmail = "gourav0sharma1@gmail.com";
 }
 

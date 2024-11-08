@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:dailycoder/core/network/network_service.dart';
+import 'package:codersgym/core/network/network_service.dart';
 import 'package:dio/dio.dart';
 import 'package:exponential_back_off/exponential_back_off.dart';
 

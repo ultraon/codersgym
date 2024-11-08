@@ -1,6 +1,6 @@
-import 'package:dailycoder/core/error/result.dart';
-import 'package:dailycoder/features/question/domain/model/contest.dart';
-import 'package:dailycoder/features/question/domain/model/question.dart';
+import 'package:codersgym/core/error/result.dart';
+import 'package:codersgym/features/question/domain/model/contest.dart';
+import 'package:codersgym/features/question/domain/model/question.dart';
 
 abstract interface class QuestionRepository {
   Future<Result<Question, Exception>> getTodayChallenge();

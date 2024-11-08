@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
-import 'package:dailycoder/core/api/api_state.dart';
-import 'package:dailycoder/features/question/domain/model/question.dart';
-import 'package:dailycoder/features/question/presentation/blocs/question_content/question_content_cubit.dart';
-import 'package:dailycoder/features/question/presentation/widgets/question_difficulty_text.dart';
-import 'package:dailycoder/injection.dart';
+import 'package:codersgym/core/api/api_state.dart';
+import 'package:codersgym/features/question/domain/model/question.dart';
+import 'package:codersgym/features/question/presentation/blocs/question_content/question_content_cubit.dart';
+import 'package:codersgym/features/question/presentation/widgets/question_difficulty_text.dart';
+import 'package:codersgym/injection.dart';
 
 @RoutePage()
 class QuestionDetailPage extends HookWidget {

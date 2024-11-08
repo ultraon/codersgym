@@ -1,4 +1,4 @@
-import 'package:dailycoder/features/question/data/entity/question_entity.dart';
+import 'package:codersgym/features/question/data/entity/question_entity.dart';
 
 class ProblemsetQuestionsEntity {
   ProblemsetQuestionList? problemsetQuestionList;

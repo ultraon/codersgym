@@ -1,4 +1,4 @@
-import 'package:dailycoder/core/utils/date_time_extension.dart';
+import 'package:codersgym/core/utils/date_time_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_heatmap_calendar/flutter_heatmap_calendar.dart';
 

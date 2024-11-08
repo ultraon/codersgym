@@ -1,12 +1,12 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:dailycoder/features/auth/presentation/blocs/auth/auth_bloc.dart';
-import 'package:dailycoder/features/auth/presentation/widgets/username_dialog.dart';
+import 'package:codersgym/features/auth/presentation/blocs/auth/auth_bloc.dart';
+import 'package:codersgym/features/auth/presentation/widgets/username_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:dailycoder/features/auth/presentation/widgets/leetcode_login_button.dart';
-import 'package:dailycoder/features/auth/presentation/widgets/typing_text_animation.dart';
-import 'package:dailycoder/gen/assets.gen.dart';
+import 'package:codersgym/features/auth/presentation/widgets/leetcode_login_button.dart';
+import 'package:codersgym/features/auth/presentation/widgets/typing_text_animation.dart';
+import 'package:codersgym/gen/assets.gen.dart';
 
 import '../../../../core/routes/app_router.gr.dart';
 
@@ -39,7 +39,7 @@ class LoginPage extends StatelessWidget {
                     SizedBox(
                       height: 150,
                       child: TypingTextAnimation(
-                        text: 'Welcome \nTo \nDailyCoder',
+                        text: 'Welcome \nTo \ncodersgym',
                         textAlign: TextAlign.center,
                         style:
                             Theme.of(context).textTheme.headlineLarge?.copyWith(

@@ -23,15 +23,12 @@ class LeetCodeStreakFire extends StatelessWidget {
         Icon(
           FontAwesomeIcons.fire,
           color: streakColor,
-          size: 24,
+          size: 18,
         ),
         const SizedBox(width: 8.0),
         Text(
           '$streakCount',
-          style: Theme.of(context)
-              .textTheme
-              .headlineMedium
-              ?.copyWith(color: streakColor),
+          style: theme.textTheme.titleLarge?.copyWith(color: streakColor),
         ),
       ],
     );

@@ -1,4 +1,5 @@
 import 'package:dailycoder/core/error/result.dart';
+import 'package:dailycoder/features/question/domain/model/contest.dart';
 import 'package:dailycoder/features/question/domain/model/question.dart';
 
 abstract interface class QuestionRepository {
@@ -10,6 +11,7 @@ abstract interface class QuestionRepository {
       getProblemQuestion(
     ProblemQuestionQueryInput query,
   );
+  Future<Result<List<Contest>, Exception>> getUpcomingContests();
 }
 
 class ProblemQuestionQueryInput {

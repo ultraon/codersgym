@@ -339,6 +339,24 @@ class LeetCodeRequests {
     """,
     );
   }
+
+  static LeetCodeRequests getUpcomingContests() {
+    return LeetCodeRequests(
+      operationName: "topTwoContests",
+      variables: Variables(),
+      query: """
+          query topTwoContests {
+              topTwoContests {
+                title
+                titleSlug
+                cardImg
+                startTime
+                duration
+              }
+            }
+    """,
+    );
+  }
 }
 
 class Variables {

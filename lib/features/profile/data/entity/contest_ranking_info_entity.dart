@@ -1,4 +1,6 @@
+import 'package:dailycoder/features/question/data/entity/contest_entity.dart';
 import 'package:dailycoder/features/profile/domain/model/contest_ranking_info.dart';
+import 'package:dailycoder/features/question/domain/model/contest.dart';
 
 class ContestRankingInfoEntity {
   UserContestRankingEntity? userContestRanking;
@@ -134,25 +136,6 @@ class UserContestRankingHistoryEntity {
   }
 }
 
-class ContestEntity {
-  String? title;
-  int? startTime;
-
-  ContestEntity({this.title, this.startTime});
-
-  ContestEntity.fromJson(Map<String, dynamic> json) {
-    title = json['title'];
-    startTime = json['startTime'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['title'] = title;
-    data['startTime'] = startTime;
-    return data;
-  }
-}
-
 extension ContestRankingInfoEntityExt on ContestRankingInfoEntity {
   ContestRankingInfo toContestRankingInfo() {
     return ContestRankingInfo(
@@ -172,16 +155,17 @@ extension UserContestRankingHistoryEntityExt
     on UserContestRankingHistoryEntity {
   UserContestRankingHistory toUserContestRankingHistory() {
     return UserContestRankingHistory(
-      attended: attended,
-      trendDirection: trendDirection,
-      problemsSolved: problemsSolved,
-      totalProblems: totalProblems,
-      rating: rating,
-      ranking: ranking,
-      contest:Contest(
-        contest?.title,
-        contest?.startTime,
-      )
-    );
+        attended: attended,
+        trendDirection: trendDirection,
+        problemsSolved: problemsSolved,
+        totalProblems: totalProblems,
+        rating: rating,
+        ranking: ranking,
+        contest: Contest(
+          title: contest?.title,
+          startTime: contest?.startTime != null
+              ? DateTime.fromMillisecondsSinceEpoch(1000 * contest!.startTime!)
+              : null,
+        ));
   }
 }

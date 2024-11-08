@@ -1,3 +1,5 @@
+import 'package:dailycoder/core/network/dio_network_service.dart';
+import 'package:dailycoder/core/network/network_service.dart';
 import 'package:dailycoder/core/utils/storage/local_storage_manager.dart';
 import 'package:dailycoder/core/utils/storage/storage_manager.dart';
 import 'package:dailycoder/features/auth/data/service/auth_service.dart';
@@ -8,6 +10,7 @@ import 'package:dailycoder/features/profile/presentation/blocs/contest_ranking_i
 import 'package:dailycoder/features/profile/presentation/blocs/cubit/user_profile_calendar_cubit.dart';
 import 'package:dailycoder/features/profile/presentation/blocs/user_profile/user_profile_cubit.dart';
 import 'package:dailycoder/features/question/presentation/blocs/question_archieve/question_archieve_bloc.dart';
+import 'package:dailycoder/features/question/presentation/blocs/upcoming_contests/upcoming_contests_cubit.dart';
 import 'package:get_it/get_it.dart';
 import 'package:dailycoder/core/api/leetcode_api.dart';
 import 'package:dailycoder/core/routes/app_router.dart';
@@ -38,11 +41,18 @@ Future<void> initializeDependencies() async {
       getIt.get(),
     ),
   );
+  getIt.registerLazySingleton<NetworkService>(
+    () => DioNetworkService(
+      configuration: NetworkConfiguration(baseUrl: 'https://leetcode.com'),
+      interceptors: [],
+    ),
+  );
 
   // REPOSITORY
   getIt.registerLazySingleton(
     () => LeetcodeApi(
       storageManger: getIt.get(),
+      networkService: getIt.get(),
     ),
   );
   getIt.registerSingleton<QuestionRepository>(
@@ -89,6 +99,11 @@ Future<void> initializeDependencies() async {
   );
   getIt.registerFactory(
     () => QuestionArchieveBloc(
+      getIt.get(),
+    ),
+  );
+  getIt.registerFactory(
+    () => UpcomingContestsCubit(
       getIt.get(),
     ),
   );

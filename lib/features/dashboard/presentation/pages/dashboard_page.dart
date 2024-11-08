@@ -9,6 +9,7 @@ import 'package:dailycoder/features/profile/presentation/blocs/user_profile/user
 import 'package:dailycoder/features/profile/presentation/pages/my_profile_page.dart';
 import 'package:dailycoder/features/dashboard/presentation/pages/home_page.dart';
 import 'package:dailycoder/features/question/presentation/blocs/question_archieve/question_archieve_bloc.dart';
+import 'package:dailycoder/features/question/presentation/blocs/upcoming_contests/upcoming_contests_cubit.dart';
 import 'package:dailycoder/features/question/presentation/pages/explore_page.dart';
 import 'package:dailycoder/features/settings/presentation/pages/setting_page.dart';
 import 'package:dailycoder/injection.dart';
@@ -28,9 +29,11 @@ class DashboardPage extends HookWidget implements AutoRouteWrapper {
     final profileCubit = context.read<UserProfileCubit>();
     final authBloc = context.read<AuthBloc>();
     final questionArchieveBloc = context.read<QuestionArchieveBloc>();
+    final upcomingContestCubit = context.read<UpcomingContestsCubit>();
     useEffect(
       () {
         dailyChallengeCubit.getTodayChallenge();
+        upcomingContestCubit.getUpcomingContest();
         final authState = authBloc.state;
         if (authState is Authenticated) {
           profileCubit.getUserProfile(authState.userName);
@@ -53,8 +56,15 @@ class DashboardPage extends HookWidget implements AutoRouteWrapper {
 
     final currentIndex = useState(0);
     final pages = [
-      BlocProvider.value(
-        value: dailyChallengeCubit,
+      MultiBlocProvider(
+        providers: [
+          BlocProvider.value(
+            value: dailyChallengeCubit,
+          ),
+          BlocProvider.value(
+            value: upcomingContestCubit,
+          ),
+        ],
         child: const HomePage(),
       ),
       BlocProvider.value(
@@ -111,6 +121,9 @@ class DashboardPage extends HookWidget implements AutoRouteWrapper {
         ),
         BlocProvider(
           create: (context) => getIt.get<QuestionArchieveBloc>(),
+        ),
+        BlocProvider(
+          create: (context) => getIt.get<UpcomingContestsCubit>(),
         ),
       ],
       child: this,

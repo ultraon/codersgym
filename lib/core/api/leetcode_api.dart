@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:dailycoder/core/network/network_service.dart';
 import 'package:dailycoder/core/utils/storage/storage_manager.dart';
 import 'package:dailycoder/features/auth/data/service/auth_service.dart';
 import 'package:dailycoder/injection.dart';
@@ -11,10 +12,15 @@ import 'package:dailycoder/core/api/leetcode_requests.dart';
 
 class LeetcodeApi {
   late GraphQLClient _graphQLClient;
+  late NetworkService _networkService;
+
   final StorageManager _storageManager;
 
-  LeetcodeApi({GraphQLClient? client, required StorageManager storageManger})
-      : _storageManager = storageManger {
+  LeetcodeApi({
+    GraphQLClient? client,
+    required StorageManager storageManger,
+    required NetworkService networkService,
+  }) : _storageManager = storageManger {
     _graphQLClient = client ??
         GraphQLClient(
           link: HttpLink(
@@ -22,6 +28,7 @@ class LeetcodeApi {
           ),
           cache: GraphQLCache(),
         );
+    _networkService = networkService;
   }
 
   Future<Map<String, dynamic>?> getDailyQuestion() async {
@@ -66,6 +73,11 @@ class LeetcodeApi {
       filters ?? Filters(), // Passing empty filter until filter is implemented
       skip,
     );
+    return _executeGraphQLQuery(request);
+  }
+
+  Future<Map<String, dynamic>?> getUpcomingContest() async {
+    final request = LeetCodeRequests.getUpcomingContests();
     return _executeGraphQLQuery(request);
   }
 

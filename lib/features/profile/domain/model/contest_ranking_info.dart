@@ -1,3 +1,5 @@
+import 'package:dailycoder/features/question/domain/model/contest.dart';
+
 class ContestRankingInfo {
   final int? attendedContestsCount;
   final double? rating;
@@ -34,11 +36,4 @@ class UserContestRankingHistory {
     this.ranking,
     this.contest,
   });
-}
-
-class Contest {
-  final String? title;
-  final int? startTime;
-
-  Contest(this.title, this.startTime);
 }

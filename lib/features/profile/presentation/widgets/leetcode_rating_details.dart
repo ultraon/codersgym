@@ -37,48 +37,31 @@ class LeetcodeRatingDetails extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-            "Contest Ratings",
-            style: textTheme.titleMedium?.copyWith(color: theme.hintColor),
-          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            UserProfileInfo(
+              title: "Global Ranking",
+              data: contestRankingInfo.globalRanking?.toReadableNumber ?? "0",
+            ),
+            UserProfileInfo(
+              title: "Top Leetcode",
+              data: contestRankingInfo.topPercentage != null
+                  ? "${contestRankingInfo.topPercentage}%"
+                  : "0%",
+            ),
+            UserProfileInfo(
+              title: "Attended",
+              data: contestRankingInfo.attendedContestsCount?.toString() ?? "0",
+            ),
+          ],
         ),
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  UserProfileInfo(
-                    title: "Global Ranking",
-                    data: contestRankingInfo.globalRanking?.toReadableNumber ??
-                        "0",
-                  ),
-                  UserProfileInfo(
-                    title: "Top Leetcode",
-                    data: contestRankingInfo.topPercentage != null
-                        ? "${contestRankingInfo.topPercentage}%"
-                        : "0%",
-                  ),
-                  UserProfileInfo(
-                    title: "Attended",
-                    data:
-                        contestRankingInfo.attendedContestsCount?.toString() ??
-                            "0",
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              LeetcodeRatingChart(
-                dataPoints: dataPoints ?? [],
-                showAnimation: true,
-              ),
-            ],
-          ),
+        const SizedBox(
+          height: 30,
+        ),
+        LeetcodeRatingChart(
+          dataPoints: dataPoints ?? [],
+          showAnimation: true,
         ),
       ],
     );

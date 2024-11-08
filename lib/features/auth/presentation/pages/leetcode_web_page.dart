@@ -1,4 +1,7 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:dailycoder/core/utils/app_constants.dart';
+import 'package:dailycoder/features/question/presentation/blocs/upcoming_contests/upcoming_contests_cubit.dart';
+import 'package:dailycoder/injection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:dailycoder/features/common/widgets/app_webview.dart';
@@ -10,13 +13,13 @@ class LeetcodeWebPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppWebview(
-      url: "https://leetcode.com/accounts/login/",
+      url: LeetcodeConstants.leetcodeLoginUrl,
       appBarTitle: Text("Leetcode Login"),
-      redirectUrl: "/api/home",
+      redirectUrl: LeetcodeConstants.leetcodePostLoginUrl,
       onUrlRedirection: () async {
         final cookieManager = CookieManager.instance();
         final loginCookie = await cookieManager.getCookie(
-          url: WebUri("https://leetcode.com"),
+          url: WebUri(LeetcodeConstants.leetcodeUrl),
           name: "LEETCODE_SESSION",
         );
         if (context.mounted) {

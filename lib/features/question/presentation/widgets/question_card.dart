@@ -66,7 +66,7 @@ class QuestionCard extends StatelessWidget {
                         width: 4,
                       ),
                       Text(
-                        question.acRate?.toStringAsFixed(2) ?? "",
+                        "${question.acRate?.toStringAsFixed(2) ?? ""}%",
                         style: textTheme.titleSmall,
                       ),
                     ],

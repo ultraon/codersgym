@@ -1,9 +1,13 @@
 import 'package:dailycoder/core/api/leetcode_requests.dart';
 import 'package:dailycoder/core/error/result.dart';
 import 'package:dailycoder/core/api/leetcode_api.dart';
+import 'package:dailycoder/features/profile/data/entity/contest_ranking_info_entity.dart';
+import 'package:dailycoder/features/question/data/entity/contest_entity.dart';
 import 'package:dailycoder/features/question/data/entity/daily_question_entity.dart';
 import 'package:dailycoder/features/question/data/entity/problem_question_entity.dart';
 import 'package:dailycoder/features/question/data/entity/question_entity.dart';
+import 'package:dailycoder/features/question/data/entity/upcoming_contest_entity.dart';
+import 'package:dailycoder/features/question/domain/model/contest.dart';
 import 'package:dailycoder/features/question/domain/model/question.dart';
 import 'package:dailycoder/features/question/domain/repository/question_repository.dart';
 
@@ -62,6 +66,20 @@ class QuestionRepositoryImpl implements QuestionRepository {
       questionsList,
       totalQuestionCount,
     ));
+  }
+
+  @override
+  Future<Result<List<Contest>, Exception>> getUpcomingContests() async {
+   final data = await leetcodeApi.getUpcomingContest();
+  if (data == null) {
+      return Failure(Exception("No data found"));
+    }
+    final contests = UpcomingContestEntity.fromJson(data);
+    final contestsList = contests.topTwoContests?.map((e) => e.toContest(),).toList();
+    if(contestsList?.isEmpty ?? true){
+      return  Failure(Exception("No Upcoming Contest found"));
+    }
+    return Success(contestsList!);
   }
 }
 

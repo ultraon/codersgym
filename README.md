@@ -2,8 +2,7 @@
 
 Coders Gym is a mobile application designed to provide a mobile-friendly interface for LeetCode challenges.
 
-![Google Pixel 3 XL Presentation (1)](https://github.com/user-attachments/assets/06013eca-74cd-493c-8ddd-4f8b0261fd4d)
-
+![Google Pixel 3 XL Presentation_compreesed](https://github.com/user-attachments/assets/283c4010-bb11-48f5-9c12-de19437bfef8)
 
 ## Features
 

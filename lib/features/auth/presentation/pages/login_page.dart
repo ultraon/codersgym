@@ -39,7 +39,7 @@ class LoginPage extends StatelessWidget {
                     SizedBox(
                       height: 150,
                       child: TypingTextAnimation(
-                        text: 'Welcome \nTo \ncodersgym',
+                        text: 'Welcome \nTo \nCodersGym',
                         textAlign: TextAlign.center,
                         style:
                             Theme.of(context).textTheme.headlineLarge?.copyWith(

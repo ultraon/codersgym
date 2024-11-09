@@ -13,6 +13,14 @@ Features of Coders Gym include:
 - Access all LeetCode problems.
 - See your profile stats with dynamic animations.
 
+## Upcoming features
+
+
+- [ ] Set reminders for contests
+- [ ] Daily reminder notifications for daily challenge
+- [ ] Code Editor for submitting code
+- [ ] View question discussions
+
 ## Technical Features
 - **BLoC (Business Logic Component)**: State management solution to separate business logic from UI components, making the app more maintainable and testable.
 - **Clean Architecture**: Ensures the app is built with scalability and maintainability in mind. Layers such as data, domain, and presentation are separated to ensure flexibility and testability.

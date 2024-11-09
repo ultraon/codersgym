@@ -12,8 +12,9 @@ Features of Coders Gym include:
 - View upcoming LeetCode contests.
 - Access all LeetCode problems.
 - See your profile stats with dynamic animations.
+- Authentication via Leetcode login or username authentication.
 
-## Upcoming features
+## Future Scope
 
 
 - [ ] Set reminders for contests

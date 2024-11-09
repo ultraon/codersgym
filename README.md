@@ -1,16 +1,21 @@
-# Daily Coder
+# <img src="https://github.com/GouravShDev/codersgym/blob/main/android/app/src/main/res/mipmap-xhdpi/ic_launcher.png?raw=true" alt="app_icon" height="40"/>  Coders Gym
 
-A new Flutter project.
+Coders Gym is a mobile application designed to provide a mobile-friendly interface for LeetCode challenges.
 
-## Getting Started
+![Google Pixel 3 XL Presentation (1)](https://github.com/user-attachments/assets/06013eca-74cd-493c-8ddd-4f8b0261fd4d)
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
+## Features
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Features of Coders Gym include:
+- 📖 **Instant Daily Challenges**  
+  *Stay consistent and sharpen your skills with fresh challenges delivered daily.*
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- 📅 **Upcoming LeetCode Contests**  
+  *Plan ahead! View upcoming contests to stay ready for your next big coding test.*
+
+- 📚 **Complete Problem Archive**  
+  *Explore the entire collection of LeetCode problems, all in one place for your convenience.*
+
+- 🎨 **Animated Profile Views**  
+  *Bring your LeetCode profile to life with engaging animations that showcase your achievements.*

@@ -4,7 +4,7 @@ Coders Gym is a mobile application build with Flutter and designed to provide a 
 
 ![Google Pixel 3 XL Presentation_compreesed](https://github.com/user-attachments/assets/283c4010-bb11-48f5-9c12-de19437bfef8)
 
-## Features
+## 🚀 Features
 
 Features of Coders Gym include:
 
@@ -14,7 +14,7 @@ Features of Coders Gym include:
 - See your profile stats with dynamic animations.
 - Authentication via Leetcode login or username authentication.
 
-## Future Scope
+## 🔮 Future Scope
 
 
 - [ ] Set reminders for contests
@@ -22,7 +22,7 @@ Features of Coders Gym include:
 - [ ] Code Editor for submitting code
 - [ ] View question discussions
 
-## Technical Features
+## 🛠 Built With
 - **BLoC (Business Logic Component)**: State management solution to separate business logic from UI components, making the app more maintainable and testable.
 - **Clean Architecture**: Ensures the app is built with scalability and maintainability in mind. Layers such as data, domain, and presentation are separated to ensure flexibility and testability.
 - **GetIt**: Used for dependency injection to manage service instances and improve the app's modularity.
@@ -33,6 +33,32 @@ Features of Coders Gym include:
 - **Exponential Backoff Strategy**: Applied for handling API call timeouts, ensuring more reliable and fault-tolerant network requests.
 
 
+## ⚙️ Setup & Installation
 
-## Contributing
+1. Clone the repository:
+   ```
+   git clone https://github.com/GouravShDev/codersgym.git
+   ```
+2. Navigate to the project directory:
+
+   ```
+   cd codersgym
+   ```
+
+3. Install dependencies: Run the following command to install project dependencies:
+   ```
+   flutter pub get
+   ```
+
+4. Generate code: Run the following command to generate the necessary code:
+   ```
+   dart run build_runner build
+   ```
+
+5. Run the app: Finally, use the following command to launch the app on the selected device or emulator:
+   ```
+   flutter run
+   ```
+
+## 🤝 Contributing
 We welcome contributions to make Coders Gym even better! Please fork the repository and submit a pull request with your improvements.

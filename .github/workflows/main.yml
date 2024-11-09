@@ -71,9 +71,20 @@ jobs:
 
       - name: Run build_runner
         run: dart run build_runner build --delete-conflicting-outputs
-
+        
       - name: Build APK
         run: flutter build apk --release
+
+      - uses: r0adkll/sign-android-release@v1
+        name: Sign app APK
+        # ID used to access action output
+        id: sign_app
+        with:
+          releaseDirectory: app/build/outputs/apk/release
+          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
+          alias: ${{ secrets.ALIAS }}
+          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
+          keyPassword: ${{ secrets.KEY_PASSWORD }}
 
       - name: Upload APK to Artifacts
         uses: actions/upload-artifact@v3

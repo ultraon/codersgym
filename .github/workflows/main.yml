@@ -26,7 +26,7 @@ jobs:
 
       - name: Install dependencies
         run: flutter pub get
-          - name: Generate firebase_options.dart
+      - name: Generate firebase_options.dart
         env:
           FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
           FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}

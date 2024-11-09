@@ -3,7 +3,9 @@ name: Flutter APK Build
 on:
   push:
     branches:
-      - main  # Replace with the branch you want to trigger the build
+      - release  # This ensures the workflow runs on the release branch
+    tags:
+      - 'v*'  # This ensures the workflow runs on any tag that starts with 'v'
 
 jobs:
   build:
@@ -89,8 +91,11 @@ jobs:
           # override default build-tools version (33.0.0) -- optional
           BUILD_TOOLS_VERSION: "34.0.0"
 
-      - name: Upload APK to Artifacts
-        uses: actions/upload-artifact@v3
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
         with:
-          name: release-apk
-          path: build/app/outputs/flutter-apk/app-release.apk
+          tag_name: ${{ github.ref_name }}  # Automatically picks the tag name from the trigger
+          release_name: Release ${{ github.ref_name }}  # Release name will match the tag name
+          files: ${{ steps.sign_app.outputs.signedReleaseFile }}  # Directly references the signed APK output from the signing step
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # GitHub Token for authentication

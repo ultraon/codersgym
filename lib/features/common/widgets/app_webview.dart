@@ -82,9 +82,9 @@ class AppWebview extends HookWidget {
             initialData: htmlText != null
                 ? InAppWebViewInitialData(data: htmlText!)
                 : null,
-            initialSettings: InAppWebViewSettings(),
             shouldInterceptFetchRequest: (controller, ajaxRequest) async {
               final url = ajaxRequest.url;
+              print("URL : " + url.toString());
               if (redirectUrl != null) {
                 if (url.toString().startsWith(redirectUrl!)) {
                   onUrlRedirection?.call();
@@ -94,15 +94,25 @@ class AppWebview extends HookWidget {
               return null;
             },
             onLoadStop: (controller, url) async {
+              // Check if user is trying to login with google
+              // We need to send user-agent for google login to work in the
+              // webview
+              // Initially we can't add that because
+              // cloudflare won't work if we do
+              if (url
+                  .toString()
+                  .startsWith('https://accounts.google.com/v3/signin')) {
+                controller.setSettings(
+                  settings: InAppWebViewSettings(
+                      userAgent:
+                          "Mozilla/5.0 (Linux; Android 8.0.0; SM-G955U Build/R16NW) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Mobile Safari/537.36"),
+                );
+              }
               canGoBack.value = await controller.canGoBack();
               canGoForward.value = await controller.canGoForward();
             },
             onWebViewCreated: (controller) {
               webViewController.value = controller;
-              controller.setSettings(
-                  settings: InAppWebViewSettings(
-                      userAgent:
-                          "Mozilla/5.0 (Linux; Android 8.0; Pixel 2 Build/OPD3.170816.012) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.82 Mobile Safari/537.36"));
               if (assetFilePath != null) {
                 controller.loadFile(assetFilePath: assetFilePath!);
               }

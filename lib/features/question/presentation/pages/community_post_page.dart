@@ -6,6 +6,9 @@ import 'package:codersgym/features/question/presentation/widgets/question_commun
 import 'package:codersgym/injection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+
+import 'package:flutter_highlight/themes/monokai-sublime.dart';
+import 'package:flutter_highlight/flutter_highlight.dart';
 import 'package:markdown/markdown.dart' as md;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -56,6 +59,9 @@ class CommunityPostPage extends HookWidget implements AutoRouteWrapper {
                         ...md.ExtensionSet.gitHubFlavored.inlineSyntaxes
                       ],
                     ),
+                    builders: {
+                      'code': CodeElementBuilder(),
+                    },
                   );
                 },
                 onError: (exception) => Text(exception.toString()),
@@ -74,6 +80,29 @@ class CommunityPostPage extends HookWidget implements AutoRouteWrapper {
         ),
       ],
       child: this,
+    );
+  }
+}
+
+class CodeElementBuilder extends MarkdownElementBuilder {
+  @override
+  Widget? visitElementAfter(md.Element element, TextStyle? preferredStyle) {
+    var language = '';
+
+    if (element.attributes['class'] != null) {
+      String lg = element.attributes['class'] as String;
+      language = lg.substring(9);
+    }
+    return SizedBox(
+      child: HighlightView(
+        // The original code to be highlighted
+        element.textContent,
+
+        // Specify language
+        // It is recommended to give it a value for performance
+        language: language,
+        theme: monokaiSublimeTheme,
+      ),
     );
   }
 }

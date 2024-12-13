@@ -194,7 +194,7 @@ class CodeEditorPageBody extends HookWidget {
         stateListner.cancel();
         codeController.dispose();
       };
-    }, []);
+    }, [codeController]);
 
     // Run code function
     final onCodeRun = useCallback(() {

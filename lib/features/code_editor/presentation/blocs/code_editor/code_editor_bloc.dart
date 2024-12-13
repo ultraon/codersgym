@@ -83,7 +83,7 @@ class CodeEditorBloc extends Bloc<CodeEditorEvent, CodeEditorState> {
     final runCodeResult = await _codeEdtiorRepository.runCode(
       questionTitleSlug: event.question.titleSlug ?? "",
       questionId: event.question.questionId ?? '0',
-      programmingLanguage: ProgrammingLanguage.cpp.name,
+      programmingLanguage: state.language.name,
       code: state.code,
       testCases: event.question.exampleTestCases
               ?.map(
@@ -144,7 +144,7 @@ class CodeEditorBloc extends Bloc<CodeEditorEvent, CodeEditorState> {
     final runSubmitCodeResult = await _codeEdtiorRepository.submitCode(
       questionTitleSlug: event.question.titleSlug ?? "",
       questionId: event.question.questionId ?? '0',
-      programmingLanguage: ProgrammingLanguage.cpp.name,
+      programmingLanguage: state.language.name,
       code: state.code,
       testCases: event.question.exampleTestCases
               ?.map(

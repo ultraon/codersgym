@@ -3,9 +3,11 @@ import 'package:codersgym/core/utils/app_constants.dart';
 import 'package:codersgym/core/routes/app_router.gr.dart';
 import 'package:codersgym/core/utils/app_constants.dart';
 import 'package:codersgym/features/auth/presentation/blocs/auth/auth_bloc.dart';
+import 'package:codersgym/features/common/dialog/app_loading_dialog.dart';
 import 'package:codersgym/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SettingPage extends StatelessWidget {
@@ -104,11 +106,16 @@ class SettingPage extends StatelessWidget {
                       color: theme.primaryColor,
                     ),
                     title: const Text("About"),
-                    onTap: () {
+                    onTap: () async {
+                      AppLoadingDialog.showLoaderDialog(context);
+                      PackageInfo packageInfo =
+                          await PackageInfo.fromPlatform();
+                      if (!context.mounted) return;
+                      AppLoadingDialog.removeLoaderDialog(context);
                       showAboutDialog(
                         context: context,
                         applicationName: AppConstants.appName,
-                        applicationVersion: "1.0.0",
+                        applicationVersion: packageInfo.version,
                         applicationIcon: Image.asset(
                           Assets.images.appIcon.path,
                           width: 60,

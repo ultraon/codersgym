@@ -11,6 +11,7 @@ class TestCaseManager extends HookWidget {
     required this.readonly,
     this.codeOutput,
     this.expectedOutput,
+    this.stdOutput,
   }) : assert(
             (codeOutput == null && expectedOutput == null) ||
                 (codeOutput?.isEmpty == true &&
@@ -30,6 +31,7 @@ class TestCaseManager extends HookWidget {
   final bool readonly;
   final List<String>? codeOutput;
   final List<String>? expectedOutput;
+  final List<String>? stdOutput;
   @override
   Widget build(BuildContext context) {
     final currentTestcases = useState(testcases);
@@ -158,6 +160,28 @@ class TestCaseManager extends HookWidget {
         SizedBox(
           height: 12,
         ),
+        if (stdOutput != null && stdOutput!.isNotEmpty) ...[
+          Text("StdOutput"),
+          const SizedBox(
+            height: 8,
+          ),
+          TextFormField(
+            // Force child to rebuild when testcases changes
+            // might need to find better way
+            key: UniqueKey(),
+            initialValue: stdOutput![selectedTestcaseIndex.value],
+            readOnly: readonly,
+            decoration: InputDecoration(
+              fillColor: Theme.of(context).highlightColor.withOpacity(0.1),
+              border: inputBorder,
+              enabledBorder: inputBorder,
+              focusedBorder: focusInputBorder,
+            ),
+          ),
+          SizedBox(
+            height: 12,
+          ),
+        ],
         if (codeOutput != null &&
             expectedOutput != null &&
             codeOutput!.isNotEmpty &&
@@ -214,6 +238,9 @@ class TestCaseManager extends HookWidget {
               enabledBorder: inputBorder,
               focusedBorder: focusInputBorder,
             ),
+          ),
+          const SizedBox(
+            height: 8,
           ),
         ],
       ],

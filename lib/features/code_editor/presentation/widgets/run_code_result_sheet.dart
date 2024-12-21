@@ -93,6 +93,7 @@ class RunCodeResultSheet extends StatelessWidget {
                     expectedOutput: isCodeSubmitted
                         ? [(executionResult.lastExpectedOutput ?? '')]
                         : executionResult.expectedCodeAnswer,
+                    stdOutput: executionResult.codePrintOutputs,
                   )
               ],
             ),

@@ -81,11 +81,16 @@ class CodeEditorPage extends HookWidget implements AutoRouteWrapper {
 }
 
 class CodeEditorPageBody extends HookWidget {
-  const CodeEditorPageBody({
+  CodeEditorPageBody({
     super.key,
     required this.question,
   });
   final Question question;
+
+  final modifiers = [
+    const IndentModifier(),
+    const TabModifier(),
+  ];
 
   void _handleCodeAndLanguageChanges(
     ValueNotifier<CodeController> codeController,
@@ -96,10 +101,11 @@ class CodeEditorPageBody extends HookWidget {
       codeController.value = CodeController(
         text: newState.code,
         language: newState.language.mode,
+        modifiers: modifiers,
       );
       return;
     }
-    if (newState.code != codeController.value.code.text) {
+    if (newState.code != codeController.value.fullText) {
       codeController.value.fullText = newState.code;
     }
   }
@@ -163,6 +169,7 @@ class CodeEditorPageBody extends HookWidget {
       CodeController(
         text: codeEditorBloc.state.code,
         language: codeEditorBloc.state.language.mode,
+        modifiers: modifiers,
       ),
     );
     final codeController = codeControllerState.value;
@@ -170,10 +177,10 @@ class CodeEditorPageBody extends HookWidget {
     useEffect(() {
       codeController.addListener(() {
         // Prevent unnecessary emittion of state when code is already updated
-        if (codeController.text == codeEditorBloc.state.code) return;
+        if (codeController.fullText == codeEditorBloc.state.code) return;
         codeEditorBloc.add(
           CodeEditorCodeUpdateEvent(
-            updatedCode: codeController.text,
+            updatedCode: codeController.fullText,
           ),
         );
       });

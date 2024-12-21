@@ -229,9 +229,12 @@ class CodeEditorPageBody extends HookWidget {
                     context: context,
                     isScrollControlled: true,
                     builder: (context) {
-                      return TestCaseBottomSheet(
-                        testcases: question.exampleTestCases ?? [],
-                        onRunCode: onCodeRun,
+                      return BlocProvider.value(
+                        value: codeEditorBloc,
+                        child: TestCaseBottomSheet(
+                          testcases: codeEditorBloc.state.testCases ?? [],
+                          onRunCode: onCodeRun,
+                        ),
                       );
                     },
                   );

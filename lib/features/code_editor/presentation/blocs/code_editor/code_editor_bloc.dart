@@ -51,6 +51,9 @@ class CodeEditorBloc extends Bloc<CodeEditorEvent, CodeEditorState> {
         case CodeEditorResetCodeEvent():
           _onCodeEditorResetCodeEvent(event, emit);
           break;
+        case CodeEditorUpdateTestcaseEvent():
+          _onCodeEditorUpdateTestcaseEvent(event, emit);
+          break;
       }
     });
   }
@@ -76,8 +79,7 @@ class CodeEditorBloc extends Bloc<CodeEditorEvent, CodeEditorState> {
     emit(
       state.copyWith(
         executionState: CodeExecutionPending(),
-        // Might need to modify when custom testcase feature is implemented
-        testCases: event.question.exampleTestCases,
+        testCases: state.testCases,
       ),
     );
     final runCodeResult = await _codeEdtiorRepository.runCode(
@@ -241,6 +243,7 @@ class CodeEditorBloc extends Bloc<CodeEditorEvent, CodeEditorState> {
         language: language,
         code: code ?? '',
         question: event.question,
+        testCases: event.question.exampleTestCases,
       ),
     );
   }
@@ -298,6 +301,15 @@ class CodeEditorBloc extends Bloc<CodeEditorEvent, CodeEditorState> {
         ?.code;
     emit(
       state.copyWith(code: code),
+    );
+  }
+
+  void _onCodeEditorUpdateTestcaseEvent(
+      CodeEditorUpdateTestcaseEvent event, Emitter<CodeEditorState> emit) {
+    emit(
+      state.copyWith(
+        testCases: event.testcases,
+      ),
     );
   }
 }

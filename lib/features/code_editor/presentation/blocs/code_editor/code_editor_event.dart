@@ -81,3 +81,14 @@ class CodeEditorLanguageUpdateEvent extends CodeEditorEvent {
 class CodeEditorResetCodeEvent extends CodeEditorEvent {}
 
 class CodeEditorFormatCodeEvent extends CodeEditorEvent {}
+
+class CodeEditorUpdateTestcaseEvent extends CodeEditorEvent {
+  final List<TestCase> testcases;
+
+  const CodeEditorUpdateTestcaseEvent({
+    required this.testcases,
+  });
+  
+  @override
+  List<Object> get props => [testcases];
+}

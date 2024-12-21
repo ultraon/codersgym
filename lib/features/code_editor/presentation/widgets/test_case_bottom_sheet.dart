@@ -83,7 +83,7 @@ class TestCaseBottomSheet extends StatelessWidget {
 
                 TestCaseManager(
                   testcases: testcases,
-                  readonly: true,
+                  readonly: false,
                 ),
               ],
             ),

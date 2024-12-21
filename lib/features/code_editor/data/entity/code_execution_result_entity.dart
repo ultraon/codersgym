@@ -8,6 +8,8 @@ class CodeExecutionResultEntity {
   final bool? runSuccess;
   final String? compileError;
   final String? fullCompileError;
+  final String? runtimeError;
+  final String? fullRuntimeError;
   final String? statusRuntime;
   final int? memory;
   final List<String>? codeAnswer;
@@ -81,6 +83,8 @@ class CodeExecutionResultEntity {
     this.statusMsg,
     this.state,
     this.lastTestcase,
+    this.runtimeError,
+    this.fullRuntimeError,
   });
 
   factory CodeExecutionResultEntity.fromJson(Map<String, dynamic> json) =>
@@ -90,6 +94,8 @@ class CodeExecutionResultEntity {
         runSuccess: json["run_success"],
         compileError: json["compile_error"],
         fullCompileError: json["full_compile_error"],
+        runtimeError: json["runtime_error"],
+        fullRuntimeError: json["full_runtime_error"],
         statusRuntime: json["status_runtime"],
         memory: json["memory"],
         codeAnswer: json["code_answer"] == null
@@ -183,6 +189,8 @@ extension CodeExecutionResultEntityExt on CodeExecutionResultEntity {
         ),
       complieError: compileError,
       fullCompileError: fullCompileError,
+      runtimeError: runtimeError,
+      fullRuntimeError: fullRuntimeError,
       totalCorrect: totalCorrect,
       totalTestcases: totalTestcases,
       memoryPercentile: memoryPercentile,

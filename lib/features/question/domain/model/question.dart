@@ -123,4 +123,17 @@ class TestCase {
   TestCase({
     required this.inputs,
   });
+
+  TestCase copy() {
+    return TestCase(
+      inputs: List.from(
+        inputs,
+      ),
+    );
+  }
+
+  @override
+  String toString() {
+    return 'TestCase{inputs: $inputs}';
+  }
 }

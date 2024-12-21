@@ -62,7 +62,8 @@ class RunCodeResultSheet extends StatelessWidget {
                 const SizedBox(
                   height: 12.0,
                 ),
-                if (executionResult.fullCompileError != null)
+                if (executionResult.fullCompileError != null ||
+                    executionResult.fullRuntimeError != null)
                   Container(
                     padding: const EdgeInsets.all(6.0),
                     decoration: BoxDecoration(
@@ -71,7 +72,9 @@ class RunCodeResultSheet extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8.0),
                     ),
                     child: Text(
-                      executionResult.fullCompileError!,
+                      executionResult.fullCompileError ??
+                          executionResult.fullRuntimeError ??
+                          '',
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                             color: Theme.of(context).colorScheme.error,
                           ),

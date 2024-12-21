@@ -1,7 +1,11 @@
+import 'dart:math';
+
 import 'package:codersgym/core/theme/app_theme.dart';
+import 'package:codersgym/features/code_editor/presentation/blocs/code_editor/code_editor_bloc.dart';
 import 'package:codersgym/features/code_editor/presentation/pages/code_editor_page.dart';
 import 'package:codersgym/features/question/domain/model/question.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 class TestCaseManager extends HookWidget {
@@ -45,6 +49,14 @@ class TestCaseManager extends HookWidget {
         color: Theme.of(context).primaryColor,
       ),
     );
+    useEffect(() {
+      context.read<CodeEditorBloc>().add(
+            CodeEditorUpdateTestcaseEvent(
+              testcases: currentTestcases.value,
+            ),
+          );
+      return null;
+    }, [currentTestcases.value]);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -62,37 +74,71 @@ class TestCaseManager extends HookWidget {
                     // Update the selected testcase
                     selectedTestcaseIndex.value = index;
                   },
-                  child: Card(
-                    color: selectedTestcaseIndex.value == index
-                        ? Theme.of(context).hintColor.withOpacity(0.15)
-                        : null,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: [
-                          if ((codeOutput?.isNotEmpty ?? false) &&
-                              (expectedOutput?.isNotEmpty ?? false)) ...[
-                            Icon(
-                              Icons.circle,
-                              size: 6,
-                              color: codeOutput![index] ==
-                                      expectedOutput![index]
-                                  ? Theme.of(context).colorScheme.successColor
-                                  : Theme.of(context).colorScheme.error,
-                            ),
-                            SizedBox(width: 4),
-                          ],
-                          Text(
-                            "Case ${index + 1}",
-                            style: TextStyle(
-                              fontWeight: selectedTestcaseIndex.value == index
-                                  ? FontWeight.bold
-                                  : FontWeight.normal,
-                            ),
+                  child: Stack(
+                    alignment: Alignment.topRight,
+                    children: [
+                      Card(
+                        color: selectedTestcaseIndex.value == index
+                            ? Theme.of(context).hintColor.withOpacity(0.15)
+                            : null,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            children: [
+                              if ((codeOutput?.isNotEmpty ?? false) &&
+                                  (expectedOutput?.isNotEmpty ?? false)) ...[
+                                Icon(
+                                  Icons.circle,
+                                  size: 6,
+                                  color: codeOutput![index] ==
+                                          expectedOutput![index]
+                                      ? Theme.of(context)
+                                          .colorScheme
+                                          .successColor
+                                      : Theme.of(context).colorScheme.error,
+                                ),
+                                SizedBox(width: 4),
+                              ],
+                              Text(
+                                "Case ${index + 1}",
+                                style: TextStyle(
+                                  fontWeight:
+                                      selectedTestcaseIndex.value == index
+                                          ? FontWeight.bold
+                                          : FontWeight.normal,
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
+                        ),
                       ),
-                    ),
+                      if (!readonly &&
+                          selectedTestcaseIndex.value == index &&
+                          currentTestcases.value.length > 1)
+                        InkWell(
+                            onTap: () {
+                              final newTestcases = currentTestcases.value
+                                  .map(
+                                    (e) => e.copy(),
+                                  )
+                                  .toList();
+                              newTestcases.removeAt(index);
+                              currentTestcases.value = newTestcases;
+                              selectedTestcaseIndex.value = min(
+                                newTestcases.length - 1,
+                                selectedTestcaseIndex.value,
+                              );
+                            },
+                            child: CircleAvatar(
+                              backgroundColor:
+                                  Theme.of(context).colorScheme.error,
+                              maxRadius: 8,
+                              child: Icon(
+                                Icons.remove,
+                                size: 12,
+                              ),
+                            )),
+                    ],
                   ),
                 );
               },
@@ -101,9 +147,14 @@ class TestCaseManager extends HookWidget {
             if (currentTestcases.value.length < 5 && !readonly)
               IconButton(
                 onPressed: () {
-                  currentTestcases.value = List.from(currentTestcases.value)
+                  currentTestcases.value = currentTestcases.value
+                      .map(
+                        (e) => e.copy(),
+                      )
+                      .toList()
                     ..add(
-                      currentTestcases.value[selectedTestcaseIndex.value],
+                      currentTestcases.value[selectedTestcaseIndex.value]
+                          .copy(),
                     );
                   WidgetsBinding.instance.addPostFrameCallback(
                     (timeStamp) {
@@ -138,13 +189,20 @@ class TestCaseManager extends HookWidget {
                   // Force child to rebuild when testcases changes
                   // might need to find better way
                   key: ValueKey(
-                    currentTestcases.value[selectedTestcaseIndex.value]
-                            .toString() +
-                        selectedTestcaseIndex.value.toString() +
-                        index.toString(),
+                    "${currentTestcases.value[selectedTestcaseIndex.value]}#${selectedTestcaseIndex.value}$index",
                   ),
                   initialValue: currentInput,
                   readOnly: readonly,
+                  onChanged: (value) {
+                    final newTestcases = currentTestcases.value
+                        .map(
+                          (e) => e.copy(),
+                        )
+                        .toList();
+                    newTestcases[selectedTestcaseIndex.value].inputs[index] =
+                        value;
+                    currentTestcases.value = newTestcases;
+                  },
                   decoration: InputDecoration(
                     fillColor:
                         Theme.of(context).highlightColor.withOpacity(0.1),

@@ -122,7 +122,12 @@ class HomePageBody extends StatelessWidget {
                   return state.when(
                     onInitial: () => const CircularProgressIndicator(),
                     onLoading: () => AppWidgetLoading(
-                      child: UpcomingContestCard.empty(),
+                      child: Column(
+                        children: List.generate(
+                          2,
+                          (index) => UpcomingContestCard.empty(),
+                        ),
+                      ),
                     ),
                     onLoaded: (contests) {
                       // Using column instead of listview because number of

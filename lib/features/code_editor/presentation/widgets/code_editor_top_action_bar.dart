@@ -71,9 +71,22 @@ class CodeEditorTopActionBar extends StatelessWidget {
           builder: (context, state) {
             return IconButton(
               onPressed: () {
-                codeEditorBloc.add(
-                  CodeEditorFormatCodeEvent(),
-                );
+                final isAuthenticated = context
+                    .read<AuthBloc>()
+                    .isUserAuthenticatedWithLeetcodeAccount;
+                if (isAuthenticated) {
+                  codeEditorBloc.add(
+                    CodeEditorFormatCodeEvent(),
+                  );
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text(
+                        "Please login via leetcode account to use this feature",
+                      ),
+                    ),
+                  );
+                }
               },
               icon: state.isCodeFormatting
                   ? const SizedBox(

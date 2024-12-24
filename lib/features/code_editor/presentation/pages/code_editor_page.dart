@@ -346,15 +346,18 @@ class CodeEditorPageBody extends HookWidget {
     required CodeExecutionResult result,
     required List<TestCase> testcases,
   }) {
+    final codeEditorBloc = context.read<CodeEditorBloc>();
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       builder: (context) {
-        return RunCodeResultSheet(
-          sampleTestcases: testcases,
-          executionResult: result,
-          isCodeSubmitted: false,
-        );
+        return BlocProvider.value(
+            value: codeEditorBloc,
+            child: RunCodeResultSheet(
+              sampleTestcases: testcases,
+              executionResult: result,
+              isCodeSubmitted: false,
+            ));
       },
     );
   }
@@ -364,15 +367,19 @@ class CodeEditorPageBody extends HookWidget {
     required CodeExecutionResult result,
     required List<TestCase> testcases,
   }) {
+    final codeEditorBloc = context.read<CodeEditorBloc>();
     if (result.didCodeResultInError) {
       showModalBottomSheet(
         context: context,
         isScrollControlled: true,
         builder: (context) {
-          return RunCodeResultSheet(
-            sampleTestcases: testcases,
-            executionResult: result,
-            isCodeSubmitted: true,
+          return BlocProvider.value(
+            value: codeEditorBloc,
+            child: RunCodeResultSheet(
+              sampleTestcases: testcases,
+              executionResult: result,
+              isCodeSubmitted: true,
+            ),
           );
         },
       );

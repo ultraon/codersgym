@@ -261,7 +261,6 @@ class _CodingKeysState extends State<CodingKeys> with TickerProviderStateMixin {
       child: AnimatedBuilder(
         animation: _tabController.animation!,
         builder: (context, child) {
-          print("TAB: " + _tabController.animation!.value.toString());
           return SizedBox(
             width: 52,
             child: Stack(

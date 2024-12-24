@@ -3,6 +3,8 @@ import 'package:codersgym/core/api/api_state.dart';
 import 'package:codersgym/core/routes/app_router.gr.dart';
 import 'package:codersgym/features/auth/presentation/blocs/auth/auth_bloc.dart';
 import 'package:codersgym/features/auth/presentation/pages/login_page.dart';
+import 'package:codersgym/features/common/bloc/app_file_downloader/app_file_downloader_bloc.dart';
+import 'package:codersgym/features/common/widgets/app_updater.dart';
 import 'package:codersgym/features/profile/domain/model/user_profile.dart';
 import 'package:codersgym/features/profile/domain/repository/profile_repository.dart';
 import 'package:codersgym/features/profile/presentation/blocs/user_profile/user_profile_cubit.dart';
@@ -76,16 +78,30 @@ class DashboardPage extends HookWidget implements AutoRouteWrapper {
     ];
 
     return Scaffold(
-      body: BlocListener<AuthBloc, AuthState>(
-        listener: (context, state) {
-          if (state is UnAuthenticated) {
-            context.router.pushAndPopUntil(
-              const LoginRoute(),
-              predicate: (route) => false,
-            );
-          }
-        },
-        child: pages[currentIndex.value],
+      body: AppUpdater(
+        child: BlocListener<AuthBloc, AuthState>(
+          listener: (context, state) {
+            if (state is UnAuthenticated) {
+              context.router.pushAndPopUntil(
+                const LoginRoute(),
+                predicate: (route) => false,
+              );
+            }
+          },
+          child: BlocListener<AppFileDownloaderBloc, AppFileDownloaderState>(
+            listener: (context, state) {
+              final messenger = ScaffoldMessenger.of(context);
+              if (state is AppFileIntiatingDownload) {
+                messenger.showSnackBar(
+                  const SnackBar(
+                    content: Text("Download started..."),
+                  ),
+                );
+              }
+            },
+            child: pages[currentIndex.value],
+          ),
+        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentIndex.value,
@@ -124,6 +140,9 @@ class DashboardPage extends HookWidget implements AutoRouteWrapper {
         ),
         BlocProvider(
           create: (context) => getIt.get<UpcomingContestsCubit>(),
+        ),
+        BlocProvider(
+          create: (context) => getIt.get<AppFileDownloaderBloc>(),
         ),
       ],
       child: this,

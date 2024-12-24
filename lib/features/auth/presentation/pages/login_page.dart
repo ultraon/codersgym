@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:codersgym/features/auth/presentation/blocs/auth/auth_bloc.dart';
 import 'package:codersgym/features/auth/presentation/widgets/username_dialog.dart';
+import 'package:codersgym/features/common/widgets/app_updater.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -27,67 +28,69 @@ class LoginPage extends StatelessWidget {
             context.router.replace(const DashboardRoute());
           }
         },
-        child: SafeArea(
-          child: CustomScrollView(slivers: [
-            SliverFillRemaining(
-              hasScrollBody: false,
-              child: Padding(
-                padding: const EdgeInsets.all(24.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      height: 150,
-                      child: TypingTextAnimation(
-                        text: 'Welcome \nTo \nCodersGym',
-                        textAlign: TextAlign.center,
-                        style:
-                            Theme.of(context).textTheme.headlineLarge?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                ), // Use theme style for title
+        child: AppUpdater(
+          child: SafeArea(
+            child: CustomScrollView(slivers: [
+              SliverFillRemaining(
+                hasScrollBody: false,
+                child: Padding(
+                  padding: const EdgeInsets.all(24.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        height: 150,
+                        child: TypingTextAnimation(
+                          text: 'Welcome \nTo \nCodersGym',
+                          textAlign: TextAlign.center,
+                          style:
+                              Theme.of(context).textTheme.headlineLarge?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ), // Use theme style for title
+                        ),
                       ),
-                    ),
-                    SvgPicture.asset(
-                      Assets.icons.coding,
-                      width: MediaQuery.sizeOf(context).width * 0.7,
-                      fit: BoxFit.cover,
-                    ),
-                    const Spacer(),
-                    LeetCodeLoginButton(),
-                    const SizedBox(height: 8),
-                    Text(
-                      "---OR---",
-                      style: textTheme.bodyMedium?.copyWith(
-                        color: theme.hintColor,
+                      SvgPicture.asset(
+                        Assets.icons.coding,
+                        width: MediaQuery.sizeOf(context).width * 0.7,
+                        fit: BoxFit.cover,
                       ),
-                    ),
-                    TextButton(
-                      onPressed: () async {
-                        final username = await showDialog<String>(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return const UsernameDialog();
-                          },
-                        );
-
-                        if (username != null &&
-                            username.isNotEmpty &&
-                            context.mounted) {
-                          context.read<AuthBloc>().add(
-                                AuthLoginWithLeetcodeUserName(
-                                  leetcodeUserName: username,
-                                ),
-                              );
-                        }
-                      },
-                      child: const Text("Enter Your UserName"),
-                    ),
-                    const SizedBox(height: 40),
-                  ],
+                      const Spacer(),
+                      LeetCodeLoginButton(),
+                      const SizedBox(height: 8),
+                      Text(
+                        "---OR---",
+                        style: textTheme.bodyMedium?.copyWith(
+                          color: theme.hintColor,
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () async {
+                          final username = await showDialog<String>(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return const UsernameDialog();
+                            },
+                          );
+          
+                          if (username != null &&
+                              username.isNotEmpty &&
+                              context.mounted) {
+                            context.read<AuthBloc>().add(
+                                  AuthLoginWithLeetcodeUserName(
+                                    leetcodeUserName: username,
+                                  ),
+                                );
+                          }
+                        },
+                        child: const Text("Enter Your UserName"),
+                      ),
+                      const SizedBox(height: 40),
+                    ],
+                  ),
                 ),
-              ),
-            )
-          ]),
+              )
+            ]),
+          ),
         ),
       ),
     ));

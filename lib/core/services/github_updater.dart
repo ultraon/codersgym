@@ -67,10 +67,10 @@ class GithubUpdater {
       }
 
       return GithubReleaseInfo(
-        version: version,
-        changelog: latestRelease?['body'],
-        publishedAt: latestRelease?['published_at'] != null
-            ? DateTime.tryParse(latestRelease?['published_at'])
+        version: latestRelease['name'],
+        changelog: latestRelease['body'],
+        publishedAt: latestRelease['published_at'] != null
+            ? DateTime.tryParse(latestRelease['published_at'])
             : null,
         downloadUrl: downloadUrl,
       );

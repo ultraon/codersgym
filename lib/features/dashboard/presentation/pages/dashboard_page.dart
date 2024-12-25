@@ -94,7 +94,9 @@ class DashboardPage extends HookWidget implements AutoRouteWrapper {
               if (state is AppFileIntiatingDownload) {
                 messenger.showSnackBar(
                   const SnackBar(
-                    content: Text("Download started..."),
+                    content: Text(
+                      "Exciting updates are on the way!",
+                    ),
                   ),
                 );
               }

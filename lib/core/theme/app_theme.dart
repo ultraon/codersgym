@@ -13,10 +13,10 @@ final ThemeData leetcodeTheme = ThemeData(
     error: Color(0xffF53836),
   ),
   snackBarTheme: const SnackBarThemeData(
-    backgroundColor: Color(0xFF1C1C1C),
+    backgroundColor: Color(0xFFD4D4D4),
     contentTextStyle: TextStyle(
       color: Color(
-        0xFFD4D4D4,
+        0xFF1C1C1C,
       ),
       fontSize: 18,
     ),

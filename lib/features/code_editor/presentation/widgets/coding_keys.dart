@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_code_editor/flutter_code_editor.dart';
 
@@ -50,6 +49,7 @@ class _CodingKeysState extends State<CodingKeys> with TickerProviderStateMixin {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
+            // First row: Essential programming symbols
             _buildCodingKeyButton(
               onPressed: () {
                 final offset = widget.codeController.selection.baseOffset;
@@ -72,20 +72,20 @@ class _CodingKeysState extends State<CodingKeys> with TickerProviderStateMixin {
             ),
             _buildCodingKeyButton(
               onPressed: () {
-                widget.codeController.insertStr("\"\"");
-                widget.codeController
-                    .setCursor(widget.codeController.selection.baseOffset - 1);
-              },
-              child: const Text('""',
-                  style: TextStyle(fontWeight: FontWeight.bold)),
-            ),
-            _buildCodingKeyButton(
-              onPressed: () {
                 widget.codeController.insertStr("()");
                 widget.codeController
                     .setCursor(widget.codeController.selection.baseOffset - 1);
               },
               child: const Text('()',
+                  style: TextStyle(fontWeight: FontWeight.bold)),
+            ),
+            _buildCodingKeyButton(
+              onPressed: () {
+                widget.codeController.insertStr("[]");
+                widget.codeController
+                    .setCursor(widget.codeController.selection.baseOffset - 1);
+              },
+              child: const Text('[]',
                   style: TextStyle(fontWeight: FontWeight.bold)),
             ),
             ..._topArrowKeys(),
@@ -94,14 +94,10 @@ class _CodingKeysState extends State<CodingKeys> with TickerProviderStateMixin {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
+            // Second row: Common operators
             _buildCodingKeyButton(
-              onPressed: () => widget.codeController.insertStr("="),
-              child: const Text('=',
-                  style: TextStyle(fontWeight: FontWeight.bold)),
-            ),
-            _buildCodingKeyButton(
-              onPressed: () => widget.codeController.insertStr("\\"),
-              child: const Text('\\',
+              onPressed: () => widget.codeController.insertStr("|"),
+              child: const Text('|',
                   style: TextStyle(fontWeight: FontWeight.bold)),
             ),
             _buildCodingKeyButton(
@@ -110,11 +106,117 @@ class _CodingKeysState extends State<CodingKeys> with TickerProviderStateMixin {
                   style: TextStyle(fontWeight: FontWeight.bold)),
             ),
             _buildCodingKeyButton(
+              onPressed: () => widget.codeController.insertStr("_"),
+              child: const Text('_',
+                  style: TextStyle(fontWeight: FontWeight.bold)),
+            ),
+            _buildCodingKeyButton(
               onPressed: () => widget.codeController.insertStr(";"),
               child: const Text(';',
                   style: TextStyle(fontWeight: FontWeight.bold)),
             ),
             ..._bottomArrowKeys(),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildAdvancedKeysTab() {
+    return Column(
+      children: [
+        // Row 1: Additional brackets and quotes
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            _buildCodingKeyButton(
+              onPressed: () {
+                widget.codeController.insertStr("<>");
+                widget.codeController
+                    .setCursor(widget.codeController.selection.baseOffset - 1);
+              },
+              child: const Text('<>',
+                  style: TextStyle(fontWeight: FontWeight.bold)),
+            ),
+            _buildCodingKeyButton(
+              onPressed: () {
+                widget.codeController.insertStr('""');
+                widget.codeController
+                    .setCursor(widget.codeController.selection.baseOffset - 1);
+              },
+              child: const Text('" "',
+                  style: TextStyle(fontWeight: FontWeight.bold)),
+            ),
+            _buildCodingKeyButton(
+              onPressed: () {
+                widget.codeController.insertStr("''");
+                widget.codeController
+                    .setCursor(widget.codeController.selection.baseOffset - 1);
+              },
+              child: const Text("' '",
+                  style: TextStyle(fontWeight: FontWeight.bold)),
+            ),
+            _buildCodingKeyButton(
+              onPressed: () => widget.codeController.insertStr("!"),
+              child: const Text('!',
+                  style: TextStyle(fontWeight: FontWeight.bold)),
+            ),
+            _buildCodingKeyButton(
+              onPressed: () => widget.codeController.insertStr("?"),
+              child: const Text('?',
+                  style: TextStyle(fontWeight: FontWeight.bold)),
+            ),
+            _buildCodingKeyButton(
+              onPressed: () => widget.codeController.insertStr(":"),
+              child: const Text(':',
+                  style: TextStyle(fontWeight: FontWeight.bold)),
+            ),
+            _buildCodingKeyButton(
+              onPressed: () => widget.codeController.insertStr("\\"),
+              child: const Text('\\',
+                  style: TextStyle(fontWeight: FontWeight.bold)),
+            ),
+          ],
+        ),
+        // Row 2: Mathematical and logical operators
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            _buildCodingKeyButton(
+              onPressed: () => widget.codeController.insertStr("+"),
+              child: const Text('+',
+                  style: TextStyle(fontWeight: FontWeight.bold)),
+            ),
+            _buildCodingKeyButton(
+              onPressed: () => widget.codeController.insertStr("-"),
+              child: const Text('-',
+                  style: TextStyle(fontWeight: FontWeight.bold)),
+            ),
+            _buildCodingKeyButton(
+              onPressed: () => widget.codeController.insertStr("*"),
+              child: const Text('*',
+                  style: TextStyle(fontWeight: FontWeight.bold)),
+            ),
+            _buildCodingKeyButton(
+              onPressed: () => widget.codeController.insertStr("/"),
+              child: const Text('/',
+                  style: TextStyle(fontWeight: FontWeight.bold)),
+            ),
+            _buildCodingKeyButton(
+              onPressed: () => widget.codeController.insertStr("%"),
+              child: const Text('%',
+                  style: TextStyle(fontWeight: FontWeight.bold)),
+            ),
+            _buildCodingKeyButton(
+              onPressed: () => widget.codeController.insertStr("="),
+              child: const Text('=',
+                  style: TextStyle(fontWeight: FontWeight.bold)),
+            ),
+            _buildCodingKeyButton(
+              onPressed: () => widget.codeController.insertStr("^"),
+              child: const Text('^',
+                  style: TextStyle(fontWeight: FontWeight.bold)),
+            ),
           ],
         ),
       ],
@@ -159,84 +261,10 @@ class _CodingKeysState extends State<CodingKeys> with TickerProviderStateMixin {
     ];
   }
 
-  Widget _buildAdvancedKeysTab() {
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            _buildCodingKeyButton(
-              onPressed: () {
-                widget.codeController.insertStr("[]");
-                widget.codeController
-                    .setCursor(widget.codeController.selection.baseOffset - 1);
-              },
-              child: const Text('[]',
-                  style: TextStyle(fontWeight: FontWeight.bold)),
-            ),
-            _buildCodingKeyButton(
-              onPressed: () {
-                widget.codeController.insertStr("''");
-                widget.codeController
-                    .setCursor(widget.codeController.selection.baseOffset - 1);
-              },
-              child: const Text("' '",
-                  style: TextStyle(fontWeight: FontWeight.bold)),
-            ),
-            _buildCodingKeyButton(
-              onPressed: () {
-                widget.codeController.insertStr("<>");
-
-                widget.codeController
-                    .setCursor(widget.codeController.selection.baseOffset - 1);
-              },
-              child: const Text('<>',
-                  style: TextStyle(fontWeight: FontWeight.bold)),
-            ),
-            _buildCodingKeyButton(
-              onPressed: () => widget.codeController.insertStr("!"),
-              child: const Text('!',
-                  style: TextStyle(fontWeight: FontWeight.bold)),
-            ),
-            ..._topArrowKeys(),
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            _buildCodingKeyButton(
-              onPressed: () => widget.codeController.insertStr("+"),
-              child: const Text('+',
-                  style: TextStyle(fontWeight: FontWeight.bold)),
-            ),
-            _buildCodingKeyButton(
-              onPressed: () => widget.codeController.insertStr("-"),
-              child: const Text('-',
-                  style: TextStyle(fontWeight: FontWeight.bold)),
-            ),
-            _buildCodingKeyButton(
-              onPressed: () => widget.codeController.insertStr(":"),
-              child: const Text(':',
-                  style: TextStyle(fontWeight: FontWeight.bold)),
-            ),
-            _buildCodingKeyButton(
-              onPressed: () => widget.codeController.insertStr("*"),
-              child: const Text('*',
-                  style: TextStyle(fontWeight: FontWeight.bold)),
-            ),
-            ..._bottomArrowKeys(),
-          ],
-        ),
-      ],
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
       color: Theme.of(context).cardColor.withOpacity(0.4),
-      // Provided fixed height for now. But in future may be will
-      // find a better way to do this.
       height: 80,
       child: Column(
         children: [

@@ -108,10 +108,8 @@ class QuestionRepositoryImpl implements QuestionRepository {
           (e) => e.toQuestion(),
         )
         .toList();
-    if (similarQuestionsList?.isEmpty ?? true) {
-      return Failure(Exception("No Similar Questions found"));
-    }
-    return Success(similarQuestionsList!);
+
+    return Success(similarQuestionsList ?? []);
   }
 
   @override
@@ -216,7 +214,7 @@ class QuestionRepositoryImpl implements QuestionRepository {
             )
             .toList();
     if (communitySolutionsList?.isEmpty ?? true) {
-      return Failure(Exception("No Similar Questions found"));
+      return Failure(Exception("No community solution found"));
     }
     return Success((
       solutionList: communitySolutionsList ?? [],

@@ -189,7 +189,7 @@ class TestCaseManager extends HookWidget {
                   // Force child to rebuild when testcases changes
                   // might need to find better way
                   key: ValueKey(
-                    "${currentTestcases.value[selectedTestcaseIndex.value]}#${selectedTestcaseIndex.value}$index",
+                    "${currentTestcases.value.length}#${selectedTestcaseIndex.value}$index",
                   ),
                   initialValue: currentInput,
                   readOnly: readonly,

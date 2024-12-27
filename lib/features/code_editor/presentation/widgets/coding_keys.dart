@@ -227,7 +227,9 @@ class _CodingKeysState extends State<CodingKeys> with TickerProviderStateMixin {
     return [
       _buildCodingKeyButton(
         onPressed: () => widget.codeController.historyController.undo(),
-        child: const Icon(Icons.undo),
+        child: const Icon(
+          Icons.undo,
+        ),
       ),
       _buildCodingKeyButton(
         onPressed: () => moveCursorToPreviousLineMaintainingColumn(),
@@ -265,7 +267,7 @@ class _CodingKeysState extends State<CodingKeys> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Container(
       color: Theme.of(context).cardColor.withOpacity(0.4),
-      height: 80,
+      height: 78,
       child: Column(
         children: [
           Expanded(
@@ -285,7 +287,7 @@ class _CodingKeysState extends State<CodingKeys> with TickerProviderStateMixin {
 
   Widget _buildAnimatedIndicator() {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      padding: const EdgeInsets.symmetric(vertical: 2.0),
       child: AnimatedBuilder(
         animation: _tabController.animation!,
         builder: (context, child) {
@@ -300,7 +302,7 @@ class _CodingKeysState extends State<CodingKeys> with TickerProviderStateMixin {
                     children: List.generate(2, (index) {
                       return Container(
                         margin: const EdgeInsets.symmetric(horizontal: 4),
-                        height: 4,
+                        height: 2.4,
                         width: 4,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(2),
@@ -319,7 +321,7 @@ class _CodingKeysState extends State<CodingKeys> with TickerProviderStateMixin {
                   child: Transform.translate(
                     offset: Offset((_tabController.animation!.value * 20), 0),
                     child: Container(
-                      height: 4,
+                      height: 2.4,
                       width: 16,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(2),

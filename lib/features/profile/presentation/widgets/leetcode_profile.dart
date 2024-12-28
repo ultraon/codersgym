@@ -45,9 +45,10 @@ class LeetcodeProfile extends HookWidget {
       LeetcodeUserProfileCard(
         userProfile: userProfile,
       ),
-      UserBadgesList(
-        badges: userProfile.badges,
-      ),
+      if (userProfile.badges?.isNotEmpty ?? false)
+        UserBadgesList(
+          badges: userProfile.badges,
+        ),
       BlocBuilder<ContestRankingInfoCubit,
           ApiState<ContestRankingInfo, Exception>>(
         bloc: contestRankingInfoCubit,

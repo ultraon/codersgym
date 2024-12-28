@@ -57,69 +57,67 @@ class QuestionDetailPage extends HookWidget implements AutoRouteWrapper {
       ),
     ];
 
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(question.title ?? 'Question Detail'),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(question.title ?? 'Question Detail'),
+      ),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 60.0),
+        child: BlocBuilder<QuestionContentCubit, QuestionContentState>(
+          builder: (context, state) {
+            final currentQuestion = state.mayBeWhen(
+              orElse: () => question,
+              onLoaded: (questionWithDetail) => questionWithDetail,
+            );
+            if (currentQuestion.codeSnippets == null) {
+              return SizedBox.shrink();
+            }
+            return FloatingActionButton(
+              onPressed: () {
+                AutoRouter.of(context).push(
+                  CodeEditorRoute(
+                    question: currentQuestion,
+                  ),
+                );
+              },
+              child: Icon(Icons.code),
+              tooltip: 'Open Code Editor',
+            );
+          },
         ),
-        floatingActionButton: Padding(
-          padding: const EdgeInsets.only(bottom: 60.0),
-          child: BlocBuilder<QuestionContentCubit, QuestionContentState>(
-            builder: (context, state) {
-              final currentQuestion = state.mayBeWhen(
-                orElse: () => question,
-                onLoaded: (questionWithDetail) => questionWithDetail,
-              );
-              if (currentQuestion.codeSnippets == null) {
-                return SizedBox.shrink();
-              }
-              return FloatingActionButton(
-                onPressed: () {
-                  AutoRouter.of(context).push(
-                    CodeEditorRoute(
-                      question: currentQuestion,
+      ),
+      body: BlocConsumer<OfficialSolutionAvailableCubit,
+          OfficialSolutionAvailableState>(
+        listener: (context, state) {
+          state.when(
+            onInitial: () {},
+            onLoading: () {},
+            onLoaded: (isAvailable) {
+              if (isAvailable) {
+                tabsItems = List.from(tabsItems)
+                  ..insert(
+                    1,
+                    TabBarItem(
+                      id: 'question_editorial',
+                      icon: Icons.menu_book_rounded,
+                      child: QuestionEditorial(
+                        question: question,
+                      ),
                     ),
                   );
-                },
-                child: Icon(Icons.code),
-                tooltip: 'Open Code Editor',
-              );
+              }
             },
-          ),
-        ),
-        body: BlocConsumer<OfficialSolutionAvailableCubit,
-            OfficialSolutionAvailableState>(
-          listener: (context, state) {
-            state.when(
-              onInitial: () {},
-              onLoading: () {},
-              onLoaded: (isAvailable) {
-                if (isAvailable) {
-                  tabsItems = List.from(tabsItems)
-                    ..insert(
-                      1,
-                      TabBarItem(
-                        id: 'question_editorial',
-                        icon: Icons.menu_book_rounded,
-                        child: QuestionEditorial(
-                          question: question,
-                        ),
-                      ),
-                    );
-                }
-              },
-              onError: (_) {},
-            );
-          },
-          builder: (context, state) {
-            return QuestionDetailPageBody(
-              // Reinitalize page body if tabs items are changed
-              key: ValueKey("QuestionDetailPageBody${tabsItems.length}"),
-              question: question,
-              tabItems: tabsItems,
-            );
-          },
-        ),
+            onError: (_) {},
+          );
+        },
+        builder: (context, state) {
+          return QuestionDetailPageBody(
+            // Reinitalize page body if tabs items are changed
+            key: ValueKey("QuestionDetailPageBody${tabsItems.length}"),
+            question: question,
+            tabItems: tabsItems,
+          );
+        },
       ),
     );
   }

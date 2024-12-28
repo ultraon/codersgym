@@ -87,7 +87,7 @@ class CodeEditorBloc extends Bloc<CodeEditorEvent, CodeEditorState> {
       questionId: event.question.questionId ?? '0',
       programmingLanguage: state.language.name,
       code: state.code,
-      testCases: event.question.exampleTestCases
+      testCases: state.testCases
               ?.map(
                 (e) => e.inputs.join('\n'),
               )
@@ -139,8 +139,7 @@ class CodeEditorBloc extends Bloc<CodeEditorEvent, CodeEditorState> {
     emit(
       state.copyWith(
         codeSubmissionState: CodeExecutionPending(),
-        // Might need to modify when custom testcase feature is implemented
-        testCases: event.question.exampleTestCases,
+        testCases: state.testCases,
       ),
     );
     final runSubmitCodeResult = await _codeEdtiorRepository.submitCode(
@@ -148,7 +147,7 @@ class CodeEditorBloc extends Bloc<CodeEditorEvent, CodeEditorState> {
       questionId: event.question.questionId ?? '0',
       programmingLanguage: state.language.name,
       code: state.code,
-      testCases: event.question.exampleTestCases
+      testCases: state.testCases
               ?.map(
                 (e) => e.inputs.join('\n'),
               )

@@ -28,9 +28,6 @@ final ThemeData leetcodeTheme = ThemeData(
       color: Color(0xFFD4D4D4),
       fontSize: 16,
     ),
-    iconTheme: IconThemeData(
-      color: Color(0xFFFF9E0F),
-    ),
   ),
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
     backgroundColor: Colors.grey[850], // Dark background for nav bar

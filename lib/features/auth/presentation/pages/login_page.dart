@@ -41,12 +41,14 @@ class LoginPage extends StatelessWidget {
                       SizedBox(
                         height: 150,
                         child: TypingTextAnimation(
-                          text: 'Welcome \nTo \nCodersGym',
+                          text: 'Welcome \nTo \nCoders Gym',
                           textAlign: TextAlign.center,
-                          style:
-                              Theme.of(context).textTheme.headlineLarge?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                  ), // Use theme style for title
+                          style: Theme.of(context)
+                              .textTheme
+                              .headlineLarge
+                              ?.copyWith(
+                                fontWeight: FontWeight.bold,
+                              ), // Use theme style for title
                         ),
                       ),
                       SvgPicture.asset(
@@ -71,7 +73,7 @@ class LoginPage extends StatelessWidget {
                               return const UsernameDialog();
                             },
                           );
-          
+
                           if (username != null &&
                               username.isNotEmpty &&
                               context.mounted) {

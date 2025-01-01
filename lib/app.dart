@@ -69,7 +69,7 @@ class App extends StatelessWidget {
         ),
       ],
       child: MaterialApp.router(
-        title: 'CodersGym',
+        title: 'Coders Gym',
         theme: leetcodeTheme,
         debugShowCheckedModeBanner: false,
         darkTheme: leetcodeTheme,

@@ -7,7 +7,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:codersgym/app.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'firebase_options.dart';
 
@@ -28,16 +27,10 @@ void main() async {
   };
   AppBlocObserver.initialize();
   await Permission.notification.isDenied.then((value) {
-        if (value) {
-          Permission.notification.request();
-        }
-      });
-  // Plugin must be initialized before using
-  await FlutterDownloader.initialize(
-      debug:
-          true, // optional: set to false to disable printing logs to console (default: true)
-      ignoreSsl:
-          false // option: set to false to disable working with http links (default: false)
-      );
+    if (value) {
+      Permission.notification.request();
+    }
+  });
+
   runApp(const AppInitializer());
 }

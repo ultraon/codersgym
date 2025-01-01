@@ -4,7 +4,7 @@ import 'dart:ui';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter_downloader/flutter_downloader.dart';
+// import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:path_provider/path_provider.dart';
 
 part 'app_file_downloader_event.dart';
@@ -23,7 +23,7 @@ class AppFileDownloaderBloc
       }
     });
 
-    FlutterDownloader.registerCallback(downloadCallback, step: 1);
+    // FlutterDownloader.registerCallback(downloadCallback, step: 1);
     _bindBackgroundIsolate();
   }
 
@@ -48,27 +48,27 @@ class AppFileDownloaderBloc
     final file = File("$fileDownloadPath/$fileName");
     if (file.existsSync()) await file.delete();
 
-    final taskId = await FlutterDownloader.enqueue(
-      url: event.downloadUrl,
-      headers: {}, // optional: header send with url (auth token etc)
-      savedDir: fileDownloadPath,
-      saveInPublicStorage: false,
-      showNotification:
-          true, // show download progress in status bar (for Android)
-      openFileFromNotification:
-          true, // click on notification to open downloaded file (for Android)
-    );
-    if (taskId == null) {
-      emit(AppFileDownloadFailed());
-      return;
-    }
-    _downloadIdToFilePathMap[taskId] = '$fileDownloadPath/$fileName';
-    emit(
-      AppFileOngoingDownload(
-        downloadId: taskId,
-        progress: 0,
-      ),
-    );
+    // final taskId = await FlutterDownloader.enqueue(
+    //   url: event.downloadUrl,
+    //   headers: {}, // optional: header send with url (auth token etc)
+    //   savedDir: fileDownloadPath,
+    //   saveInPublicStorage: false,
+    //   showNotification:
+    //       true, // show download progress in status bar (for Android)
+    //   openFileFromNotification:
+    //       true, // click on notification to open downloaded file (for Android)
+    // );
+    // if (taskId == null) {
+    //   emit(AppFileDownloadFailed());
+    //   return;
+    // }
+    // _downloadIdToFilePathMap[taskId] = '$fileDownloadPath/$fileName';
+    // emit(
+    //   AppFileOngoingDownload(
+    //     downloadId: taskId,
+    //     progress: 0,
+    //   ),
+    // );
   }
 
   void _bindBackgroundIsolate() {
@@ -83,26 +83,26 @@ class AppFileDownloaderBloc
     }
     _port.listen((dynamic data) {
       final taskId = (data as List<dynamic>)[0] as String;
-      final status = DownloadTaskStatus.fromInt(data[1] as int);
+      // final status = DownloadTaskStatus.fromInt(data[1] as int);
       final progress = data[2] as int;
 
-      print(
-        'Callback on UI isolate: '
-        'task ($taskId) is in status ($status) and process ($progress)',
-      );
+      // print(
+      //   'Callback on UI isolate: '
+      //   'task ($taskId) is in status ($status) and process ($progress)',
+      // );
       final currentState = state;
-      if (currentState is AppFileOngoingDownload &&
-          currentState.downloadId == taskId) {
-        add(
-          AppFileDownloadStatusUpdate(
-            downloadId: taskId,
-            progress: progress,
-            status: AppFileDownloadStatus.values.byName(
-              status.name,
-            ),
-          ),
-        );
-      }
+      // if (currentState is AppFileOngoingDownload &&
+      //     currentState.downloadId == taskId) {
+      //   add(
+      //     AppFileDownloadStatusUpdate(
+      //       downloadId: taskId,
+      //       progress: progress,
+      //       status: AppFileDownloadStatus.values.byName(
+      //         status.name,
+      //       ),
+      //     ),
+      //   );
+      // }
     });
   }
 
@@ -172,7 +172,7 @@ class AppFileDownloaderBloc
             downloadId: event.downloadId,
           ),
         );
-        FlutterDownloader.open(taskId: event.downloadId);
+        // FlutterDownloader.open(taskId: event.downloadId);
 
         break;
       case AppFileDownloadStatus.failed:

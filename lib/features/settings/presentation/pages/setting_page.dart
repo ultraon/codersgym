@@ -133,39 +133,6 @@ class SettingPage extends StatelessWidget {
                               },
                             ),
                             // Update Section
-                            ListTile(
-                              leading: Icon(
-                                Icons.update_outlined,
-                                color: theme.primaryColor,
-                              ),
-                              title: const Text("Check for Update"),
-                              onTap: () async {
-                                AppLoadingDialog.showLoaderDialog(context);
-
-                                final githubUpdater =
-                                    getIt.get<GithubUpdater>();
-                                final release = await githubUpdater
-                                    .checkForUpdate(state.appVersionName);
-                                if (context.mounted) {
-                                  AppLoadingDialog.removeLoaderDialog(context);
-                                }
-                                if (!context.mounted) {
-                                  return;
-                                }
-                                if (release != null) {
-                                  AppUpdaterDialog.show(
-                                    context,
-                                    releaseInfo: release,
-                                  );
-                                } else {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text("No new update found"),
-                                    ),
-                                  );
-                                }
-                              },
-                            ),
 
                             // Version Section
                             ListTile(

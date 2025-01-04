@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:codersgym/core/routes/app_router.gr.dart';
+import 'package:codersgym/features/auth/presentation/blocs/auth/auth_bloc.dart';
 import 'package:codersgym/features/code_editor/domain/model/code_execution_result.dart';
 import 'package:codersgym/features/code_editor/domain/model/programming_language.dart';
 import 'package:codersgym/features/code_editor/presentation/blocs/code_editor/code_editor_bloc.dart';
@@ -14,6 +15,7 @@ import 'package:codersgym/features/code_editor/presentation/widgets/coding_keys.
 import 'package:codersgym/features/code_editor/presentation/widgets/question_description_bottomsheet.dart';
 import 'package:codersgym/features/code_editor/presentation/widgets/run_code_result_sheet.dart';
 import 'package:codersgym/features/code_editor/presentation/widgets/test_case_bottom_sheet.dart';
+import 'package:codersgym/features/profile/presentation/blocs/user_profile/user_profile_cubit.dart';
 import 'package:codersgym/features/question/domain/model/question.dart';
 import 'package:codersgym/injection.dart';
 import 'package:flutter/material.dart';
@@ -143,6 +145,12 @@ class CodeEditorPageBody extends HookWidget {
       final codeSubmissionState = newState.codeSubmissionState;
       switch (codeSubmissionState) {
         case CodeExecutionSuccess():
+          final authBloc = context.read<AuthBloc>();
+          final profileCubit = context.read<UserProfileCubit>();
+          final authState = authBloc.state;
+          if (authState is Authenticated) {
+            profileCubit.getUserProfile(authState.userName);
+          }
           _onCodeSubmissionExecutionSuccess(
             context,
             result: codeSubmissionState.result,

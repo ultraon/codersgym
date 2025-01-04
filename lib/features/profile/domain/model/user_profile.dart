@@ -1,7 +1,8 @@
 import 'dart:convert';
 import 'package:collection/collection.dart';
+import 'package:equatable/equatable.dart';
 
-class UserProfile {
+class UserProfile extends Equatable {
   final String? username;
   final String? socialAccounts;
   final String? githubUrl;
@@ -94,9 +95,36 @@ class UserProfile {
           : null,
     );
   }
+
+  @override
+  List<Object?> get props => [
+        username,
+        socialAccounts,
+        githubUrl,
+        points,
+        questionCount,
+        testcaseCount,
+        realName,
+        websites,
+        countryName,
+        skillTags,
+        company,
+        school,
+        starRating,
+        aboutMe,
+        userAvatar,
+        reputation,
+        ranking,
+        acSubmissionNum,
+        totalSubmissionNum,
+        allQuestionsCount,
+        badges,
+        activeBadgeId,
+        streakCounter,
+      ];
 }
 
-class QuestionCount {
+class QuestionCount extends Equatable {
   int? count;
   String? difficulty;
 
@@ -108,9 +136,11 @@ class QuestionCount {
       difficulty: json['difficulty'],
     );
   }
+  @override
+  List<Object?> get props => [count, difficulty];
 }
 
-class LeetCodeBadge {
+class LeetCodeBadge extends Equatable {
   final String? id;
   final String? displayName;
   final String? icon;
@@ -128,9 +158,12 @@ class LeetCodeBadge {
       icon: json['icon'],
     );
   }
+
+  @override
+  List<Object?> get props => [id, displayName, icon];
 }
 
-class StreakCounter {
+class StreakCounter extends Equatable {
   final int streakCount;
   final int daysSkipped;
   final bool currentDayCompleted;
@@ -156,6 +189,9 @@ class StreakCounter {
       'currentDayCompleted': currentDayCompleted,
     };
   }
+
+  @override
+  List<Object?> get props => [streakCount, daysSkipped, currentDayCompleted];
 }
 
 extension UserProfileExt on UserProfile {
@@ -208,7 +244,7 @@ extension UserProfileExt on UserProfile {
   }
 }
 
-class UserProfileQuestionsStats {
+class UserProfileQuestionsStats extends Equatable {
   final int easySolved;
   final int mediumSolved;
   final int hardSolved;
@@ -224,4 +260,13 @@ class UserProfileQuestionsStats {
     required this.totalMedium,
     required this.totalHard,
   });
+  @override
+  List<Object?> get props => [
+        easySolved,
+        mediumSolved,
+        hardSolved,
+        totalEasy,
+        totalMedium,
+        totalHard,
+      ];
 }

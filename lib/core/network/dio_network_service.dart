@@ -7,6 +7,7 @@ import 'package:codersgym/core/network/network_service.dart';
 import 'package:dio/dio.dart';
 import 'package:exponential_back_off/exponential_back_off.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/foundation.dart';
 
 class DioNetworkService extends NetworkService {
   DioNetworkService({
@@ -108,11 +109,13 @@ Future<NetworkResponse<Model>> executeRequest<Model>(
     );
   } on DioException catch (error) {
     final errorBody = error.response?.data;
-    FirebaseCrashlytics.instance.recordError(
-      error,
-      StackTrace.current,
-      fatal: false,
-    );
+    if (kReleaseMode) {
+      FirebaseCrashlytics.instance.recordError(
+        error,
+        StackTrace.current,
+        fatal: false,
+      );
+    }
 
     if (errorBody is String) {
       return NetworkResponse.error(

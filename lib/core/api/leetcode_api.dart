@@ -50,7 +50,10 @@ class LeetcodeApi {
 
   Future<Map<String, dynamic>?> getUserProfile(String userName) async {
     final request = LeetCodeRequests.getUserProfileRequest(userName);
-    return _executeGraphQLQuery(request);
+    return _executeGraphQLQuery(
+      request,
+      useCache: false, // Profile details change frequently
+    );
   }
 
   Future<Map<String, dynamic>?> getGlobalData() async {
@@ -134,7 +137,9 @@ class LeetcodeApi {
   }
 
   Future<Map<String, dynamic>?> _executeGraphQLQuery(
-      LeetCodeRequests request) async {
+    LeetCodeRequests request, {
+    bool useCache = true, // Default to using cache
+  }) async {
     try {
       final leetcodeCreds =
           await _storageManager.getObjectMap(_storageManager.leetcodeSession);
@@ -142,6 +147,8 @@ class LeetcodeApi {
       final queryOptions = QueryOptions(
         document: gql(request.query),
         variables: request.variables.toJson(),
+        fetchPolicy:
+            useCache ? FetchPolicy.cacheAndNetwork : FetchPolicy.networkOnly,
         context: Context.fromList([
           HttpLinkHeaders(headers: {
             'Cookie': CookieEncoder.encode(

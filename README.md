@@ -6,9 +6,6 @@ Coders Gym is a mobile application build with Flutter and designed to provide a 
 
 ## 🚀 Features
 
-
-Here’s an improved version with a more user-friendly tone and engaging phrasing:
-
 Features of Coders Gym
 
 - **Daily Challenges at Your Fingertips**: Stay consistent with instant access to your daily coding challenges.

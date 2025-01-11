@@ -15,6 +15,7 @@ import 'package:codersgym/features/question/presentation/blocs/daily_challenge/d
 import 'package:codersgym/features/question/presentation/widgets/daily_question_card.dart';
 import 'package:codersgym/features/dashboard/presentation/widgets/user_greeting_card.dart';
 
+@RoutePage()
 class HomePage extends HookWidget {
   const HomePage({super.key});
 

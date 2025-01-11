@@ -9,22 +9,27 @@ class AppRouter extends RootStackRouter {
 
   @override
   List<AutoRoute> get routes => [
-        AutoRoute(path: '/', page: SplashRoute.page),
-        AutoRoute(
-          path: '/dashboard',
-          page: DashboardRoute.page,
-          children: [
-            AutoRoute(path: '', page: HomeRoute.page, initial: true),
-            AutoRoute(path: 'explore', page: ExploreRoute.page),
-            AutoRoute(path: 'my_profile', page: MyProfileRoute.page),
-            AutoRoute(path: 'settings', page: SettingRoute.page),
-          ],
-        ),
-        AutoRoute(page: LoginRoute.page),
-        AutoRoute(page: QuestionDetailRoute.page),
-        AutoRoute(page: LeetcodeWebRoute.page),
-        AutoRoute(page: NotificationRoute.page),
-        AutoRoute(page: CommunityPostRoute.page),
-        AutoRoute(page: CodeEditorRoute.page),
+        AutoRoute(page: SplashRoute.page, initial: true),
+        AutoRoute(page: AuthShell.page, children: [
+          AutoRoute(page: LoginRoute.page),
+          AutoRoute(page: LeetcodeWebRoute.page),
+        ]),
+        AutoRoute(page: DashboardShell.page, children: [
+          AutoRoute(
+            page: DashboardRoute.page,
+            children: [
+              AutoRoute(page: HomeRoute.page, initial: true),
+              AutoRoute(page: ExploreRoute.page),
+              AutoRoute(page: MyProfileRoute.page),
+              AutoRoute(page: SettingShell.page, children: [
+                AutoRoute(page: SettingRoute.page),
+                AutoRoute(page: NotificationRoute.page),
+              ]),
+            ],
+          ),
+          AutoRoute(page: QuestionDetailRoute.page),
+          AutoRoute(page: CodeEditorRoute.page),
+          AutoRoute(page: CommunityPostRoute.page),
+        ]),
       ];
 }

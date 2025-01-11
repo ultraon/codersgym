@@ -2,19 +2,12 @@ import 'package:auto_route/auto_route.dart';
 import 'package:codersgym/core/api/api_state.dart';
 import 'package:codersgym/core/routes/app_router.gr.dart';
 import 'package:codersgym/features/auth/presentation/blocs/auth/auth_bloc.dart';
-import 'package:codersgym/features/auth/presentation/pages/login_page.dart';
 import 'package:codersgym/features/common/bloc/app_file_downloader/app_file_downloader_bloc.dart';
 import 'package:codersgym/features/common/widgets/app_updater.dart';
 import 'package:codersgym/features/profile/domain/model/user_profile.dart';
 import 'package:codersgym/features/profile/domain/repository/profile_repository.dart';
 import 'package:codersgym/features/profile/presentation/blocs/user_profile/user_profile_cubit.dart';
-import 'package:codersgym/features/profile/presentation/pages/my_profile_page.dart';
-import 'package:codersgym/features/dashboard/presentation/pages/home_page.dart';
-import 'package:codersgym/features/question/presentation/blocs/question_archieve/question_archieve_bloc.dart';
 import 'package:codersgym/features/question/presentation/blocs/upcoming_contests/upcoming_contests_cubit.dart';
-import 'package:codersgym/features/question/presentation/pages/explore_page.dart';
-import 'package:codersgym/features/settings/presentation/pages/setting_page.dart';
-import 'package:codersgym/injection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -22,7 +15,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import '../../../question/presentation/blocs/daily_challenge/daily_challenge_cubit.dart';
 
 @RoutePage()
-class DashboardPage extends HookWidget implements AutoRouteWrapper {
+class DashboardPage extends HookWidget {
   const DashboardPage({super.key});
 
   @override
@@ -59,7 +52,7 @@ class DashboardPage extends HookWidget implements AutoRouteWrapper {
       child: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is UnAuthenticated) {
-            context.router.pushAndPopUntil(
+            context.router.root.pushAndPopUntil(
               const LoginRoute(),
               predicate: (route) => false,
             );
@@ -116,30 +109,6 @@ class DashboardPage extends HookWidget implements AutoRouteWrapper {
           ),
         ),
       ),
-    );
-  }
-
-  @override
-  Widget wrappedRoute(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (context) => getIt.get<UserProfileCubit>(),
-        ),
-        BlocProvider(
-          create: (_) => getIt.get<DailyChallengeCubit>(),
-        ),
-        BlocProvider(
-          create: (context) => getIt.get<QuestionArchieveBloc>(),
-        ),
-        BlocProvider(
-          create: (context) => getIt.get<UpcomingContestsCubit>(),
-        ),
-        BlocProvider(
-          create: (context) => getIt.get<AppFileDownloaderBloc>(),
-        ),
-      ],
-      child: this,
     );
   }
 

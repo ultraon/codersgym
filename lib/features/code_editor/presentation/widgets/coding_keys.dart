@@ -271,7 +271,6 @@ class _CodingKeysState extends State<CodingKeys> with TickerProviderStateMixin {
         children: [
           Expanded(
             child: TabBarView(
-              physics: CustomPageViewScrollPhysics(),
               controller: _tabController,
               children: [
                 _buildBasicKeysTab(),
@@ -392,21 +391,4 @@ class _CodingKeysState extends State<CodingKeys> with TickerProviderStateMixin {
 
     widget.codeController.setCursor(newCursorPosition);
   }
-}
-
-class CustomPageViewScrollPhysics extends ScrollPhysics {
-  const CustomPageViewScrollPhysics({ScrollPhysics? parent})
-      : super(parent: parent);
-
-  @override
-  CustomPageViewScrollPhysics applyTo(ScrollPhysics? ancestor) {
-    return CustomPageViewScrollPhysics(parent: buildParent(ancestor));
-  }
-
-  @override
-  SpringDescription get spring => const SpringDescription(
-        mass: 280,
-        stiffness: 200,
-        damping: 1,
-      );
 }

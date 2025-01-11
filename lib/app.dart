@@ -1,3 +1,4 @@
+import 'package:codersgym/core/utils/custom_scroll_physics.dart';
 import 'package:codersgym/features/auth/presentation/blocs/auth/auth_bloc.dart';
 import 'package:codersgym/features/profile/presentation/blocs/user_profile/user_profile_cubit.dart';
 import 'package:codersgym/features/settings/presentation/blocs/app_info/app_info_cubit.dart';
@@ -70,6 +71,9 @@ class App extends StatelessWidget {
         theme: leetcodeTheme,
         debugShowCheckedModeBanner: false,
         darkTheme: leetcodeTheme,
+        scrollBehavior: const ScrollBehavior().copyWith(
+          physics: const CustomPageViewScrollPhysics(),
+        ),
         routerConfig: appRouter.config(),
       ),
     );

@@ -4,13 +4,14 @@ import 'package:bloc/bloc.dart';
 import 'package:codersgym/features/question/domain/model/question.dart';
 import 'package:codersgym/features/question/domain/repository/question_repository.dart';
 import 'package:equatable/equatable.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
 part 'question_archieve_event.dart';
 part 'question_archieve_state.dart';
 
 class QuestionArchieveBloc
-    extends Bloc<QuestionArchieveEvent, QuestionArchieveState> {
+    extends HydratedBloc<QuestionArchieveEvent, QuestionArchieveState> {
   final QuestionRepository _questionRepository;
   final defaultCategorySlug = "all-code-essentials";
   int currentSkip = 0;
@@ -90,5 +91,15 @@ class QuestionArchieveBloc
 
     emit(state.copyWith(isLoading: false));
     // result
+  }
+
+  @override
+  QuestionArchieveState? fromJson(Map<String, dynamic> json) {
+    return QuestionArchieveState.fromJson(json);
+  }
+
+  @override
+  Map<String, dynamic>? toJson(QuestionArchieveState state) {
+    return state.toJson();
   }
 }

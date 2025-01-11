@@ -33,6 +33,8 @@ import 'package:codersgym/core/routes/app_router.dart';
 import 'package:codersgym/features/question/data/repository/question_repository.dart';
 import 'package:codersgym/features/question/domain/repository/question_repository.dart';
 import 'package:codersgym/features/question/presentation/blocs/daily_challenge/daily_challenge_cubit.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'features/profile/domain/repository/profile_repository.dart';
@@ -43,11 +45,20 @@ final getIt = GetIt.instance;
 Future<void> initializeDependencies() async {
   // UTILS
   final sharedPref = await SharedPreferences.getInstance();
+  final hydradedStorage = await HydratedStorage.build(
+    storageDirectory: await getApplicationDocumentsDirectory(),
+  );
+
+  HydratedBloc.storage = hydradedStorage;
   getIt.registerLazySingleton<StorageManager>(
     () => LocalStorageManager.getInstance(sharedPref),
   );
   getIt.registerLazySingleton(
     () => HTMLMarkdownParser(),
+  );
+
+  getIt.registerLazySingleton<HydratedStorage>(
+    () => hydradedStorage,
   );
 
   // ROUTER
@@ -56,6 +67,7 @@ Future<void> initializeDependencies() async {
   // SERVICE
   getIt.registerLazySingleton<AuthService>(
     () => AuthServiceImp(
+      getIt.get(),
       getIt.get(),
       getIt.get(),
     ),

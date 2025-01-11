@@ -40,9 +40,13 @@ class HomePageBody extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               BlocBuilder<UserProfileCubit, ApiState<UserProfile, Exception>>(
+                buildWhen: (previous, current) =>
+                    current.isLoaded || current.isError,
                 builder: (context, state) {
                   return state.when(
-                    onInitial: () => const CircularProgressIndicator(),
+                    onInitial: () => AppWidgetLoading(
+                      child: UserGreetingCard.loading(),
+                    ),
                     onLoading: () {
                       return AppWidgetLoading(
                         child: UserGreetingCard.loading(),
@@ -79,9 +83,8 @@ class HomePageBody extends StatelessWidget {
               ),
               BlocBuilder<DailyChallengeCubit, ApiState<Question, Exception>>(
                 builder: (context, state) {
-                  return state.when(
-                    onInitial: () => const CircularProgressIndicator(),
-                    onLoading: () => AppWidgetLoading(
+                  return state.mayBeWhen(
+                    orElse: () => AppWidgetLoading(
                       child: DailyQuestionCard.empty(),
                     ),
                     onLoaded: (question) {
@@ -120,9 +123,8 @@ class HomePageBody extends StatelessWidget {
               BlocBuilder<UpcomingContestsCubit,
                   ApiState<List<Contest>, Exception>>(
                 builder: (context, state) {
-                  return state.when(
-                    onInitial: () => const CircularProgressIndicator(),
-                    onLoading: () => AppWidgetLoading(
+                  return state.mayBeWhen(
+                    orElse: () => AppWidgetLoading(
                       child: Column(
                         children: List.generate(
                           2,

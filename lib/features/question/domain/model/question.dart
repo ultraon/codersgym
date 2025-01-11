@@ -36,6 +36,7 @@ class Question {
   factory Question.fromJson(Map<String, dynamic> json) {
     return Question(
       title: json['title'],
+      questionId: json['questionId'],
       titleSlug: json['titleSlug'],
       difficulty: json['difficulty'],
       acRate: json['acRate']?.toDouble(),
@@ -44,8 +45,19 @@ class Question {
       hasVideoSolution: json['hasVideoSolution'],
       hasSolution: json['hasSolution'],
       content: json['content'],
+      status: json['status'] != null
+          ? QuestionStatus.values.firstWhere(
+              (e) => e.toString() == 'QuestionStatus.${json['status']}')
+          : null,
+      hints: (json['hints'] as List<dynamic>?)?.cast<String>(),
       topicTags: (json['topicTags'] as List<dynamic>?)
           ?.map((v) => TopicTags.fromJson(v as Map<String, dynamic>))
+          .toList(),
+      codeSnippets: (json['codeSnippets'] as List<dynamic>?)
+          ?.map((v) => CodeSnippet.fromJson(v as Map<String, dynamic>))
+          .toList(),
+      exampleTestCases: (json['exampleTestCases'] as List<dynamic>?)
+          ?.map((v) => TestCase.fromJson(v as Map<String, dynamic>))
           .toList(),
     );
   }
@@ -53,6 +65,7 @@ class Question {
   Map<String, dynamic> toJson() {
     return {
       'title': title,
+      'questionId': questionId,
       'titleSlug': titleSlug,
       'difficulty': difficulty,
       'acRate': acRate,
@@ -61,7 +74,11 @@ class Question {
       'hasVideoSolution': hasVideoSolution,
       'hasSolution': hasSolution,
       'content': content,
+      'status': status?.toString().split('.').last,
+      'hints': hints,
       'topicTags': topicTags?.map((v) => v.toJson()).toList(),
+      'codeSnippets': codeSnippets?.map((v) => v.toJson()).toList(),
+      'exampleTestCases': exampleTestCases?.map((v) => v.toJson()).toList(),
     };
   }
 }
@@ -115,6 +132,22 @@ class CodeSnippet {
     this.lang,
     this.langSlug,
   });
+
+  factory CodeSnippet.fromJson(Map<String, dynamic> json) {
+    return CodeSnippet(
+      code: json['code'],
+      lang: json['lang'],
+      langSlug: json['langSlug'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'code': code,
+      'lang': lang,
+      'langSlug': langSlug,
+    };
+  }
 }
 
 class TestCase {
@@ -126,10 +159,20 @@ class TestCase {
 
   TestCase copy() {
     return TestCase(
-      inputs: List.from(
-        inputs,
-      ),
+      inputs: List.from(inputs),
     );
+  }
+
+  factory TestCase.fromJson(Map<String, dynamic> json) {
+    return TestCase(
+      inputs: (json['inputs'] as List<dynamic>).cast<String>(),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'inputs': inputs,
+    };
   }
 
   @override

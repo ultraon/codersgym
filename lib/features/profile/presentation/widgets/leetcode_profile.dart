@@ -53,9 +53,8 @@ class LeetcodeProfile extends HookWidget {
           ApiState<ContestRankingInfo, Exception>>(
         bloc: contestRankingInfoCubit,
         builder: (context, state) {
-          return state.when(
-            onInitial: () => const Center(child: CircularProgressIndicator()),
-            onLoading: () {
+          return state.mayBeWhen(
+            orElse: () {
               return AppWidgetLoading(
                 child: LeetcodeRatingDetails.empty(),
               );
@@ -81,11 +80,8 @@ class LeetcodeProfile extends HookWidget {
           ApiState<UserProfileCalendar, Exception>>(
         bloc: userProfileCalendarCubit,
         builder: (context, state) {
-          return state.when(
-            onInitial: () => const Center(
-              child: CircularProgressIndicator(),
-            ),
-            onLoading: () => const SubmissionHeatMapCalendar(
+          return state.mayBeWhen(
+            orElse: () => const SubmissionHeatMapCalendar(
               dataSets: {},
             ),
             onLoaded: (calendar) {

@@ -72,7 +72,9 @@ class App extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         darkTheme: leetcodeTheme,
         scrollBehavior: const ScrollBehavior().copyWith(
-          physics: const CustomPageViewScrollPhysics(),
+          physics: const CustomPageViewScrollPhysics(
+            parent: ClampingScrollPhysics(),
+          ),
         ),
         routerConfig: appRouter.config(),
       ),

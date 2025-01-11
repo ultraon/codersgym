@@ -55,45 +55,68 @@ class UserProfile extends Equatable {
 
   factory UserProfile.fromJson(Map<String, dynamic> json) {
     return UserProfile(
-      username: json['matchedUser']?['username'],
-      socialAccounts: json['matchedUser']?['socialAccounts'],
-      githubUrl: json['matchedUser']?['githubUrl'],
-      points: json['matchedUser']?['contributions']?['points'],
-      questionCount: json['matchedUser']?['contributions']?['questionCount'],
-      testcaseCount: json['matchedUser']?['contributions']?['testcaseCount'],
-      realName: json['matchedUser']?['profile']?['realName'],
-      websites:
-          List<String>.from(json['matchedUser']?['profile']?['websites'] ?? []),
-      countryName: json['matchedUser']?['profile']?['countryName'],
-      skillTags: List<String>.from(
-          json['matchedUser']?['profile']?['skillTags'] ?? []),
-      company: json['matchedUser']?['profile']?['company'],
-      school: json['matchedUser']?['profile']?['school'],
-      starRating:
-          (json['matchedUser']?['profile']?['starRating'] as num?)?.toDouble(),
-      aboutMe: json['matchedUser']?['profile']?['aboutMe'],
-      userAvatar: json['matchedUser']?['profile']?['userAvatar'],
-      reputation: json['matchedUser']?['profile']?['reputation'],
-      ranking: json['matchedUser']?['profile']?['ranking'],
-      acSubmissionNum:
-          (json['matchedUser']?['submitStats']?['acSubmissionNum'] as List?)
-              ?.map((item) => QuestionCount.fromJson(item))
-              .toList(),
-      totalSubmissionNum:
-          (json['matchedUser']?['submitStats']?['totalSubmissionNum'] as List?)
-              ?.map((item) => QuestionCount.fromJson(item))
-              .toList(),
-      allQuestionsCount: (json['allQuestionsCount'] as List?)
-          ?.map((item) => QuestionCount.fromJson(item))
+      username: json['username'],
+      socialAccounts: json['socialAccounts'],
+      githubUrl: json['githubUrl'],
+      points: json['points'],
+      questionCount: json['questionCount'],
+      testcaseCount: json['testcaseCount'],
+      realName: json['realName'],
+      websites: (json['websites'] as List<dynamic>?)?.cast<String>(),
+      countryName: json['countryName'],
+      skillTags: (json['skillTags'] as List<dynamic>?)?.cast<String>(),
+      company: json['company'],
+      school: json['school'],
+      starRating: (json['starRating'] as num?)?.toDouble(),
+      aboutMe: json['aboutMe'],
+      userAvatar: json['userAvatar'],
+      reputation: json['reputation'],
+      ranking: json['ranking'],
+      acSubmissionNum: (json['acSubmissionNum'] as List<dynamic>?)
+          ?.map((e) => QuestionCount.fromJson(e))
           .toList(),
-      activeBadgeId: (json['activeBadgeId']),
-      badges: (json['badges'] as List?)
-          ?.map((item) => LeetCodeBadge.fromJson(item))
+      totalSubmissionNum: (json['totalSubmissionNum'] as List<dynamic>?)
+          ?.map((e) => QuestionCount.fromJson(e))
           .toList(),
+      allQuestionsCount: (json['allQuestionsCount'] as List<dynamic>?)
+          ?.map((e) => QuestionCount.fromJson(e))
+          .toList(),
+      badges: (json['badges'] as List<dynamic>?)
+          ?.map((e) => LeetCodeBadge.fromJson(e))
+          .toList(),
+      activeBadgeId: json['activeBadgeId'],
       streakCounter: json['streakCounter'] != null
           ? StreakCounter.fromJson(json['streakCounter'])
           : null,
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'username': username,
+      'socialAccounts': socialAccounts,
+      'githubUrl': githubUrl,
+      'points': points,
+      'questionCount': questionCount,
+      'testcaseCount': testcaseCount,
+      'realName': realName,
+      'websites': websites,
+      'countryName': countryName,
+      'skillTags': skillTags,
+      'company': company,
+      'school': school,
+      'starRating': starRating,
+      'aboutMe': aboutMe,
+      'userAvatar': userAvatar,
+      'reputation': reputation,
+      'ranking': ranking,
+      'acSubmissionNum': acSubmissionNum?.map((e) => e.toJson()).toList(),
+      'totalSubmissionNum': totalSubmissionNum?.map((e) => e.toJson()).toList(),
+      'allQuestionsCount': allQuestionsCount?.map((e) => e.toJson()).toList(),
+      'badges': badges?.map((e) => e.toJson()).toList(),
+      'activeBadgeId': activeBadgeId,
+      'streakCounter': streakCounter?.toJson(),
+    };
   }
 
   @override
@@ -136,6 +159,14 @@ class QuestionCount extends Equatable {
       difficulty: json['difficulty'],
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'count': count,
+      'difficulty': difficulty,
+    };
+  }
+
   @override
   List<Object?> get props => [count, difficulty];
 }
@@ -159,9 +190,18 @@ class LeetCodeBadge extends Equatable {
     );
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'displayName': displayName,
+      'icon': icon,
+    };
+  }
+
   @override
   List<Object?> get props => [id, displayName, icon];
 }
+
 
 class StreakCounter extends Equatable {
   final int streakCount;

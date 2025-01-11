@@ -1,20 +1,14 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:codersgym/core/utils/app_constants.dart';
 import 'package:codersgym/core/routes/app_router.gr.dart';
-import 'package:codersgym/core/utils/app_constants.dart';
 import 'package:codersgym/features/auth/presentation/blocs/auth/auth_bloc.dart';
-import 'package:codersgym/features/common/bloc/app_file_downloader/app_file_downloader_bloc.dart';
-import 'package:codersgym/features/common/dialog/app_loading_dialog.dart';
-import 'package:codersgym/core/services/github_updater.dart';
 import 'package:codersgym/features/settings/presentation/blocs/app_info/app_info_cubit.dart';
-import 'package:codersgym/features/common/widgets/app_updater_dialog.dart';
 import 'package:codersgym/gen/assets.gen.dart';
-import 'package:codersgym/injection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+@RoutePage()
 class SettingPage extends StatelessWidget {
   const SettingPage({super.key});
 

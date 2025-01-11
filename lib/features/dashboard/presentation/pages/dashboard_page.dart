@@ -30,7 +30,6 @@ class DashboardPage extends HookWidget implements AutoRouteWrapper {
     final dailyChallengeCubit = context.read<DailyChallengeCubit>();
     final profileCubit = context.read<UserProfileCubit>();
     final authBloc = context.read<AuthBloc>();
-    final questionArchieveBloc = context.read<QuestionArchieveBloc>();
     final upcomingContestCubit = context.read<UpcomingContestsCubit>();
     useEffect(
       () {
@@ -56,76 +55,66 @@ class DashboardPage extends HookWidget implements AutoRouteWrapper {
       [],
     );
 
-    final currentIndex = useState(0);
-    final pages = [
-      MultiBlocProvider(
-        providers: [
-          BlocProvider.value(
-            value: dailyChallengeCubit,
-          ),
-          BlocProvider.value(
-            value: upcomingContestCubit,
-          ),
-        ],
-        child: const HomePage(),
-      ),
-      BlocProvider.value(
-        value: questionArchieveBloc,
-        child: const ExplorePage(),
-      ),
-      const MyProfilePage(),
-      const SettingPage(),
-    ];
-
-    return Scaffold(
-      body: AppUpdater(
-        child: BlocListener<AuthBloc, AuthState>(
+    return AppUpdater(
+      child: BlocListener<AuthBloc, AuthState>(
+        listener: (context, state) {
+          if (state is UnAuthenticated) {
+            context.router.pushAndPopUntil(
+              const LoginRoute(),
+              predicate: (route) => false,
+            );
+          }
+        },
+        child: BlocListener<AppFileDownloaderBloc, AppFileDownloaderState>(
           listener: (context, state) {
-            if (state is UnAuthenticated) {
-              context.router.pushAndPopUntil(
-                const LoginRoute(),
-                predicate: (route) => false,
+            final messenger = ScaffoldMessenger.of(context);
+            if (state is AppFileIntiatingDownload) {
+              messenger.showSnackBar(
+                const SnackBar(
+                  content: Text(
+                    "Exciting updates are on the way!",
+                  ),
+                ),
               );
             }
           },
-          child: BlocListener<AppFileDownloaderBloc, AppFileDownloaderState>(
-            listener: (context, state) {
-              final messenger = ScaffoldMessenger.of(context);
-              if (state is AppFileIntiatingDownload) {
-                messenger.showSnackBar(
-                  const SnackBar(
-                    content: Text(
-                      "Exciting updates are on the way!",
+          child: AutoTabsRouter.pageView(
+            routes: const [
+              HomeRoute(),
+              ExploreRoute(),
+              MyProfileRoute(),
+              SettingRoute(),
+            ],
+            builder: (context, child, _) {
+              final tabsRouter = AutoTabsRouter.of(context);
+              return Scaffold(
+                body: child,
+                bottomNavigationBar: BottomNavigationBar(
+                  currentIndex: tabsRouter.activeIndex,
+                  onTap: tabsRouter.setActiveIndex, // Update selected index
+                  items: const [
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.home),
+                      label: 'Home',
                     ),
-                  ),
-                );
-              }
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.explore_rounded),
+                      label: 'Explore',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.person),
+                      label: 'Profile',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.settings),
+                      label: 'Settings',
+                    ),
+                  ],
+                ),
+              );
             },
-            child: pages[currentIndex.value],
           ),
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: currentIndex.value,
-        onTap: (index) => currentIndex.value = index, // Update selected index
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.explore_rounded),
-            label: 'Explore',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Settings',
-          ),
-        ],
       ),
     );
   }
@@ -134,6 +123,9 @@ class DashboardPage extends HookWidget implements AutoRouteWrapper {
   Widget wrappedRoute(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        BlocProvider(
+          create: (context) => getIt.get<UserProfileCubit>(),
+        ),
         BlocProvider(
           create: (_) => getIt.get<DailyChallengeCubit>(),
         ),

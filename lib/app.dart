@@ -62,9 +62,6 @@ class App extends StatelessWidget {
           create: (context) => getIt.get<AuthBloc>(),
         ),
         BlocProvider(
-          create: (context) => getIt.get<UserProfileCubit>(),
-        ),
-        BlocProvider(
           create: (context) => getIt.get<AppInfoCubit>()..getAppInfo(),
         ),
       ],

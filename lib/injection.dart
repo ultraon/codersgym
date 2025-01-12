@@ -200,10 +200,11 @@ Future<void> initializeDependencies() async {
       getIt.get(),
     ),
   );
-  getIt.registerFactory(
-    () => CodeEditorBloc(
+  getIt.registerFactoryParam<CodeEditorBloc, String, void>(
+    (questionId, _) => CodeEditorBloc(
       getIt.get(),
       getIt.get(),
+      questionId,
     ),
   );
   getIt.registerFactory(

@@ -1,27 +1,30 @@
 import 'package:bloc/bloc.dart';
-import 'package:codersgym/core/utils/storage/local_storage_manager.dart';
 import 'package:codersgym/core/utils/storage/storage_manager.dart';
 import 'package:codersgym/features/code_editor/domain/model/code_execution_result.dart';
 import 'package:codersgym/features/code_editor/domain/model/programming_language.dart';
 import 'package:codersgym/features/code_editor/domain/repository/code_editor_repository.dart';
-import 'package:codersgym/features/profile/domain/model/user_profile.dart';
 import 'package:codersgym/features/question/domain/model/question.dart';
 import 'package:equatable/equatable.dart';
 import 'dart:async';
 import 'package:collection/collection.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 part 'code_editor_event.dart';
 part 'code_editor_state.dart';
 
-class CodeEditorBloc extends Bloc<CodeEditorEvent, CodeEditorState> {
+class CodeEditorBloc extends HydratedBloc<CodeEditorEvent, CodeEditorState> {
   final CodeEditorRepository _codeEdtiorRepository;
   final StorageManager _localStorageManager;
+  final String _questionId;
 
   static const _preferedCodingLanguageKey = 'preferedCodingLang';
   Timer? _timer;
   CodeEditorState previousState = CodeEditorState.initial();
-  CodeEditorBloc(this._codeEdtiorRepository, this._localStorageManager)
-      : super(CodeEditorState.initial()) {
+  CodeEditorBloc(
+    this._codeEdtiorRepository,
+    this._localStorageManager,
+    this._questionId,
+  ) : super(CodeEditorState.initial()) {
     on<CodeEditorEvent>((event, emit) async {
       switch (event) {
         case CodeEditorRunCodeEvent():
@@ -57,6 +60,8 @@ class CodeEditorBloc extends Bloc<CodeEditorEvent, CodeEditorState> {
       }
     });
   }
+  @override
+  String get id => _questionId;
 
   @override
   Future<void> close() {
@@ -85,8 +90,8 @@ class CodeEditorBloc extends Bloc<CodeEditorEvent, CodeEditorState> {
     final runCodeResult = await _codeEdtiorRepository.runCode(
       questionTitleSlug: event.question.titleSlug ?? "",
       questionId: event.question.questionId ?? '0',
-      programmingLanguage: state.language.name,
-      code: state.code,
+      programmingLanguage: (state.language ?? ProgrammingLanguage.cpp).name,
+      code: state.code ?? '',
       testCases: state.testCases
               ?.map(
                 (e) => e.inputs.join('\n'),
@@ -145,8 +150,8 @@ class CodeEditorBloc extends Bloc<CodeEditorEvent, CodeEditorState> {
     final runSubmitCodeResult = await _codeEdtiorRepository.submitCode(
       questionTitleSlug: event.question.titleSlug ?? "",
       questionId: event.question.questionId ?? '0',
-      programmingLanguage: state.language.name,
-      code: state.code,
+      programmingLanguage: (state.language ?? ProgrammingLanguage.cpp).name,
+      code: state.code ?? '',
       testCases: state.testCases
               ?.map(
                 (e) => e.inputs.join('\n'),
@@ -231,16 +236,20 @@ class CodeEditorBloc extends Bloc<CodeEditorEvent, CodeEditorState> {
     final language = lastSelectedLanguage != null
         ? ProgrammingLanguage.values.byName(lastSelectedLanguage)
         : ProgrammingLanguage.cpp;
-    final code = event.question.codeSnippets
+    final defaultCode = event.question.codeSnippets
         ?.firstWhereOrNull(
           (element) => element.langSlug == language.name,
         )
         ?.code;
+    // Get the cached values if its exists
+    final currentCode = state.code;
+    final currentProgrammingLanguage = state.language;
     emit(
       state.copyWith(
         isStateInitialized: true,
-        language: language,
-        code: code ?? '',
+        language: currentProgrammingLanguage ?? language,
+        // Used the cached code if present
+        code: currentCode ?? defaultCode,
         question: event.question,
         testCases: event.question.exampleTestCases,
       ),
@@ -274,9 +283,11 @@ class CodeEditorBloc extends Bloc<CodeEditorEvent, CodeEditorState> {
       isCodeFormatting: true,
     ));
     final codeFormatResult = await _codeEdtiorRepository.formatCode(
-        code: state.code,
-        tabSize: 4,
-        programmingLanguageCode: state.language.formatUrlCode);
+      code: state.code ?? '',
+      tabSize: 4,
+      programmingLanguageCode:
+          (state.language ?? ProgrammingLanguage.cpp).formatUrlCode,
+    );
 
     codeFormatResult.when(
       onSuccess: (formattedCode) {
@@ -295,7 +306,9 @@ class CodeEditorBloc extends Bloc<CodeEditorEvent, CodeEditorState> {
   ) {
     final code = state.question?.codeSnippets
         ?.firstWhereOrNull(
-          (element) => element.langSlug == state.language.name,
+          (element) =>
+              element.langSlug ==
+              (state.language ?? ProgrammingLanguage.cpp).name,
         )
         ?.code;
     emit(
@@ -310,5 +323,22 @@ class CodeEditorBloc extends Bloc<CodeEditorEvent, CodeEditorState> {
         testCases: event.testcases,
       ),
     );
+  }
+
+  @override
+  CodeEditorState? fromJson(Map<String, dynamic> json) {
+    if (json.isEmpty) return CodeEditorState.initial();
+    return CodeEditorState.initial().copyWith(
+      code: json['code'],
+      language: ProgrammingLanguage.values.byName(json['language']),
+    );
+  }
+
+  @override
+  Map<String, dynamic>? toJson(CodeEditorState state) {
+    return {
+      "code": state.code,
+      "language": state.language?.name,
+    };
   }
 }

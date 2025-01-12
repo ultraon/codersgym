@@ -17,9 +17,9 @@ class SettingPage extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     final theme = Theme.of(context);
 
-    return SafeArea(
-      child: Scaffold(
-        body: Padding(
+    return Scaffold(
+      body: SafeArea(
+        child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: BlocBuilder<AuthBloc, AuthState>(
             builder: (context, authState) {
@@ -42,13 +42,16 @@ class SettingPage extends StatelessWidget {
                             Center(
                               child: Column(
                                 children: [
-                                  CircleAvatar(
-                                    radius: 48,
-                                    backgroundColor: theme.focusColor,
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 24),
                                     child: CircleAvatar(
-                                      foregroundImage: AssetImage(
-                                          Assets.images.appIcon.path),
-                                      radius: 40,
+                                      radius: 48,
+                                      backgroundColor: theme.focusColor,
+                                      child: CircleAvatar(
+                                        foregroundImage: AssetImage(
+                                            Assets.images.appIcon.path),
+                                        radius: 40,
+                                      ),
                                     ),
                                   ),
                                   const SizedBox(

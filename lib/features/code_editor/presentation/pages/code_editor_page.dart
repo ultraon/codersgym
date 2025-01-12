@@ -39,7 +39,9 @@ class CodeEditorPage extends HookWidget implements AutoRouteWrapper {
   @override
   Widget wrappedRoute(BuildContext context) {
     return BlocProvider(
-      create: (context) => getIt.get<CodeEditorBloc>(),
+      create: (context) => getIt.get<CodeEditorBloc>(
+        param1: question.questionId,
+      ),
       child: this,
     );
   }
@@ -60,22 +62,8 @@ class CodeEditorPage extends HookWidget implements AutoRouteWrapper {
             body: CircularProgressIndicator(),
           );
         }
-        return PopScope(
-          canPop: false,
-          onPopInvokedWithResult: (bool didPop, __) async {
-            if (didPop) {
-              return;
-            }
-            final shouldPop = await CodeEditorBackConfirmationDialog.show(
-                    context) ??
-                false; // Default to staying on the page if the dialog is dismissed
-            if (shouldPop && context.mounted) {
-              Navigator.pop(context);
-            }
-          },
-          child: CodeEditorPageBody(
-            question: question,
-          ),
+        return CodeEditorPageBody(
+          question: question,
         );
       },
     );
@@ -102,13 +90,13 @@ class CodeEditorPageBody extends HookWidget {
     if (prevState.language != newState.language) {
       codeController.value = CodeController(
         text: newState.code,
-        language: newState.language.mode,
+        language: (newState.language ?? ProgrammingLanguage.cpp).mode,
         modifiers: modifiers,
       );
       return;
     }
     if (newState.code != codeController.value.fullText) {
-      codeController.value.fullText = newState.code;
+      codeController.value.fullText = newState.code ?? '';
     }
   }
 
@@ -176,7 +164,8 @@ class CodeEditorPageBody extends HookWidget {
     final codeControllerState = useState(
       CodeController(
         text: codeEditorBloc.state.code,
-        language: codeEditorBloc.state.language.mode,
+        language:
+            (codeEditorBloc.state.language ?? ProgrammingLanguage.cpp).mode,
         modifiers: modifiers,
       ),
     );

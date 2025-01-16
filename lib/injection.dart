@@ -1,6 +1,8 @@
 import 'package:codersgym/core/network/app_dio_logger.dart';
 import 'package:codersgym/core/network/dio_network_service.dart';
 import 'package:codersgym/core/network/network_service.dart';
+import 'package:codersgym/core/services/github_updater.dart';
+import 'package:codersgym/core/utils/app_constants.dart';
 import 'package:codersgym/core/utils/storage/local_storage_manager.dart';
 import 'package:codersgym/core/utils/storage/storage_manager.dart';
 import 'package:codersgym/features/auth/data/service/auth_service.dart';
@@ -9,6 +11,7 @@ import 'package:codersgym/features/auth/presentation/blocs/auth/auth_bloc.dart';
 import 'package:codersgym/features/code_editor/data/repository/code_editor_repository.dart';
 import 'package:codersgym/features/code_editor/domain/repository/code_editor_repository.dart';
 import 'package:codersgym/features/code_editor/presentation/blocs/code_editor/code_editor_bloc.dart';
+import 'package:codersgym/features/common/bloc/app_file_downloader/app_file_downloader_bloc.dart';
 import 'package:codersgym/features/profile/data/repository/profile_repository.dart';
 import 'package:codersgym/features/profile/presentation/blocs/contest_ranking_info/contest_ranking_info_cubit.dart';
 import 'package:codersgym/features/profile/presentation/blocs/cubit/user_profile_calendar_cubit.dart';
@@ -23,12 +26,15 @@ import 'package:codersgym/features/question/presentation/blocs/question_solution
 import 'package:codersgym/features/question/presentation/blocs/question_tags/question_tags_cubit.dart';
 import 'package:codersgym/features/question/presentation/blocs/similar_question/similar_question_cubit.dart';
 import 'package:codersgym/features/question/presentation/blocs/upcoming_contests/upcoming_contests_cubit.dart';
+import 'package:codersgym/features/settings/presentation/blocs/app_info/app_info_cubit.dart';
 import 'package:get_it/get_it.dart';
 import 'package:codersgym/core/api/leetcode_api.dart';
 import 'package:codersgym/core/routes/app_router.dart';
 import 'package:codersgym/features/question/data/repository/question_repository.dart';
 import 'package:codersgym/features/question/domain/repository/question_repository.dart';
 import 'package:codersgym/features/question/presentation/blocs/daily_challenge/daily_challenge_cubit.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'features/profile/domain/repository/profile_repository.dart';
@@ -39,11 +45,20 @@ final getIt = GetIt.instance;
 Future<void> initializeDependencies() async {
   // UTILS
   final sharedPref = await SharedPreferences.getInstance();
+  final hydradedStorage = await HydratedStorage.build(
+    storageDirectory: await getApplicationDocumentsDirectory(),
+  );
+
+  HydratedBloc.storage = hydradedStorage;
   getIt.registerLazySingleton<StorageManager>(
     () => LocalStorageManager.getInstance(sharedPref),
   );
   getIt.registerLazySingleton(
     () => HTMLMarkdownParser(),
+  );
+
+  getIt.registerLazySingleton<HydratedStorage>(
+    () => hydradedStorage,
   );
 
   // ROUTER
@@ -52,6 +67,7 @@ Future<void> initializeDependencies() async {
   // SERVICE
   getIt.registerLazySingleton<AuthService>(
     () => AuthServiceImp(
+      getIt.get(),
       getIt.get(),
       getIt.get(),
     ),
@@ -75,12 +91,20 @@ Future<void> initializeDependencies() async {
     instanceName: 'dynamicBaseUrlNetworkService',
   );
 
+  getIt.registerLazySingleton<GithubUpdater>(
+    () => GithubUpdater(
+        repoName: AppConstants.githubRepo,
+        username: AppConstants.githubUsername,
+        storageManager: getIt.get()),
+  );
+
   // REPOSITORY
   getIt.registerLazySingleton(
     () => LeetcodeApi(
       storageManger: getIt.get(),
       leetcodeNetworkService: getIt.get(instanceName: 'leetcodeNetworkService'),
-      dynamicBaseUrlNetworkService: getIt.get(instanceName: 'dynamicBaseUrlNetworkService'),
+      dynamicBaseUrlNetworkService:
+          getIt.get(instanceName: 'dynamicBaseUrlNetworkService'),
     ),
   );
   getIt.registerSingleton<QuestionRepository>(
@@ -176,10 +200,17 @@ Future<void> initializeDependencies() async {
       getIt.get(),
     ),
   );
-  getIt.registerFactory(
-    () => CodeEditorBloc(
+  getIt.registerFactoryParam<CodeEditorBloc, String, void>(
+    (questionId, _) => CodeEditorBloc(
       getIt.get(),
       getIt.get(),
+      questionId,
     ),
+  );
+  getIt.registerFactory(
+    () => AppInfoCubit(),
+  );
+  getIt.registerFactory(
+    () => AppFileDownloaderBloc(),
   );
 }

@@ -15,7 +15,10 @@ class DailyQuestionCard extends StatelessWidget {
 
   factory DailyQuestionCard.empty() {
     return DailyQuestionCard(
-      question: const Question(),
+      question: const Question(
+        title: 'two sum',
+        difficulty: 'easy',
+      ),
       onSolveTapped: () {},
     );
   }

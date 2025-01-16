@@ -12,7 +12,15 @@ final ThemeData leetcodeTheme = ThemeData(
     surface: Color(0xFF2A2A2A),
     error: Color(0xffF53836),
   ),
-
+  snackBarTheme: const SnackBarThemeData(
+    backgroundColor: Color(0xFFD4D4D4),
+    contentTextStyle: TextStyle(
+      color: Color(
+        0xFF1C1C1C,
+      ),
+      fontSize: 18,
+    ),
+  ),
   appBarTheme: const AppBarTheme(
     color: Color(0xFF2A2A2A), // Darker shade for app bar
     elevation: 0,
@@ -20,17 +28,15 @@ final ThemeData leetcodeTheme = ThemeData(
       color: Color(0xFFD4D4D4),
       fontSize: 16,
     ),
-    iconTheme: IconThemeData(
-      color: Color(0xFFFF9E0F),
-    ),
   ),
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
     backgroundColor: Colors.grey[850], // Dark background for nav bar
-    selectedItemColor: Color(0xFFFF9E0F), // Accent color for selected item
+    selectedItemColor:
+        const Color(0xFFFF9E0F), // Accent color for selected item
     unselectedItemColor: Colors.grey[400], // Subtle grey for unselected items
     showSelectedLabels: true,
     showUnselectedLabels: false,
-    selectedLabelStyle: TextStyle(
+    selectedLabelStyle: const TextStyle(
       fontSize: 12,
       fontWeight: FontWeight.bold,
       color: Color(0xFFFF9E0F),
@@ -61,7 +67,7 @@ final ThemeData leetcodeTheme = ThemeData(
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
       backgroundColor: const Color(0xFFFF9E0F), // LeetCode orange
-      foregroundColor: Color(0xFF2A2A2A), // Text color
+      foregroundColor: const Color(0xFF2A2A2A), // Text color
       textStyle: const TextStyle(fontWeight: FontWeight.bold),
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
     ),
@@ -89,7 +95,7 @@ final ThemeData leetcodeTheme = ThemeData(
 
 extension ColorSchemeExt on ColorScheme {
   Color get successColorAccent {
-    return Color(0xff1ABBBB);
+    return const Color(0xff1ABBBB);
   }
 
   Color get successColor {
@@ -97,6 +103,6 @@ extension ColorSchemeExt on ColorScheme {
   }
 
   Color get warningColor {
-    return Color(0xffFEB600);
+    return const Color(0xffFEB600);
   }
 }

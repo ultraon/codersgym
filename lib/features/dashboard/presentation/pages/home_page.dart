@@ -15,6 +15,7 @@ import 'package:codersgym/features/question/presentation/blocs/daily_challenge/d
 import 'package:codersgym/features/question/presentation/widgets/daily_question_card.dart';
 import 'package:codersgym/features/dashboard/presentation/widgets/user_greeting_card.dart';
 
+@RoutePage()
 class HomePage extends HookWidget {
   const HomePage({super.key});
 
@@ -39,9 +40,13 @@ class HomePageBody extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               BlocBuilder<UserProfileCubit, ApiState<UserProfile, Exception>>(
+                buildWhen: (previous, current) =>
+                    current.isLoaded || current.isError,
                 builder: (context, state) {
                   return state.when(
-                    onInitial: () => const CircularProgressIndicator(),
+                    onInitial: () => AppWidgetLoading(
+                      child: UserGreetingCard.loading(),
+                    ),
                     onLoading: () {
                       return AppWidgetLoading(
                         child: UserGreetingCard.loading(),
@@ -78,9 +83,8 @@ class HomePageBody extends StatelessWidget {
               ),
               BlocBuilder<DailyChallengeCubit, ApiState<Question, Exception>>(
                 builder: (context, state) {
-                  return state.when(
-                    onInitial: () => const CircularProgressIndicator(),
-                    onLoading: () => AppWidgetLoading(
+                  return state.mayBeWhen(
+                    orElse: () => AppWidgetLoading(
                       child: DailyQuestionCard.empty(),
                     ),
                     onLoaded: (question) {
@@ -119,10 +123,14 @@ class HomePageBody extends StatelessWidget {
               BlocBuilder<UpcomingContestsCubit,
                   ApiState<List<Contest>, Exception>>(
                 builder: (context, state) {
-                  return state.when(
-                    onInitial: () => const CircularProgressIndicator(),
-                    onLoading: () => AppWidgetLoading(
-                      child: UpcomingContestCard.empty(),
+                  return state.mayBeWhen(
+                    orElse: () => AppWidgetLoading(
+                      child: Column(
+                        children: List.generate(
+                          2,
+                          (index) => UpcomingContestCard.empty(),
+                        ),
+                      ),
                     ),
                     onLoaded: (contests) {
                       // Using column instead of listview because number of

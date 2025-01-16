@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:codersgym/core/routes/app_router.gr.dart';
+import 'package:codersgym/features/auth/presentation/blocs/auth/auth_bloc.dart';
 import 'package:codersgym/features/code_editor/domain/model/code_execution_result.dart';
 import 'package:codersgym/features/code_editor/domain/model/programming_language.dart';
 import 'package:codersgym/features/code_editor/presentation/blocs/code_editor/code_editor_bloc.dart';
@@ -14,6 +15,7 @@ import 'package:codersgym/features/code_editor/presentation/widgets/coding_keys.
 import 'package:codersgym/features/code_editor/presentation/widgets/question_description_bottomsheet.dart';
 import 'package:codersgym/features/code_editor/presentation/widgets/run_code_result_sheet.dart';
 import 'package:codersgym/features/code_editor/presentation/widgets/test_case_bottom_sheet.dart';
+import 'package:codersgym/features/profile/presentation/blocs/user_profile/user_profile_cubit.dart';
 import 'package:codersgym/features/question/domain/model/question.dart';
 import 'package:codersgym/injection.dart';
 import 'package:flutter/material.dart';
@@ -37,7 +39,9 @@ class CodeEditorPage extends HookWidget implements AutoRouteWrapper {
   @override
   Widget wrappedRoute(BuildContext context) {
     return BlocProvider(
-      create: (context) => getIt.get<CodeEditorBloc>(),
+      create: (context) => getIt.get<CodeEditorBloc>(
+        param1: question.questionId,
+      ),
       child: this,
     );
   }
@@ -58,22 +62,8 @@ class CodeEditorPage extends HookWidget implements AutoRouteWrapper {
             body: CircularProgressIndicator(),
           );
         }
-        return PopScope(
-          canPop: false,
-          onPopInvokedWithResult: (bool didPop, __) async {
-            if (didPop) {
-              return;
-            }
-            final shouldPop = await CodeEditorBackConfirmationDialog.show(
-                    context) ??
-                false; // Default to staying on the page if the dialog is dismissed
-            if (shouldPop && context.mounted) {
-              Navigator.pop(context);
-            }
-          },
-          child: CodeEditorPageBody(
-            question: question,
-          ),
+        return CodeEditorPageBody(
+          question: question,
         );
       },
     );
@@ -81,11 +71,16 @@ class CodeEditorPage extends HookWidget implements AutoRouteWrapper {
 }
 
 class CodeEditorPageBody extends HookWidget {
-  const CodeEditorPageBody({
+  CodeEditorPageBody({
     super.key,
     required this.question,
   });
   final Question question;
+
+  final modifiers = [
+    const IndentModifier(),
+    const TabModifier(),
+  ];
 
   void _handleCodeAndLanguageChanges(
     ValueNotifier<CodeController> codeController,
@@ -95,12 +90,13 @@ class CodeEditorPageBody extends HookWidget {
     if (prevState.language != newState.language) {
       codeController.value = CodeController(
         text: newState.code,
-        language: newState.language.mode,
+        language: (newState.language ?? ProgrammingLanguage.cpp).mode,
+        modifiers: modifiers,
       );
       return;
     }
-    if (newState.code != codeController.value.code.text) {
-      codeController.value.fullText = newState.code;
+    if (newState.code != codeController.value.fullText) {
+      codeController.value.fullText = newState.code ?? '';
     }
   }
 
@@ -137,6 +133,12 @@ class CodeEditorPageBody extends HookWidget {
       final codeSubmissionState = newState.codeSubmissionState;
       switch (codeSubmissionState) {
         case CodeExecutionSuccess():
+          final authBloc = context.read<AuthBloc>();
+          final profileCubit = context.read<UserProfileCubit>();
+          final authState = authBloc.state;
+          if (authState is Authenticated) {
+            profileCubit.getUserProfile(authState.userName);
+          }
           _onCodeSubmissionExecutionSuccess(
             context,
             result: codeSubmissionState.result,
@@ -162,7 +164,9 @@ class CodeEditorPageBody extends HookWidget {
     final codeControllerState = useState(
       CodeController(
         text: codeEditorBloc.state.code,
-        language: codeEditorBloc.state.language.mode,
+        language:
+            (codeEditorBloc.state.language ?? ProgrammingLanguage.cpp).mode,
+        modifiers: modifiers,
       ),
     );
     final codeController = codeControllerState.value;
@@ -170,10 +174,10 @@ class CodeEditorPageBody extends HookWidget {
     useEffect(() {
       codeController.addListener(() {
         // Prevent unnecessary emittion of state when code is already updated
-        if (codeController.text == codeEditorBloc.state.code) return;
+        if (codeController.fullText == codeEditorBloc.state.code) return;
         codeEditorBloc.add(
           CodeEditorCodeUpdateEvent(
-            updatedCode: codeController.text,
+            updatedCode: codeController.fullText,
           ),
         );
       });
@@ -222,9 +226,12 @@ class CodeEditorPageBody extends HookWidget {
                     context: context,
                     isScrollControlled: true,
                     builder: (context) {
-                      return TestCaseBottomSheet(
-                        testcases: question.exampleTestCases ?? [],
-                        onRunCode: onCodeRun,
+                      return BlocProvider.value(
+                        value: codeEditorBloc,
+                        child: TestCaseBottomSheet(
+                          testcases: codeEditorBloc.state.testCases ?? [],
+                          onRunCode: onCodeRun,
+                        ),
                       );
                     },
                   );
@@ -336,15 +343,18 @@ class CodeEditorPageBody extends HookWidget {
     required CodeExecutionResult result,
     required List<TestCase> testcases,
   }) {
+    final codeEditorBloc = context.read<CodeEditorBloc>();
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       builder: (context) {
-        return RunCodeResultSheet(
-          sampleTestcases: testcases,
-          executionResult: result,
-          isCodeSubmitted: false,
-        );
+        return BlocProvider.value(
+            value: codeEditorBloc,
+            child: RunCodeResultSheet(
+              sampleTestcases: testcases,
+              executionResult: result,
+              isCodeSubmitted: false,
+            ));
       },
     );
   }
@@ -354,15 +364,19 @@ class CodeEditorPageBody extends HookWidget {
     required CodeExecutionResult result,
     required List<TestCase> testcases,
   }) {
+    final codeEditorBloc = context.read<CodeEditorBloc>();
     if (result.didCodeResultInError) {
       showModalBottomSheet(
         context: context,
         isScrollControlled: true,
         builder: (context) {
-          return RunCodeResultSheet(
-            sampleTestcases: testcases,
-            executionResult: result,
-            isCodeSubmitted: true,
+          return BlocProvider.value(
+            value: codeEditorBloc,
+            child: RunCodeResultSheet(
+              sampleTestcases: testcases,
+              executionResult: result,
+              isCodeSubmitted: true,
+            ),
           );
         },
       );

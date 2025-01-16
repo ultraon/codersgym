@@ -12,6 +12,7 @@ import 'package:codersgym/features/question/presentation/blocs/question_tags/que
 import 'package:codersgym/features/question/presentation/blocs/similar_question/similar_question_cubit.dart';
 import 'package:codersgym/features/question/presentation/widgets/question_difficulty_text.dart';
 import 'package:codersgym/features/question/presentation/widgets/question_info_tile.dart';
+import 'package:codersgym/features/question/presentation/widgets/question_status_icon.dart';
 import 'package:codersgym/injection.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -50,12 +51,26 @@ class QuestionDescription extends HookWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: Text(
-                        ("${question.frontendQuestionId}. ") +
-                            (question.title ?? ""),
-                        style: textTheme.titleLarge
-                            ?.copyWith(fontWeight: FontWeight.bold),
+                      padding: const EdgeInsets.only(
+                        top: 8.0,
+                        right: 8.0,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Flexible(
+                            child: Text(
+                              ("${question.frontendQuestionId}. ") +
+                                  (question.title ?? ""),
+                              style: textTheme.titleLarge
+                                  ?.copyWith(fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          if (question.status != null)
+                            QuestionStatusIcon(
+                              status: question.status!,
+                            ),
+                        ],
                       ),
                     ),
                     QuestionDifficultyText(question),

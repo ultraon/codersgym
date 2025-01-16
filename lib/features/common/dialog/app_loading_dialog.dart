@@ -12,7 +12,7 @@ abstract final class AppLoadingDialog {
           margin: const EdgeInsets.only(left: 7),
           child: Text(
             "Loading...",
-            style: Theme.of(context).textTheme.titleLarge,
+            style: Theme.of(context).textTheme.titleMedium,
           ),
         ),
       ],

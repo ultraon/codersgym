@@ -185,6 +185,7 @@ class LeetCodeRequests {
           title
           titleSlug
           content
+          status
           isPaidOnly
           difficulty
           likes

@@ -2,9 +2,9 @@ part of 'code_editor_bloc.dart';
 
 class CodeEditorState extends Equatable {
   final bool isStateInitialized;
-  final String code;
+  final String? code;
   final Question? question;
-  final ProgrammingLanguage language;
+  final ProgrammingLanguage? language;
   final CodeExecutionState executionState;
   final CodeExecutionState codeSubmissionState;
   final List<TestCase>? testCases;
@@ -12,9 +12,9 @@ class CodeEditorState extends Equatable {
 
   const CodeEditorState({
     required this.isStateInitialized,
-    required this.code,
+    this.code,
     this.question,
-    required this.language,
+    this.language,
     required this.executionState,
     required this.codeSubmissionState,
     this.testCases,
@@ -24,8 +24,6 @@ class CodeEditorState extends Equatable {
   factory CodeEditorState.initial() {
     return CodeEditorState(
       isStateInitialized: false,
-      code: '',
-      language: ProgrammingLanguage.cpp,
       executionState: CodeExcecutionInitial(),
       codeSubmissionState: CodeExcecutionInitial(),
       isCodeFormatting: false,

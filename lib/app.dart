@@ -1,5 +1,7 @@
+import 'package:codersgym/core/utils/custom_scroll_physics.dart';
 import 'package:codersgym/features/auth/presentation/blocs/auth/auth_bloc.dart';
 import 'package:codersgym/features/profile/presentation/blocs/user_profile/user_profile_cubit.dart';
+import 'package:codersgym/features/settings/presentation/blocs/app_info/app_info_cubit.dart';
 import 'package:codersgym/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:codersgym/core/routes/app_router.dart';
@@ -61,14 +63,19 @@ class App extends StatelessWidget {
           create: (context) => getIt.get<AuthBloc>(),
         ),
         BlocProvider(
-          create: (context) => getIt.get<UserProfileCubit>(),
+          create: (context) => getIt.get<AppInfoCubit>()..getAppInfo(),
         ),
       ],
       child: MaterialApp.router(
-        title: 'Daily Coders',
+        title: 'Coders Gym',
         theme: leetcodeTheme,
         debugShowCheckedModeBanner: false,
         darkTheme: leetcodeTheme,
+        scrollBehavior: const ScrollBehavior().copyWith(
+          physics: const CustomPageViewScrollPhysics(
+            parent: ClampingScrollPhysics(),
+          ),
+        ),
         routerConfig: appRouter.config(),
       ),
     );

@@ -2,6 +2,10 @@ class AppConstants {
   AppConstants._();
   static const appName = "CodersGym";
   static const sourceCodeUrl = "https://github.com/GouravShDev/codersgym";
+  static const releaseNoteUrl =
+      "https://github.com/GouravShDev/codersgym/releases/tag/v{versionName}";
+  static const githubUsername = "GouravShDev";
+  static const githubRepo = "codersgym";
   static const reportBugEmail = "gourav0sharma1@gmail.com";
 }
 

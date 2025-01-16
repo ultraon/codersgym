@@ -7,6 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:codersgym/app.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -25,5 +26,11 @@ void main() async {
     return true;
   };
   AppBlocObserver.initialize();
+  await Permission.notification.isDenied.then((value) {
+    if (value) {
+      Permission.notification.request();
+    }
+  });
+
   runApp(const AppInitializer());
 }

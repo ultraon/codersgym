@@ -58,7 +58,7 @@ class UserGreetingCard extends StatelessWidget {
 
   factory UserGreetingCard.loading() {
     return const UserGreetingCard(
-      userName: "Daily Coder",
+      userName: "Coder",
       avatarUrl: "",
       streak: null,
     );

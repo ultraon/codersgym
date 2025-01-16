@@ -2,14 +2,14 @@ import 'package:bloc/bloc.dart';
 import 'package:codersgym/core/api/api_state.dart';
 import 'package:codersgym/features/profile/domain/model/contest_ranking_info.dart';
 import 'package:codersgym/features/profile/domain/repository/profile_repository.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 class ContestRankingInfoCubit
-    extends Cubit<ApiState<ContestRankingInfo, Exception>> {
+    extends HydratedCubit<ApiState<ContestRankingInfo, Exception>> {
   ContestRankingInfoCubit(this._profileRepository) : super(ApiState.initial());
   final ProfileRepository _profileRepository;
 
   Future<void> getContestRankingInfo(String userName) async {
-    emit(ApiLoading());
     final rankingInfoResult =
         await _profileRepository.getContestRankingInfo(userName);
     rankingInfoResult.when(
@@ -23,6 +23,22 @@ class ContestRankingInfoCubit
       onFailure: (exception) => emit(
         ApiError(exception),
       ),
+    );
+  }
+
+  @override
+  ApiState<ContestRankingInfo, Exception>? fromJson(Map<String, dynamic> json) {
+    if (json.isEmpty) {
+      return ApiState.initial();
+    }
+    return ApiLoaded(ContestRankingInfo.fromJson(json));
+  }
+
+  @override
+  Map<String, dynamic>? toJson(ApiState<ContestRankingInfo, Exception> state) {
+    return state.mayBeWhen(
+      orElse: () => null,
+      onLoaded: (rankingInfo) => rankingInfo.toJson(),
     );
   }
 }

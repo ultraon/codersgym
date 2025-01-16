@@ -6,6 +6,8 @@ import 'dart:io';
 import 'package:codersgym/core/network/network_service.dart';
 import 'package:dio/dio.dart';
 import 'package:exponential_back_off/exponential_back_off.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/foundation.dart';
 
 class DioNetworkService extends NetworkService {
   DioNetworkService({
@@ -20,7 +22,7 @@ class DioNetworkService extends NetworkService {
 
   Dio _getDefaultDioClient() {
     _headers.addAll(configuration.headers ?? {});
-  final dio = Dio()
+    final dio = Dio()
       ..options.baseUrl = configuration.baseUrl
       ..options.headers = _headers
       ..options.connectTimeout = const Duration(seconds: 15)
@@ -107,7 +109,14 @@ Future<NetworkResponse<Model>> executeRequest<Model>(
     );
   } on DioException catch (error) {
     final errorBody = error.response?.data;
-    log(error.response?.data ?? '');
+    if (kReleaseMode) {
+      FirebaseCrashlytics.instance.recordError(
+        error,
+        StackTrace.current,
+        fatal: false,
+      );
+    }
+
     if (errorBody is String) {
       return NetworkResponse.error(
         NetworkUnknownError(

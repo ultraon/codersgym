@@ -3,12 +3,18 @@ import 'package:codersgym/core/utils/storage/storage_manager.dart';
 import 'package:codersgym/features/auth/data/entity/user_status_entity.dart';
 import 'package:codersgym/features/auth/domain/service/auth_service.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 class AuthServiceImp implements AuthService {
   final StorageManager _storageManager;
   final LeetcodeApi _leetcodeApi;
+  final HydratedStorage _blocCaching;
 
-  AuthServiceImp(this._storageManager, this._leetcodeApi);
+  AuthServiceImp(
+    this._storageManager,
+    this._leetcodeApi,
+    this._blocCaching,
+  );
   @override
   Future<AuthenticationStatus> checkAuthentication() async {
     try {
@@ -66,6 +72,7 @@ class AuthServiceImp implements AuthService {
     await _storageManager.clearKey(_storageManager.leetcodeSession);
     await _storageManager.clearKey(_storageManager.leetcodeUserName);
     CookieManager.instance().deleteAllCookies();
+    _blocCaching.clear();
     return UnAuthenticatedStatus();
   }
 }

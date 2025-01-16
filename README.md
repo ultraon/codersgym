@@ -6,21 +6,24 @@ Coders Gym is a mobile application build with Flutter and designed to provide a 
 
 ## 🚀 Features
 
-Features of Coders Gym include:
+Features of Coders Gym
 
-- Read daily challenges instantly.
-- View upcoming LeetCode contests.
-- Access all LeetCode problems.
-- See your profile stats with dynamic animations.
-- Authentication via Leetcode login or username authentication.
+- **Daily Challenges at Your Fingertips**: Stay consistent with instant access to your daily coding challenges.
+- **Upcoming LeetCode Contests**: Plan ahead with a clear view of all upcoming contests.
+- **Explore the Full Problem Set**: Access the entire collection of LeetCode problems to sharpen your skills.
+- **Dynamic Profile Stats**: Track your progress with interactive and visually engaging animations.
+- **Seamless Authentication**: Log in effortlessly using your LeetCode credentials or simply by your username.
+- **Built-In Code Editor**: Write, test, and submit your solutions directly within the app
+- **Question Discussions and Solutions**: Dive deeper into problems by exploring community discussions and expert solutions.
+
 
 ## 🔮 Future Scope
 
 
 - [ ] Set reminders for contests
 - [ ] Daily reminder notifications for daily challenge
-- [ ] Code Editor for submitting code
-- [ ] View question discussions
+- [x] Code Editor for submitting code
+- [x] View question discussions
 
 ## 🛠 Built With
 - **BLoC (Business Logic Component)**: State management solution to separate business logic from UI components, making the app more maintainable and testable.

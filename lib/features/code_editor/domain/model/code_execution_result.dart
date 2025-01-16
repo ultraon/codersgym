@@ -11,6 +11,8 @@ class CodeExecutionResult extends Equatable {
   final int? totalTestcases;
   final String? complieError;
   final String? fullCompileError;
+  final String? runtimeError;
+  final String? fullRuntimeError;
 
   final String? statusMemory;
 
@@ -33,6 +35,8 @@ class CodeExecutionResult extends Equatable {
     this.totalTestcases,
     this.complieError,
     this.fullCompileError,
+    this.runtimeError,
+    this.fullRuntimeError,
     this.statusMemory,
     this.runtimePercentile,
     this.memoryPercentile,
@@ -72,6 +76,8 @@ class CodeExecutionResult extends Equatable {
         lastTestCasesInputs,
         lastExpectedOutput,
         lastCodeOutput,
+        runtimeError,
+        fullRuntimeError,
       ];
 }
 

@@ -71,9 +71,22 @@ class CodeEditorTopActionBar extends StatelessWidget {
           builder: (context, state) {
             return IconButton(
               onPressed: () {
-                codeEditorBloc.add(
-                  CodeEditorFormatCodeEvent(),
-                );
+                final isAuthenticated = context
+                    .read<AuthBloc>()
+                    .isUserAuthenticatedWithLeetcodeAccount;
+                if (isAuthenticated) {
+                  codeEditorBloc.add(
+                    CodeEditorFormatCodeEvent(),
+                  );
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text(
+                        "Please login via leetcode account to use this feature",
+                      ),
+                    ),
+                  );
+                }
               },
               icon: state.isCodeFormatting
                   ? const SizedBox(
@@ -145,49 +158,50 @@ class CodeEditorTopActionBar extends StatelessWidget {
                   child: const CircularProgressIndicator(),
                 ),
                 Visibility(
-                    maintainAnimation: true,
-                    maintainState: true,
-                    maintainSize: true,
-                    visible: !isRunning,
-                    child: (allowCodeRun)
-                        ? ElevatedButton.icon(
-                            style: ElevatedButton.styleFrom(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 18.0,
-                                vertical: 4.0,
-                              ),
+                  maintainAnimation: true,
+                  maintainState: true,
+                  maintainSize: true,
+                  visible: !isRunning,
+                  child: (allowCodeRun)
+                      ? ElevatedButton.icon(
+                          style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 18.0,
+                              vertical: 4.0,
                             ),
-                            icon: const Icon(Icons.upload_file_outlined),
-                            onPressed: () {
-                              codeEditorBloc.add(
-                                CodeEditorSubmitCodeEvent(question: question),
-                              );
-                            },
-                            label: const Text('Submit'),
-                          )
-                        : ClipRRect(
-                            borderRadius: BorderRadius.circular(
-                                8.0), // Match button shape
-                            child: BackdropFilter(
-                              filter: ImageFilter.blur(
-                                  sigmaX: 10.0, sigmaY: 10.0), // Blur intensity
-                              child: ElevatedButton.icon(
-                                style: ElevatedButton.styleFrom(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 18.0,
-                                    vertical: 4.0,
-                                  ),
-                                  backgroundColor: Colors.white
-                                      .withOpacity(0.3), // Semi-transparent
+                          ),
+                          icon: const Icon(Icons.upload_file_outlined),
+                          onPressed: () {
+                            codeEditorBloc.add(
+                              CodeEditorSubmitCodeEvent(question: question),
+                            );
+                          },
+                          label: const Text('Submit'),
+                        )
+                      : ClipRRect(
+                          borderRadius:
+                              BorderRadius.circular(8.0), // Match button shape
+                          child: BackdropFilter(
+                            filter: ImageFilter.blur(
+                                sigmaX: 10.0, sigmaY: 10.0), // Blur intensity
+                            child: ElevatedButton.icon(
+                              style: ElevatedButton.styleFrom(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 18.0,
+                                  vertical: 4.0,
                                 ),
-                                icon: const Icon(Icons
-                                    .lock), // Replace icon for disabled state
-                                onPressed: () =>
-                                    LeetcodeLoginDialog.show(context),
-                                label: const Text('Locked'),
+                                backgroundColor: Colors.white
+                                    .withOpacity(0.3), // Semi-transparent
                               ),
+                              icon: const Icon(Icons
+                                  .lock), // Replace icon for disabled state
+                              onPressed: () =>
+                                  LeetcodeLoginDialog.show(context),
+                              label: const Text('Locked'),
                             ),
-                          )),
+                          ),
+                        ),
+                ),
               ],
             );
           },

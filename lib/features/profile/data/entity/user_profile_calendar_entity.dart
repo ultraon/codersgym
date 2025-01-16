@@ -135,7 +135,10 @@ extension UserProfileCalendarEntityExt on UserProfileCalendarEntity {
         (e) {
           int time = int.parse(e.key); // Convert timestamp to integer
           int submissions = e.value;
-          return CalendarSubmission(time, submissions);
+          return CalendarSubmission(
+            timeStamp: time,
+            submissionCount: submissions,
+          );
         },
       ).toList(),
     );

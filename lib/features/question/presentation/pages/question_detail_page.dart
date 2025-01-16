@@ -1,8 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:codersgym/core/routes/app_router.gr.dart';
 import 'package:codersgym/core/utils/inherited_provider.dart';
-import 'package:codersgym/features/code_editor/domain/model/programming_language.dart';
-import 'package:codersgym/features/code_editor/presentation/blocs/code_editor/code_editor_bloc.dart';
+import 'package:codersgym/features/profile/presentation/blocs/user_profile/user_profile_cubit.dart';
 import 'package:codersgym/features/question/presentation/blocs/community_solutions/community_solutions_bloc.dart';
 import 'package:codersgym/features/question/presentation/blocs/official_solution_available/official_solution_available_cubit.dart';
 import 'package:codersgym/features/question/presentation/blocs/question_hints/question_hints_cubit.dart';
@@ -12,19 +11,14 @@ import 'package:codersgym/features/question/presentation/blocs/similar_question/
 import 'package:codersgym/features/question/presentation/widgets/question_community_solution.dart';
 import 'package:codersgym/features/question/presentation/widgets/question_description.dart';
 import 'package:codersgym/features/question/presentation/widgets/question_editorial.dart';
-import 'package:codersgym/features/question/presentation/widgets/question_info_tile.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_floating_bottom_bar/flutter_floating_bottom_bar.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
-import 'package:codersgym/core/api/api_state.dart';
 import 'package:codersgym/features/question/domain/model/question.dart';
 import 'package:codersgym/features/question/presentation/blocs/question_content/question_content_cubit.dart';
-import 'package:codersgym/features/question/presentation/widgets/question_difficulty_text.dart';
 import 'package:codersgym/injection.dart';
-import 'package:collection/collection.dart';
 
 @RoutePage()
 class QuestionDetailPage extends HookWidget implements AutoRouteWrapper {
@@ -57,69 +51,67 @@ class QuestionDetailPage extends HookWidget implements AutoRouteWrapper {
       ),
     ];
 
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(question.title ?? 'Question Detail'),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(question.title ?? 'Question Detail'),
+      ),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 60.0),
+        child: BlocBuilder<QuestionContentCubit, QuestionContentState>(
+          builder: (context, state) {
+            final currentQuestion = state.mayBeWhen(
+              orElse: () => question,
+              onLoaded: (questionWithDetail) => questionWithDetail,
+            );
+            if (currentQuestion.codeSnippets == null) {
+              return SizedBox.shrink();
+            }
+            return FloatingActionButton(
+              onPressed: () {
+                AutoRouter.of(context).push(
+                  CodeEditorRoute(
+                    question: currentQuestion,
+                  ),
+                );
+              },
+              child: Icon(Icons.code),
+              tooltip: 'Open Code Editor',
+            );
+          },
         ),
-        floatingActionButton: Padding(
-          padding: const EdgeInsets.only(bottom: 60.0),
-          child: BlocBuilder<QuestionContentCubit, QuestionContentState>(
-            builder: (context, state) {
-              final currentQuestion = state.mayBeWhen(
-                orElse: () => question,
-                onLoaded: (questionWithDetail) => questionWithDetail,
-              );
-              if (currentQuestion.codeSnippets == null) {
-                return SizedBox.shrink();
-              }
-              return FloatingActionButton(
-                onPressed: () {
-                  AutoRouter.of(context).push(
-                    CodeEditorRoute(
-                      question: currentQuestion,
+      ),
+      body: BlocConsumer<OfficialSolutionAvailableCubit,
+          OfficialSolutionAvailableState>(
+        listener: (context, state) {
+          state.when(
+            onInitial: () {},
+            onLoading: () {},
+            onLoaded: (isAvailable) {
+              if (isAvailable) {
+                tabsItems = List.from(tabsItems)
+                  ..insert(
+                    1,
+                    TabBarItem(
+                      id: 'question_editorial',
+                      icon: Icons.menu_book_rounded,
+                      child: QuestionEditorial(
+                        question: question,
+                      ),
                     ),
                   );
-                },
-                child: Icon(Icons.code),
-                tooltip: 'Open Code Editor',
-              );
+              }
             },
-          ),
-        ),
-        body: BlocConsumer<OfficialSolutionAvailableCubit,
-            OfficialSolutionAvailableState>(
-          listener: (context, state) {
-            state.when(
-              onInitial: () {},
-              onLoading: () {},
-              onLoaded: (isAvailable) {
-                if (isAvailable) {
-                  tabsItems = List.from(tabsItems)
-                    ..insert(
-                      1,
-                      TabBarItem(
-                        id: 'question_editorial',
-                        icon: Icons.menu_book_rounded,
-                        child: QuestionEditorial(
-                          question: question,
-                        ),
-                      ),
-                    );
-                }
-              },
-              onError: (_) {},
-            );
-          },
-          builder: (context, state) {
-            return QuestionDetailPageBody(
-              // Reinitalize page body if tabs items are changed
-              key: ValueKey("QuestionDetailPageBody${tabsItems.length}"),
-              question: question,
-              tabItems: tabsItems,
-            );
-          },
-        ),
+            onError: (_) {},
+          );
+        },
+        builder: (context, state) {
+          return QuestionDetailPageBody(
+            // Reinitalize page body if tabs items are changed
+            key: ValueKey("QuestionDetailPageBody${tabsItems.length}"),
+            question: question,
+            tabItems: tabsItems,
+          );
+        },
       ),
     );
   }

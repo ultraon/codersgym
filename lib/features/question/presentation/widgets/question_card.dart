@@ -1,3 +1,4 @@
+import 'package:codersgym/features/question/presentation/widgets/question_status_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:codersgym/features/question/domain/model/question.dart';
@@ -48,10 +49,10 @@ class QuestionCard extends StatelessWidget {
                       style: textTheme.titleMedium,
                     ),
                   ),
-                  Icon(
-                    getStatusIcon(),
-                    color: getStatusColor(context),
-                  ),
+                  if (question.status != null)
+                    QuestionStatusIcon(
+                      status: question.status!,
+                    ),
                 ],
               ),
               const SizedBox(height: 3),
@@ -78,22 +79,5 @@ class QuestionCard extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  IconData getStatusIcon() {
-    return switch (question.status) {
-      QuestionStatus.accepted => Icons.check_circle,
-      QuestionStatus.notAccepted => Icons.incomplete_circle,
-      _ => Icons.extension_outlined,
-    };
-  }
-
-  Color getStatusColor(BuildContext context) {
-    final theme = Theme.of(context);
-    return switch (question.status) {
-      QuestionStatus.accepted => Colors.green,
-      QuestionStatus.notAccepted => theme.primaryColor,
-      _ => theme.hintColor,
-    };
   }
 }
